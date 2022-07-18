@@ -32,7 +32,7 @@ public class Range {
     public boolean isInside(double point) {
         double epsilon = 1.0e-10;
 
-        return (point - from >= -epsilon && to - point >= -epsilon);
+        return point - from >= -epsilon && to - point >= -epsilon;
     }
 }
 

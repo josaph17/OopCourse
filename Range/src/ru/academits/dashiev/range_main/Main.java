@@ -1,4 +1,5 @@
 package ru.academits.dashiev.range_main;
+
 import ru.academits.dashiev.range.Range;
 
 public class Main {
@@ -6,8 +7,8 @@ public class Main {
         Range range = new Range(11.3, 32.4);
 
         double point = 32.6;
-
         double length = range.getLength();
+
         System.out.printf("Длина диапазона от %.1f до %.1f равна %.1f%n", range.getFrom(), range.getTo(), length);
 
         if (range.isInside(point)) {
@@ -31,4 +32,3 @@ public class Main {
         }
     }
 }
-
