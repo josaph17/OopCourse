@@ -34,5 +34,15 @@ public class Range {
 
         return point - from >= -epsilon && to - point >= -epsilon;
     }
+
+    public String crossInterval(double from, double to, double from2, double to2) {
+        if (this.from <= to2 && this.to >= from2) {
+            System.out.printf("Интервал пересечения двух интервалов {%.2f , %.2f}", from2, to2);
+            return " ";
+        }
+
+        return null;
+    }
+
 }
 
