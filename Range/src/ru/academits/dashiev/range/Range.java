@@ -30,15 +30,32 @@ public class Range {
     }
 
     public boolean isInside(double point) {
-        double epsilon = 1.0e-10;
-
-        return point - from >= -epsilon && to - point >= -epsilon;
+        return point - from >= 0 && to - point >= 0;
     }
 
-    public String crossInterval(double from, double to, double from2, double to2) {
-        if (this.from <= to2 && this.to >= from2) {
-            System.out.printf("Интервал пересечения двух интервалов {%.2f , %.2f}", from2, to2);
-            return " ";
+    public String toString() {
+        return "(" + from + ", " + to + ")";
+    }
+
+    public Range intersect(Range newRange) {
+        //if (this.from <= newRange.getTo() && this.to >= newRange.getFrom())
+        if (newRange.isInside(this.from)) { // начало промежутка this приндлежит промежутку newRange
+            if (newRange.isInside(this.to)) {
+                return (new Range(this.from, this.to));
+            }
+            if (this.isInside(newRange.getTo())) {
+                return (new Range(this.from, newRange.getTo()));
+            }
+        }
+
+        if (this.isInside(newRange.getFrom())) { // начало промежутка newRange приндлежит промежутку this
+            if (newRange.isInside(this.to)) {
+                return (new Range(newRange.getFrom(), this.to));
+            }
+
+            if (this.isInside(newRange.getTo())) {
+                return (new Range(newRange.getFrom(), newRange.getTo()));
+            }
         }
 
         return null;
