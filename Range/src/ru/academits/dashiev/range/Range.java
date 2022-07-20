@@ -60,6 +60,5 @@ public class Range {
 
         return null;
     }
-
 }
 
