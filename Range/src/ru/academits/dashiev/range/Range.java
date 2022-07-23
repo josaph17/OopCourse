@@ -37,7 +37,7 @@ public class Range {
         return "(" + from + ", " + to + ")";
     }
 
-    public Range intersect(Range newRange) {
+    public Range getIntersect(Range newRange) { // ф-я пересечения
         //if (this.from <= newRange.getTo() && this.to >= newRange.getFrom())
         if (newRange.isInside(this.from)) { // начало промежутка this приндлежит промежутку newRange
             if (newRange.isInside(this.to)) {
@@ -59,6 +59,24 @@ public class Range {
         }
 
         return null;
+    }
+
+    public Range[] getUnion(Range newRange) { // объединение
+        if (this.getIntersect(newRange) == null) { // если нет пересечений, то объединение из 2-х отрезков
+
+            Range[] unionRange = new Range[2];
+            unionRange[0] = this;
+            unionRange[1] = newRange;
+
+            return unionRange;
+        }
+        if (this.from == newRange.getFrom() && this.to == newRange.getTo()){ // если отрезки совпадаю
+            return null;
+        }
+
+        Range[] unionRange = new Range[1];
+        unionRange[0] = new Range(Math.min(this.from, newRange.getFrom()), Math.max(this.to, newRange.getTo()));
+        return unionRange;
     }
 }
 

@@ -3,6 +3,31 @@ package ru.academits.dashiev.range_main;
 import ru.academits.dashiev.range.Range;
 
 public class Main {
+    public static void printRangeArray(Range[] array) {
+        for (Range i : array) {
+            System.out.print(i.toString() + " ");
+        }
+    }
+
+    public static void checkFunction(double from1, double to1, double from2, double to2) {
+        Range range1 = new Range(from1, to1);
+        Range range2 = new Range(from2, to2);
+
+        System.out.print("Дано два интервала: " + range1.toString() + " и " + range2.toString());
+        System.out.println();
+
+        Range intersectRange = range1.getIntersect(range2);
+        if (intersectRange != null) {
+            System.out.println("Интервал пересечения двух интервалов: " + intersectRange.toString());
+        } else {
+            System.out.println("Интервал пересечения двух интервалов: null");
+        }
+
+        System.out.print("Объединение двух отрезков: ");
+        printRangeArray(range1.getUnion(range2));
+        System.out.println();
+    }
+
     public static void main(String[] args) {
         // Range range1 = new Range(11.3, 32.4);
 //        double point = 32.6;
@@ -24,14 +49,8 @@ public class Main {
 //        } else {
 //            System.out.printf("Число %.1f не принадлежит диапазону от %.1f до %.1f%n", point, range.getFrom(), range.getTo());
 //        }
-        Range range1 = new Range(6.7, 33.8);
-        Range range2 = new Range(8, 34.1);
+        checkFunction(6.7, 33.8, 8, 34.1);
 
-        Range intersectRange = range1.intersect(range2);
-        if (intersectRange != null) {
-            System.out.println("Интервал пересечения двух интервалов: " + intersectRange.toString());
-        } else {
-            System.out.println("Интервал пересечения двух интервалов: null");
-        }
+        checkFunction(5, 7, 5, 7);
     }
 }
