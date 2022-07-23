@@ -37,7 +37,7 @@ public class Range {
         return "(" + from + ", " + to + ")";
     }
 
-    public Range getIntersect(Range newRange) { // ф-я пересечения
+    public Range getIntersect(Range newRange) {
         //if (this.from <= newRange.getTo() && this.to >= newRange.getFrom())
         if (newRange.isInside(this.from)) { // начало промежутка this приндлежит промежутку newRange
             if (newRange.isInside(this.to)) {
@@ -48,7 +48,8 @@ public class Range {
             }
         }
 
-        if (this.isInside(newRange.getFrom())) { // начало промежутка newRange приндлежит промежутку this
+        if (this.isInside(newRange.getFrom())) {
+            // начало промежутка newRange приндлежит промежутку this
             if (newRange.isInside(this.to)) {
                 return (new Range(newRange.getFrom(), this.to));
             }
@@ -61,9 +62,19 @@ public class Range {
         return null;
     }
 
-    public Range[] getUnion(Range newRange) { // объединение
-        if (this.getIntersect(newRange) == null) { // если нет пересечений, то объединение из 2-х отрезков
+    public Range[] getUnion(Range newRange) {
+        // объединение
+        if (this.getIntersect(newRange) == null) {
+            // отрезки не пересекаются
+            Range[] unionRange = new Range[2];
+            unionRange[0] = this;
+            unionRange[1] = newRange;
 
+            return unionRange;
+        }
+
+        if (this.getIntersect(newRange) == null) {
+            // если нет пересечений, то объединение из 2-х отрезков
             Range[] unionRange = new Range[2];
             unionRange[0] = this;
             unionRange[1] = newRange;
@@ -73,7 +84,46 @@ public class Range {
 
         Range[] unionRange = new Range[1];
         unionRange[0] = new Range(Math.min(this.from, newRange.getFrom()), Math.max(this.to, newRange.getTo()));
+
         return unionRange;
+    }
+
+    public Range[] getDifference(Range newRange) {
+        // разность
+        if (this.getIntersect(newRange) == null) {
+            // если нет пересечений, то объединение из 2-х отрезков
+            Range[] unionRange = new Range[1];
+            unionRange[0] = this;
+
+            return unionRange;
+        }
+
+        if (this.from >= newRange.getFrom() && this.to <= newRange.getTo()) {
+            // когда отрезки одинаковые или левый во втором
+
+            return null;
+        }
+
+        if (this.isInside(newRange.getFrom())) {
+            if (this.isInside(newRange.getTo())) { // 2 отрезка
+                Range[] differenceRange = new Range[2];
+
+                differenceRange[0] = new Range(this.from, newRange.getTo());
+                differenceRange[1] = new Range(newRange.getTo(), this.to);
+
+                return differenceRange;
+            }
+
+            Range[] differenceRange = new Range[1];
+            differenceRange[0] = new Range( this.from, newRange.getFrom());
+
+            return differenceRange;
+        }
+
+        Range[] differenceRange = new Range[1];
+        differenceRange[0] = new Range(this.from, newRange.getFrom());
+
+        return differenceRange;
     }
 }
 

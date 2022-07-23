@@ -18,17 +18,27 @@ public class Main {
 
         Range intersectRange = range1.getIntersect(range2);
         if (intersectRange != null) {
-            System.out.println("Интервал пересечения двух интервалов: " + intersectRange.toString());
+            System.out.println("Пересечение двух интервалов: " + intersectRange.toString());
         } else {
-            System.out.println("Интервал пересечения двух интервалов: null");
+            System.out.println("Пересечение двух интервалов: null");
         }
 
         if (range1.getUnion(range2) != null) {
             System.out.print("Объединение двух отрезков: ");
             printRangeArray(range1.getUnion(range2));
         } else {
-            System.out.print("Объедиение двух интервалов: null");
+            System.out.print("Объедиение двух: null");
         }
+//
+//        System.out.println();
+//
+//        if (range1.getDifference(range2)!= null){
+//            System.out.print("Разность двух отрезков: ");
+//            printRangeArray(range1.getDifference(range2));
+//        } else{
+//            System.out.println("Разность двух отрезков: пустой массив");
+//        }
+
 
         System.out.println();
         System.out.println();
@@ -55,11 +65,10 @@ public class Main {
 //        } else {
 //            System.out.printf("Число %.1f не принадлежит диапазону от %.1f до %.1f%n", point, range.getFrom(), range.getTo());
 //        }
-        checkFunction(6.7, 33.8, 8, 34.1); // Интервалы пересек в 2-х точках, объед 1 отр
-
-        checkFunction(5, 7, 5, 7); // И. равны. Интервалы О и перес равны
-
-        checkFunction(3.3, 4.4, 5.5, 6.6); // И. равны. Интервалы О и перес равны
-
+        checkFunction(4.4, 5.5, 6.6, 7.7); // не перес
+        checkFunction(6, 8.9, 4.4, 6.3); // перес в начале this
+        checkFunction(5.2, 8.3, 7.8, 10); // перес в конце this
+        checkFunction(6.7, 10, 7.2, 8.8); // второй отрезок внутри this
+        checkFunction(10, 10.5, 9.9, 11.9); // this внутри второго отрещка
     }
 }
