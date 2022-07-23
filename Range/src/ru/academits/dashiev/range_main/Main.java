@@ -23,8 +23,14 @@ public class Main {
             System.out.println("Интервал пересечения двух интервалов: null");
         }
 
-        System.out.print("Объединение двух отрезков: ");
-        printRangeArray(range1.getUnion(range2));
+        if (range1.getUnion(range2) != null) {
+            System.out.print("Объединение двух отрезков: ");
+            printRangeArray(range1.getUnion(range2));
+        } else {
+            System.out.print("Объедиение двух интервалов: null");
+        }
+
+        System.out.println();
         System.out.println();
     }
 
@@ -49,8 +55,11 @@ public class Main {
 //        } else {
 //            System.out.printf("Число %.1f не принадлежит диапазону от %.1f до %.1f%n", point, range.getFrom(), range.getTo());
 //        }
-        checkFunction(6.7, 33.8, 8, 34.1);
+        checkFunction(6.7, 33.8, 8, 34.1); // Интервалы пересек в 2-х точках, объед 1 отр
 
-        checkFunction(5, 7, 5, 7);
+        checkFunction(5, 7, 5, 7); // И. равны. Интервалы О и перес равны
+
+        checkFunction(3.3, 4.4, 5.5, 6.6); // И. равны. Интервалы О и перес равны
+
     }
 }

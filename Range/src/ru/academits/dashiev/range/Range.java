@@ -70,9 +70,6 @@ public class Range {
 
             return unionRange;
         }
-        if (this.from == newRange.getFrom() && this.to == newRange.getTo()){ // если отрезки совпадаю
-            return null;
-        }
 
         Range[] unionRange = new Range[1];
         unionRange[0] = new Range(Math.min(this.from, newRange.getFrom()), Math.max(this.to, newRange.getTo()));
