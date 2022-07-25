@@ -1,23 +1,28 @@
 package ru.academits.dashiev.vector;
 
 public class Vector {
-    private double value;
+    private double vectorValue; // значение вектора
+    private int n; // размерность вектора, n-мерное пространство
+    private double vector[];
 
     public Vector(int n) { // размерность n, все компоненты равны 0
-        double[] vector = new double[n];
+        this.n = n;
 
-        for (double e : vector) {
-            e = 0;
+        double[] vector = new double[this.n ];
+
+        for (int i = 0; i < this.n ; i++) {
+            vector[i] = 0;
         }
     }
 
-    public Vector(Vector vector) { //конструктор копирования
-        this.value = vector.value;
+    public Vector(Vector newVector) { //конструктор копирования
+
+        this.vectorValue = newVector.vectorValue;
     }
 
-    public Vector(double... array) { // заполнение вектора значениями из массива
-        for (int i = 0; i < this.length; i++) {
-            this
+    public Vector(double... array) { // c.заполнение вектора значениями из массива , передать new double{3,4,5}
+        for (int i = 0; i < this.n; i++) {
+            vector[i] = array[i];
         }
     }
 
@@ -32,8 +37,9 @@ public class Vector {
         }
     }
 
-    public int getSize() {  // для получения размерности вектора
-        return this.length;
+    public int getSize() {  // для получения размерности вектора, зн-я n-мерного пространства
+
+        return this.n;
     }
 
     public String toString() {
@@ -45,7 +51,7 @@ public class Vector {
         }
         System.out.print(" }");
 
-        return 1;
+        return "";
     }
 
     public double addVector() { // a.Прибавление к вектору другого вектора
@@ -65,12 +71,10 @@ public class Vector {
     }
 
     public int getVectorLength() { // e.Получение длины вектора
+
         return 1;
     }
 
-    public int getVectorLength() { // f.Получение и установка компоненты вектора по индексу
-        return 1;
-    }
 
     public boolean equals() { /*g.Переопределить метод equals, чтобы был true  векторы
     имеют одинаковую размерность и соответствующие компоненты равны. */
@@ -79,6 +83,6 @@ public class Vector {
 
     public int hashCode() { /*g.Переопределить метод equals, чтобы был true  векторы
     имеют одинаковую размерность и соответствующие компоненты равны. */
-        return 1;
+        return this.n; /// !!!!!!!!!!!!!
     }
 }
