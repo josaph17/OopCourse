@@ -10,8 +10,8 @@ public class Range {
     }
 
     public Range(Range b) { // конструктор копирования
-        this.from = b.from;
-        this.to = b.to;
+        from = b.from;
+        to = b.to;
     }
 
     public double getFrom() {
@@ -35,107 +35,101 @@ public class Range {
     }
 
     public boolean isInside(double point) {
-        return point - from >= 0 && to - point >= 0;
+        return point >= from && to >= point;
     }
 
+    @Override
     public String toString() {
         return "(" + from + ", " + to + ")";
     }
 
-    public Range getIntersect(Range newRange) {
+    public Range getIntersection(Range range) {
         //if (this.from <= newRange.getTo() && this.to >= newRange.getFrom())
-        if (newRange.isInside(this.from)) { // начало промежутка this приндлежит промежутку newRange
-            if (newRange.isInside(this.to)) {
-                return (new Range(this.from, this.to));
+        if (range.isInside(from)) { // начало промежутка this принадлежит промежутку newRange
+            if (range.isInside(to)) {
+                return (new Range(from, to));
             }
-            if (this.isInside(newRange.getTo())) {
-                return (new Range(this.from, newRange.getTo()));
+            if (this.isInside(range.to)) {
+                return (new Range(from, range.to));
             }
         }
 
-        if (this.isInside(newRange.getFrom())) {
-            // начало промежутка newRange приндлежит промежутку this
-            if (newRange.isInside(this.to)) {
-                return (new Range(newRange.getFrom(), this.to));
+        if (this.isInside(range.getFrom())) {
+            // начало промежутка newRange принадлежит промежутку this
+            if (range.isInside(to)) {
+                return (new Range(range.from, to));
             }
 
-            if (this.isInside(newRange.getTo())) {
-                return (new Range(newRange.getFrom(), newRange.getTo()));
+            if (this.isInside(range.to)) {
+                return (new Range(range.from, range.to));
             }
         }
 
         return null;
     }
 
-    public Range[] getUnion(Range newRange) {
+    public Range[] getUnion(Range range) {
         // объединение
-        if ((this.from == newRange.getTo())) {
-            Range[] differenceRange = new Range[1];
-            differenceRange[0] = new Range(newRange.getFrom(), this.to);
-
-            return differenceRange;
+        if ((from == range.getTo())) {
+            return new Range[]{
+                    new Range(range.from, to)
+            };
         }
 
-        if (this.to == newRange.getFrom()) {
-            Range[] differenceRange = new Range[1];
-            differenceRange[0] = new Range(this.from, newRange.getTo());
+        if (to == range.getFrom()) {
+            return new Range[]{
+                    new Range(from, range.to) // для одного эл-а так делается?
+            };
 
-            return differenceRange;
         }
 
-        if (this.getIntersect(newRange) == null) {
+        if (this.getIntersection(range) == null) {
             // если нет пересечений, то объединение из 2-х отрезков
-            Range[] unionRange = new Range[2];
-            unionRange[0] = new Range(this.from, this.to);
-            unionRange[1] = new Range(newRange.getFrom(), getTo());
-
-            return unionRange;
+            return new Range[]{
+                    new Range(from, to),
+                    new Range(range.from, range.to)
+            };
         }
 
         // пересечение в одной точке
-        Range[] unionRange = new Range[2];
-        unionRange[0] = new Range(Math.min(this.from, newRange.getFrom()), Math.max(this.from, newRange.getFrom()));
-        unionRange[1] = new Range(Math.min(this.to, newRange.getTo()), Math.max(this.to, newRange.getTo()));
-
-        return unionRange;
+        return new Range[]{
+                new Range(Math.min(from, range.from), Math.max(from, range.from)),
+                new Range(Math.min(to, range.to), Math.max(to, range.to))
+        };
     }
 
-    public Range[] getDifference(Range newRange) {
+    public Range[] getDifference(Range range) {
         // разность
-        if (this.from >= newRange.getFrom() && this.to <= newRange.getTo()) {
+        if (from >= range.from && to <= range.to) {
             //левый интервал внутри второго
             Range[] differenceRange = {}; // пустой массив длины 0
 
             return differenceRange; // нет отрезков, вместо null пустой массив
         }
 
-        if (this.getIntersect(newRange) == null) {
+        if (this.getIntersection(range) == null) {
             // если нет пересечений
-            Range[] differenceRange = new Range[1];
-            differenceRange[0] = this;
-
-            return differenceRange; // 1 отрезок
+            return new Range[]{
+                    new Range(this)
+            };
         }
 
-        if (this.from < newRange.getFrom() && this.to > newRange.getTo()) {
+        if (from < range.from && to > range.to) {
             // правый интервал внутри левого, 2 отрезка
-            Range[] differenceRange = new Range[2];
-            differenceRange[0] = new Range(Math.min(this.from, newRange.getFrom()), Math.max(this.from, newRange.getFrom()));
-            differenceRange[1] = new Range(Math.min(this.to, newRange.getTo()), Math.max(this.to, newRange.getTo()));
-
-            return differenceRange;
+            return new Range[]{
+                    new Range(Math.min(from, range.from), Math.max(from, range.from)),
+                    new Range(Math.min(to, range.to), Math.max(to, range.to))
+            };
         }
 
-        if (this.from > newRange.getFrom()) {
-            Range[] differenceRange = new Range[1];
-            differenceRange[0] = new Range(newRange.getTo(), this.to);
-
-            return differenceRange;
+        if (from > range.from) {
+            return new Range[]{
+                    new Range(range.to, to)
+            };
         }
 
-        Range[] differenceRange = new Range[1];
-        differenceRange[0] = new Range(this.from, newRange.getFrom());
-
-        return differenceRange;
+        return new Range[]{
+                new Range(from, range.from)
+        };
     }
 }

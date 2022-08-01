@@ -30,17 +30,13 @@ public class Main {
             }
 
             sb.delete(sb.length() - 2, sb.length());
+
             sb.append("]");
 
             String result = sb.toString();
 
-
             System.out.print(sb);
-
-            return;
         }
-
-
     }
 
     public static void checkFunction(double from1, double to1, double from2, double to2) {
@@ -50,9 +46,9 @@ public class Main {
         System.out.print("Даны интервалы: [" + range1.toString() + "] и [" + range2.toString() + "]");
         System.out.println();
 
-        Range intersectRange = range1.getIntersect(range2);
-        if (intersectRange != null) {
-            System.out.print("Пересечение интервалов: " + intersectRange.toString());
+        Range intersection = range1.getIntersection(range2);
+        if (intersection != null) {
+            System.out.print("Пересечение интервалов: " + intersection);
         } else {
             System.out.print("Пересечение интервалов: null");
         }
@@ -63,7 +59,7 @@ public class Main {
             System.out.print("Объединение интервалов: ");
             printRangeArray(range1.getUnion(range2));
         } else {
-            System.out.print("Объедиение интервалов: null");
+            System.out.print("Объединение интервалов: null");
         }
 
         System.out.println();
@@ -78,46 +74,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        // Range range1 = new Range(11.3, 32.4);
-//        double point = 32.6;
-//        double length = range.getLength();
-//
-//        System.out.printf("Длина диапазона от %.1f до %.1f равна %.1f%n", range.getFrom(), range.getTo(), length);
-//
-//        if (range.isInside(point)) {
-//            System.out.printf("Число %.1f принадлежит диапазону ", point);
-//        } else {
-//            System.out.printf("Число %.1f не принадлежит диапазону от %.1f до %.1f%n", point, range.getFrom(), range.getTo());
-//        }
-        // Range range2 = new Range(12, 30);
-//        length = range.getLength();
-//        System.out.printf("Длина диапазона от %.1f до %.1f равна %.1f%n", range.getFrom(), range.getTo(), length);
-//
-//        if (range.isInside(point)) {
-//            System.out.printf("Число %.1f принадлежит диапазону от %.1f до %.1f%n", point, range.getFrom(), range.getTo());
-//        } else {
-//            System.out.printf("Число %.1f не принадлежит диапазону от %.1f до %.1f%n", point, range.getFrom(), range.getTo());
-//        }
-        checkFunction(4.4, 5.5, 6.6, 7.7); // не перес
-        checkFunction(6.6, 7.7, 4.4, 5.5); // не перес
-        checkFunction(6, 8.9, 4.4, 6.3); // перес в начале this
-        checkFunction(5.2, 8.3, 7.8, 10); // перес в конце this
-        checkFunction(6.7, 10, 7.2, 8.8); // второй отрезок внутри this
-        checkFunction(10, 10.5, 9.9, 11.9); // this внутри второго отрещка
+//        checkFunction(4.4, 5.5, 6.6, 7.7); // не перес
+//        checkFunction(6.6, 7.7, 4.4, 5.5); // не перес
+//        checkFunction(6, 8.9, 4.4, 6.3); // перес в начале this
+//        checkFunction(5.2, 8.3, 7.8, 10); // перес в конце this
+//        checkFunction(6.7, 10, 7.2, 8.8); // второй отрезок внутри this
+//        checkFunction(10, 10.5, 9.9, 11.9); // this внутри второго отрещка
         checkFunction(5, 6.6, 6.6, 7.8); // this внутри второго отрещка
         checkFunction(4.4, 5.5, 5.5, 10.2); // this внутри второго отрещка
-
-//        int a = 5;
-//        int b = a;
-//        a = 7;
-//        System.out.println(b);
-//
-//        Range a1 = new Range(5, 10);
-//        Range b1 = new Range(a1);
-
-        // b1 = a1.clone(); // почему нельзя без try ?
-//
-//        a1.setFrom(7);
-//        System.out.println(b1);
     }
 }
