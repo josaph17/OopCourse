@@ -2,10 +2,10 @@ package ru.academits.dashiev.vector;
 
 public class Vector {
     private double vectorValue; // значение вектора
-    private int n; // размерность вектора, n-мерное пространство
-    private double vector[];
+    private int n; // размерность вектора, количество компонетов
+    private double vector[]; // массив
 
-    public Vector(int n) { // размерность n, все компоненты равны 0
+    public Vector(int n) { // размерность n, количество компонетов
         this.n = n;
 
         double[] vector = new double[this.n ];

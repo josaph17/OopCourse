@@ -4,16 +4,50 @@ import ru.academits.dashiev.range.Range;
 
 public class Main {
     public static void printRangeArray(Range[] array) {
-        for (Range i : array) {
-            System.out.print(i.toString() + " ");
+        if (array.length == 1) {
+            System.out.print("[");
+            for (Range i : array) {
+                System.out.print(i.toString());
+            }
+            System.out.print("]");
+
+            return;
         }
+
+        if (array.length == 0) {
+            System.out.println("[]");
+
+            return;
+        }
+
+        if (array.length == 2) {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("[");
+            for (Range i : array) {
+                sb.append(i)
+                        .append(", ");
+            }
+
+            sb.delete(sb.length() - 2, sb.length());
+            sb.append("]");
+
+            String result = sb.toString();
+
+
+            System.out.print(sb);
+
+            return;
+        }
+
+
     }
 
     public static void checkFunction(double from1, double to1, double from2, double to2) {
         Range range1 = new Range(from1, to1);
         Range range2 = new Range(from2, to2);
 
-        System.out.print("Даны интервалы: " + range1.toString() + " и " + range2.toString());
+        System.out.print("Даны интервалы: [" + range1.toString() + "] и [" + range2.toString() + "]");
         System.out.println();
 
         Range intersectRange = range1.getIntersect(range2);
@@ -34,11 +68,9 @@ public class Main {
 
         System.out.println();
 
-        if (range1.getDifference(range2)!= null){
+        if (range1.getDifference(range2) != null) {
             System.out.print("Разность интервалов: ");
             printRangeArray(range1.getDifference(range2));
-        } else{
-            System.out.print("Разность интервалов: пустой массив");
         }
 
         System.out.println();
@@ -74,5 +106,18 @@ public class Main {
         checkFunction(10, 10.5, 9.9, 11.9); // this внутри второго отрещка
         checkFunction(5, 6.6, 6.6, 7.8); // this внутри второго отрещка
         checkFunction(4.4, 5.5, 5.5, 10.2); // this внутри второго отрещка
+
+//        int a = 5;
+//        int b = a;
+//        a = 7;
+//        System.out.println(b);
+//
+//        Range a1 = new Range(5, 10);
+//        Range b1 = new Range(a1);
+
+        // b1 = a1.clone(); // почему нельзя без try ?
+//
+//        a1.setFrom(7);
+//        System.out.println(b1);
     }
 }

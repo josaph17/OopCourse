@@ -9,6 +9,11 @@ public class Range {
         this.to = to;
     }
 
+    public Range(Range b) { // конструктор копирования
+        this.from = b.from;
+        this.to = b.to;
+    }
+
     public double getFrom() {
         return from;
     }
@@ -81,8 +86,8 @@ public class Range {
         if (this.getIntersect(newRange) == null) {
             // если нет пересечений, то объединение из 2-х отрезков
             Range[] unionRange = new Range[2];
-            unionRange[0] = this;
-            unionRange[1] = newRange;
+            unionRange[0] = new Range(this.from, this.to);
+            unionRange[1] = new Range(newRange.getFrom(), getTo());
 
             return unionRange;
         }
@@ -99,8 +104,9 @@ public class Range {
         // разность
         if (this.from >= newRange.getFrom() && this.to <= newRange.getTo()) {
             //левый интервал внутри второго
+            Range[] differenceRange = {}; // пустой массив длины 0
 
-            return null; // нет отрезков
+            return differenceRange; // нет отрезков, вместо null пустой массив
         }
 
         if (this.getIntersect(newRange) == null) {
