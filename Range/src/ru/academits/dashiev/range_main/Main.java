@@ -46,9 +46,9 @@ public class Main {
         System.out.print("Даны интервалы: [" + range1.toString() + "] и [" + range2.toString() + "]");
         System.out.println();
 
-        Range intersection = range1.getIntersection(range2);
-        if (intersection != null) {
-            System.out.print("Пересечение интервалов: " + intersection);
+        if (range1.getIntersection(range2) != null) {
+            System.out.print("Пересечение интервалов: ");
+            printRangesArray(range1.getIntersection(range2));
         } else {
             System.out.print("Пересечение интервалов: null");
         }

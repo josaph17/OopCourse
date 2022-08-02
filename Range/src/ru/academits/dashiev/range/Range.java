@@ -47,10 +47,10 @@ public class Range {
         return "(" + from + ", " + to + ")";
     }
 
-    public Range getIntersection(Range range) {
+    public Range[] getIntersection(Range range) {
         //if (this.from <= newRange.getTo() && this.to >= newRange.getFrom())
         if (this.equals(range)) {
-            return (new Range(this)); // если интервалы одинаковы
+            return new Range[]{(new Range(this))}; // если интервалы одинаковы
         }
 
         if (to < range.from || range.to < from) {
@@ -62,45 +62,25 @@ public class Range {
         }
 
         if (from == range.from) { // интервалы пересекаются в двух точках , 1-я точка пересечения одинаковая
-            return new Range(from, Math.min(to, range.to));
+            return new Range[]{new Range(from, Math.min(to, range.to))};
         }
 
         if (to == range.to) { // интервалы пересекаются в двух точках , 2-я точка пересечения одинаковая
-            return new Range(Math.max(from, range.from), to);
+            return new Range[]{new Range(Math.max(from, range.from), to)};
         }
 
-        return new
-
-                Range(Math.max(from, range.from), Math.min(to, range.to)); // интервалы пересек в 2-ч точках
+        return new Range[]{new Range(Math.max(from, range.from), Math.min(to, range.to))}; // интервалы пересек в 2-ч точках
     }
 
     public Range[] getUnion(Range range) {
-        // объединение
-        if ((from == range.getTo())) {
+        if (to < range.from || range.to < from) { // если интервалы не пересек
             return new Range[]{
-                    new Range(range.from, to)
+                    new Range(this),
+                    new Range(range)
             };
         }
 
-        if (to == range.getFrom()) {
-            return new Range[]{
-                    new Range(from, range.to) // для одного эл-а так делается?
-            };
-        }
-
-        if (this.getIntersection(range) == null) {
-            // если нет пересечений, то объединение из 2-х отрезков
-            return new Range[]{
-                    new Range(from, to),
-                    new Range(range.from, range.to)
-            };
-        }
-
-        // пересечение в одной точке
-        return new Range[]{
-                new Range(Math.min(from, range.from), Math.max(from, range.from)),
-                new Range(Math.min(to, range.to), Math.max(to, range.to))
-        };
+        return new Range[]{new Range(Math.min(from, range.from), Math.max(to, range.to))};
     }
 
     public Range[] getDifference(Range range) {
