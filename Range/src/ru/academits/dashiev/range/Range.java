@@ -34,6 +34,10 @@ public class Range {
         return to - from;
     }
 
+    public boolean equals(Range range) {
+        return (from == range.from && to == range.to);
+    }
+
     public boolean isInside(double point) {
         return point >= from && to >= point;
     }
@@ -45,27 +49,29 @@ public class Range {
 
     public Range getIntersection(Range range) {
         //if (this.from <= newRange.getTo() && this.to >= newRange.getFrom())
-        if (range.isInside(from)) { // начало промежутка this принадлежит промежутку newRange
-            if (range.isInside(to)) {
-                return (new Range(from, to));
-            }
-            if (this.isInside(range.to)) {
-                return (new Range(from, range.to));
-            }
+        if (this.equals(range)) {
+            return (new Range(this)); // если интервалы одинаковы
         }
 
-        if (this.isInside(range.getFrom())) {
-            // начало промежутка newRange принадлежит промежутку this
-            if (range.isInside(to)) {
-                return (new Range(range.from, to));
-            }
-
-            if (this.isInside(range.to)) {
-                return (new Range(range.from, range.to));
-            }
+        if (to < range.from || range.to < from) {
+            return null; // интервалы не пересекаются
         }
 
-        return null;
+        if ((from == range.to && to > range.from) || (to == range.from && from < range.to)) {
+            return null; // интервалы пересекаются в одной точке
+        }
+
+        if (from == range.from) { // интервалы пересекаются в двух точках , 1-я точка пересечения одинаковая
+            return new Range(from, Math.min(to, range.to));
+        }
+
+        if (to == range.to) { // интервалы пересекаются в двух точках , 2-я точка пересечения одинаковая
+            return new Range(Math.max(from, range.from), to);
+        }
+
+        return new
+
+                Range(Math.max(from, range.from), Math.min(to, range.to)); // интервалы пересек в 2-ч точках
     }
 
     public Range[] getUnion(Range range) {
@@ -80,7 +86,6 @@ public class Range {
             return new Range[]{
                     new Range(from, range.to) // для одного эл-а так делается?
             };
-
         }
 
         if (this.getIntersection(range) == null) {
