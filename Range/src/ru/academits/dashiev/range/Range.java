@@ -85,36 +85,37 @@ public class Range {
 
     public Range[] getDifference(Range range) {
         // разность
-        if (from >= range.from && to <= range.to) {
-            //левый интервал внутри второго
-            Range[] differenceRange = {}; // пустой массив длины 0
-
-            return differenceRange; // нет отрезков, вместо null пустой массив
+        if (to < range.from || range.to < from) {
+            return new Range[]{new Range(this)}; // интервалы не пересекаются
         }
 
-        if (this.getIntersection(range) == null) {
-            // если нет пересечений
-            return new Range[]{
-                    new Range(this)
-            };
+        if (this.equals(range) || (from >= range.from && to <= range.to)) {
+            return null; // если интервалы одинаковы или this находится внутри второго интервала
         }
 
         if (from < range.from && to > range.to) {
-            // правый интервал внутри левого, 2 отрезка
             return new Range[]{
-                    new Range(Math.min(from, range.from), Math.max(from, range.from)),
-                    new Range(Math.min(to, range.to), Math.max(to, range.to))
-            };
+                    new Range(new Range(from, range.from)),
+                    new Range(new Range(range.to, to))
+            }; // 2 интервала
         }
 
-        if (from > range.from) {
-            return new Range[]{
-                    new Range(range.to, to)
-            };
+        if (from == range.to) {
+            if (from > range.from) { // интервал пересек в одной точке, но штриховка по разные стороны
+                return new Range[]{new Range(this)};
+            }
         }
 
-        return new Range[]{
-                new Range(from, range.from)
-        };
+        if (to == range.from) {
+            if (from < range.from) { // интервал пересек в одной точке, но штриховка по разные стороны
+                return new Range[]{new Range(this)};
+            }
+        }
+
+        if (to > range.to) {
+            return new Range[]{new Range(range.to, to)};
+        }
+
+        return new Range[]{new Range(from, range.from)};
     }
 }

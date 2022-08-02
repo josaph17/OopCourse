@@ -67,6 +67,8 @@ public class Main {
         if (range1.getDifference(range2) != null) {
             System.out.print("Разность интервалов: ");
             printRangesArray(range1.getDifference(range2));
+        }  else {
+            System.out.print("Разность интервалов: null");
         }
 
         System.out.println();
