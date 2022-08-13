@@ -9,9 +9,9 @@ public class Range {
         this.to = to;
     }
 
-    public Range(Range b) { // конструктор копирования
-        from = b.from;
-        to = b.to;
+    public Range(Range range) { // конструктор копирования
+        from = range.from;
+        to = range.to;
     }
 
     public double getFrom() {
