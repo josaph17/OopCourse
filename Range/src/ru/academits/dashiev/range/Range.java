@@ -34,8 +34,19 @@ public class Range {
         return to - from;
     }
 
-    public boolean equals(Range range) {
-        return (from == range.from && to == range.to);
+    @Override
+    public boolean equals(Object object) { // неявноее приведение к базовому классу
+        if (object == this) { // в java Проверяем через This
+            return true;
+        }
+
+        if (object == null || object.getClass() != this.getClass()) { // возвр тип объекта
+            return false;
+        }
+
+        Range range = (Range) object; // явно приводим к наследнику
+
+        return from == range.from && to == range.to; // сравниваем поля
     }
 
     public boolean isInside(double point) {
@@ -47,29 +58,12 @@ public class Range {
         return "(" + from + ", " + to + ")";
     }
 
-    public Range[] getIntersection(Range range) {
-        //if (this.from <= newRange.getTo() && this.to >= newRange.getFrom())
-        if (this.equals(range)) {
-            return new Range[]{(new Range(this))}; // если интервалы одинаковы
-        }
-
-        if (to < range.from || range.to < from) {
+    public Range getIntersection(Range range) {
+        if (to < range.from || range.to < from || from == range.to || to == range.from) {
             return null; // интервалы не пересекаются
         }
 
-        if ((from == range.to && to > range.from) || (to == range.from && from < range.to)) {
-            return null; // интервалы пересекаются в одной точке
-        }
-
-        if (from == range.from) { // интервалы пересекаются в двух точках , 1-я точка пересечения одинаковая
-            return new Range[]{new Range(from, Math.min(to, range.to))};
-        }
-
-        if (to == range.to) { // интервалы пересекаются в двух точках , 2-я точка пересечения одинаковая
-            return new Range[]{new Range(Math.max(from, range.from), to)};
-        }
-
-        return new Range[]{new Range(Math.max(from, range.from), Math.min(to, range.to))}; // интервалы пересек в 2-ч точках
+        return new Range(Math.max(from, range.from), Math.min(to, range.to)); // интервалы пересек
     }
 
     public Range[] getUnion(Range range) {
@@ -85,11 +79,7 @@ public class Range {
 
     public Range[] getDifference(Range range) {
         // разность
-        if (to < range.from || range.to < from) {
-            return new Range[]{new Range(this)}; // интервалы не пересекаются
-        }
-
-        if (this.equals(range) || (from >= range.from && to <= range.to)) {
+        if (equals(range) || (from >= range.from && to <= range.to)) { // могу ли я убрать equals(range) ? или он нужен
             return null; // если интервалы одинаковы или this находится внутри второго интервала
         }
 
@@ -100,16 +90,8 @@ public class Range {
             }; // 2 интервала
         }
 
-        if (from == range.to) {
-            if (from > range.from) { // интервал пересек в одной точке, но штриховка по разные стороны
-                return new Range[]{new Range(this)};
-            }
-        }
-
-        if (to == range.from) {
-            if (from < range.from) { // интервал пересек в одной точке, но штриховка по разные стороны
-                return new Range[]{new Range(this)};
-            }
+        if (to <= range.from || range.to <= from) {
+            return new Range[]{new Range(this)}; // интервалы не пересекаются
         }
 
         if (to > range.to) {
