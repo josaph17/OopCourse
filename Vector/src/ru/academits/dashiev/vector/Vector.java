@@ -1,64 +1,71 @@
 package ru.academits.dashiev.vector;
 
 public class Vector {
-    private int n; // размерность вектора, количество компонетов
-    private double vector[]; // массив
+    private double vectorComponents[]; // массив
 
-    public Vector() {
-        vector = new double[5]; // конструктор по умолчанию размерности в 3 эл-а
-    }
-
-    public Vector(int n) { //Конструктор, размерность n, количество компонетов
-        if (n <= 0) {
-            throw new IllegalArgumentException("n must be >0. Current value: " + n); // бросил исключение
+    public Vector(int capacity) { //Конструктор, размерность n, количество компонетов
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("Capacity must be >0. Current value: " + capacity); // бросил исключение
         }
 
-        vector = new double[n]; // инициализировали vector, все компоненты равны 0
+        vectorComponents = new double[capacity]; // инициализировали vector, все компоненты равны 0
     }
 
-    public Vector(Vector vector) { //конструктор копирования
-        if (vector != null && vector.getSize() > 0 && (vector instanceof Vector)) {
-            n = vector.getSize();
+    public Vector(Vector anotherVector) { //конструктор копирования
+        if (anotherVector == null) {
+            throw new IllegalArgumentException("Constructor Argument is null!");
+        }
 
-            this.vector = new double[vector.getSize()];
+        vectorComponents = new double[anotherVector.getSize()];
 
-            for (int i = 0; i < n; i++) {
-                this.vector[i] = vector[i];
-            }
+        for (int i = 0; i < anotherVector.getSize(); i++) {
+            vectorComponents[i] = anotherVector.getVectorComponents()[i];
         }
     }
 
-    public Vector(double[] array) { // c.заполнение вектора значениями из массива , передать new double{3,4,5}
+    public Vector(double... array) { // c.заполнение вектора значениями из массива , передать new double{3,4,5}
         for (int i = 0; i < array.length; i++) { // foreach Не подойдет т.к. хотим внести изменения
-            this.vector[i] = array[i];
+            this.vectorComponents[i] = array[i];
         }
     }
 
-    public Vector(int n, double... array) { /* заполнение вектора значениями из массива. Если длина массива array,length
+    public Vector(int capacity, double... array) {
+        /* заполнение вектора значениями из массива. Если длина массива array,length
      меньше n, то считать что в остальных компонентах 0*/
-        this(n);
-
-        vector = new double[n];
+        this(capacity); // вызвали конструктор, размерность capacity, количество компонетов
 
         for (int i = 0; i < array.length; i++) {
-            vector[i] = array[i];
+            vectorComponents[i] = array[i];
         }
+    }
+
+    public double[] getVectorComponents() {
+        double[] copyVectorComponents = new double[vectorComponents.length];
+
+        System.arraycopy(copyVectorComponents, 0, vectorComponents, 0, vectorComponents.length);
+
+        return copyVectorComponents;
+    }
+
+    public void setVectorComponents(double[] vectorComponents) {
+        this.vectorComponents = new double[vectorComponents.length]; /* чтобы переменная this.vectorComponents
+        больше не ссылалась на объект, что и vectorComponents*/
+
+        System.arraycopy(vectorComponents, 0, this.vectorComponents, 0, vectorComponents.length);
     }
 
     public int getSize() {  // для получения размерности вектора, зн-я n-мерного пространства
-        return n;
+        return vectorComponents.length;
     }
 
     public String toString() {
-        for (int i = 0; i < n; i++) {
-            System.out.print("{ ");
-            for (int j = 0; j < n; j++) {
-                System.out.print(vector[j] + ", ");
-            }
-        }
-        System.out.print(" }");
+        StringBuilder sb = new StringBuilder();
 
-        return "";
+        for (double vC : vectorComponents) {
+            sb.append(vC);
+        }
+
+        return sb.toString(); // получение резкльтирующей строчки
     }
 
     public double add() { // a.Прибавление к вектору другого вектора
@@ -70,25 +77,25 @@ public class Vector {
     } // b. Вычитание из вектора другого вектора
 
     public double[] multiplicationVectorScalar(double scalar) { // c.Умножение вектора на скаляр
-        Vector newVector = new Vector(vector);
-
-        for (int i = 0; i < n; i++) {
-            vector[i] *= scalar;
+        for (int i = 0; i < vectorComponents.length; i++) { // копию не обяз создавать т.к. scalar не ссылочный тип
+            vectorComponents[i] *= scalar;
         }
 
-        return vector;
+        return vectorComponents;
     }
 
-    public double reverseVector() { // d.Разворот вектора
-        return 1;
+    public void reverse() { // d.Разворот вектора
+        for (int i = 0; i < vectorComponents.length; i++) { // копию не обяз создавать т.к. scalar не ссылочный тип
+            vectorComponents[i] *= -1;
+        }
     }
 
-    public double getVectorLength() { // e.Получение длины вектора
+    public double getSum() { // e.Получение длины вектора
 
         double vectorLength = 0;
 
-        for (double e : vector) {
-            vectorLength += Math.pow(e, 2);
+        for (double e : vectorComponents) {
+            vectorLength += e * e; // умножение т.к. это быстрее Math.pow
         }
 
         return Math.sqrt(vectorLength);
@@ -102,14 +109,18 @@ public class Vector {
 
     public int hashCode() { /*g.Переопределить метод equals, чтобы был true  векторы
     имеют одинаковую размерность и соответствующие компоненты равны. */
-        return this.n; /// !!!!!!!!!!!!!
+        return 1; /// !!!!!!!!!!!!!
     }
 
-    static double addVector(Vector vector) {
+    static double sumVectors(Vector vector1, Vector vector2) {
         return 1;
     }
 
-    static double scalarProduct(Vector vector) {
+    static double subtractionVectors(Vector vector1, Vector vector2) {
+        return 1;
+    }
+
+    static double scalarProduct(Vector vector1, Vector vector2) {
         return 1;
     }
 }
