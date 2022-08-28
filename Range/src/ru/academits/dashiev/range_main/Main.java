@@ -22,23 +22,24 @@ public class Main {
         System.out.print("Даны интервалы: " + range1 + " и " + range2);
         System.out.println();
 
-        if (range1.getIntersection(range2) == null) {
+        Range intersection = range1.getIntersection(range2);
+
+        if (intersection == null) {
             System.out.println("Пересечение интервалов: null");
         } else {
             System.out.print("Пересечение интервалов: ");
-            printRangesArray(range1.getIntersection(range2));
+            printRangesArray(intersection);
         }
+
+        Range[] union = range1.getUnion(range2);
 
         System.out.print("Объединение интервалов: ");
-        System.out.println(Arrays.toString(range1.getUnion(range2)));
+        System.out.println(Arrays.toString(union));
 
-        if (range1.getDifference(range2).length != 0) { // если рез-т пустой массив, т.е.масс массив длины 0
-            System.out.print("Разность интервалов: ");
-            System.out.println(Arrays.toString(range1.getDifference(range2)));
-        } else {
-            System.out.print("Разность интервалов: ");
-            System.out.println(Arrays.toString(range1.getDifference(range2)));
-        }
+        Range[] difference = range1.getDifference(range2);
+
+        System.out.print("Разность интервалов: ");
+        System.out.println(Arrays.toString(difference));
 
         System.out.println();
     }
