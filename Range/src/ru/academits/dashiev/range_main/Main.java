@@ -2,6 +2,8 @@ package ru.academits.dashiev.range_main;
 
 import ru.academits.dashiev.range.Range;
 
+import java.util.Arrays;
+
 public class Main {
     public static void printRangesArray(Range range) {
         if (range.getLength() == 0) {
@@ -11,40 +13,6 @@ public class Main {
         }
 
         System.out.println("[" + range + "]");
-    }
-
-    public static void printRangesArray(Range[] rangeArray) { // перегрузка функции
-        if (rangeArray.length == 1) {
-            System.out.print("[");
-            for (Range range : rangeArray) {
-                System.out.print(range);
-            }
-            System.out.print("]");
-
-            return;
-        }
-
-        if (rangeArray.length == 0) {
-            System.out.println("[]");
-
-            return;
-        }
-
-        if (rangeArray.length == 2) {
-            StringBuilder sb = new StringBuilder();
-
-            sb.append("[");
-            for (Range interval : rangeArray) {
-                sb.append(interval)
-                        .append(", ");
-            }
-
-            sb.delete(sb.length() - 2, sb.length());
-
-            sb.append("]");
-
-            System.out.print(sb); // вместо result
-        }
     }
 
     public static void checkRangesOperations(double from1, double to1, double from2, double to2) {
@@ -61,23 +29,17 @@ public class Main {
             printRangesArray(range1.getIntersection(range2));
         }
 
-        if (range1.getUnion(range2) != null) {
-            System.out.print("Объединение интервалов: ");
-            printRangesArray(range1.getUnion(range2));
-        } else {
-            System.out.print("Объединение интервалов: null");
-        }
+        System.out.print("Объединение интервалов: ");
+        System.out.println(Arrays.toString(range1.getUnion(range2)));
 
-        System.out.println();
-
-        if (range1.getDifference(range2) != null) {
+        if (range1.getDifference(range2).length != 0) { // если рез-т пустой массив, т.е.масс массив длины 0
             System.out.print("Разность интервалов: ");
-            printRangesArray(range1.getDifference(range2));
+            System.out.println(Arrays.toString(range1.getDifference(range2)));
         } else {
-            System.out.print("Разность интервалов: null");
+            System.out.print("Разность интервалов: ");
+            System.out.println(Arrays.toString(range1.getDifference(range2)));
         }
 
-        System.out.println();
         System.out.println();
     }
 

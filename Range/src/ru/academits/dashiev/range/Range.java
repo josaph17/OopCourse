@@ -1,5 +1,7 @@
 package ru.academits.dashiev.range;
 
+import java.util.Arrays;
+
 public class Range {
     private double from;
     private double to;
@@ -40,7 +42,7 @@ public class Range {
             return true;
         }
 
-        if (object == null || object.getClass() != this.getClass()) { // возвр тип объекта
+        if (object == null || object.getClass() != getClass()) { // возвр тип объекта
             return false;
         }
 
@@ -58,8 +60,9 @@ public class Range {
         return "(" + from + ", " + to + ")";
     }
 
+
     public Range getIntersection(Range range) {
-        if (to < range.from || range.to < from || from == range.to || to == range.from) {
+        if (to <= range.from || range.to <= from) {
             return null; // интервалы не пересекаются
         }
 
@@ -79,8 +82,8 @@ public class Range {
 
     public Range[] getDifference(Range range) {
         // разность
-        if (equals(range) || (from >= range.from && to <= range.to)) { // могу ли я убрать equals(range) ? или он нужен
-            return null; // если интервалы одинаковы или this находится внутри второго интервала
+        if (from >= range.from && to <= range.to) { // могу ли я убрать equals(range) ? или он нужен
+            return new Range[0]; // если интервалы одинаковы или this находится внутри второго интервала, то пустой массив
         }
 
         if (from < range.from && to > range.to) {
