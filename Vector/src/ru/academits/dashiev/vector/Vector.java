@@ -53,15 +53,6 @@ public class Vector {
         }
     }
 
-
-    public double getVectorComponent(int index) {
-        return vectorComponents[index];
-    }
-
-    public void setVectorComponent(int index, double value) {
-        vectorComponents[index] = value;
-    }
-
     public int getSize() {
         return vectorComponents.length;
     }
@@ -71,94 +62,113 @@ public class Vector {
         return Arrays.toString(vectorComponents);
     }
 
-    //    public Vector(double... array) { // c.заполнение вектора значениями из массива , передать new double{3,4,5}
-//        for (int i = 0; i < array.length; i++) { // foreach Не подойдет т.к. хотим внести изменения
-//            this.vectorComponents[i] = array[i];
-//        }
-//    }
-//
+    public void add(Vector anotherVector) {
+        if (vectorComponents == null) {
+            throw new IllegalArgumentException("VectorComponents is null!");
+        }
 
-//
-//    public double[] getVectorComponents() {
-//        double[] copyVectorComponents = new double[vectorComponents.length];
-//
-//        System.arraycopy(copyVectorComponents, 0, vectorComponents, 0, vectorComponents.length);
-//
-//        return copyVectorComponents;
-//    }
-//
-//    public void setVectorComponents(double[] vectorComponents) {
-//        this.vectorComponents = new double[vectorComponents.length]; /* чтобы переменная this.vectorComponents
-//        больше не ссылалась на объект, что и vectorComponents*/
-//
-//        System.arraycopy(vectorComponents, 0, this.vectorComponents, 0, vectorComponents.length);
-//    }
-//
+        if (anotherVector == null) {
+            throw new IllegalArgumentException("AnotherVector is null!");
+        }
 
-//
-//    public String toString() {
-//        StringBuilder sb = new StringBuilder();
-//
-//        for (double vC : vectorComponents) {
-//            sb.append(vC);
-//        }
-//
-//        return sb.toString(); // получение резкльтирующей строчки
-//    }
-//
-//    public double add() { // a.Прибавление к вектору другого вектора
-//        return 1;
-//    } // a. Прибавление к вектору другого вектора
-//
-//    public double subtractVector() { // b.Прибавление к вектору другого вектора
-//        return 1;
-//    } // b. Вычитание из вектора другого вектора
-//
-//    public double[] multiplicationVectorScalar(double scalar) { // c.Умножение вектора на скаляр
-//        for (int i = 0; i < vectorComponents.length; i++) { // копию не обяз создавать т.к. scalar не ссылочный тип
-//            vectorComponents[i] *= scalar;
-//        }
-//
-//        return vectorComponents;
-//    }
-//
-//    public void reverse() { // d.Разворот вектора
-//        for (int i = 0; i < vectorComponents.length; i++) { // копию не обяз создавать т.к. scalar не ссылочный тип
-//            vectorComponents[i] *= -1;
-//        }
-//    }
-//
-//    public double getSum() { // e.Получение длины вектора
-//
-//        double vectorLength = 0;
-//
-//        for (double e : vectorComponents) {
-//            vectorLength += e * e; // умножение т.к. это быстрее Math.pow
-//        }
-//
-//        return Math.sqrt(vectorLength);
-//    }
-//
-//    @Override
-//    public boolean equals(Object obj) { /*g.Переопределить метод equals, чтобы был true  векторы
-//    имеют одинаковую размерность и соответствующие компоненты равны. */
-//        return true;
-//    }
-//
-//    public int hashCode() { /*g.Переопределить метод equals, чтобы был true  векторы
-//    имеют одинаковую размерность и соответствующие компоненты равны. */
-//        return 1; /// !!!!!!!!!!!!!
-//    }
-//
-//    static double sumVectors(Vector vector1, Vector vector2) {
-//        return 1;
-//    }
-//
-//    static double subtractionVectors(Vector vector1, Vector vector2) {
-//        return 1;
-//    }
-//
-//    static double scalarProduct(Vector vector1, Vector vector2) {
-//        return 1;
-//    }
+        double[] copyVectorComponents = null;
+
+        if (vectorComponents.length <= anotherVector.getSize()) {
+            copyVectorComponents = new double[anotherVector.getSize()];
+
+            copyVectorComponents = Arrays.copyOf(vectorComponents, anotherVector.getSize());
+        } else {
+            copyVectorComponents = new double[vectorComponents.length];
+            copyVectorComponents = Arrays.copyOf(vectorComponents, vectorComponents.length);
+        }
+
+        for (int i = 0; i < anotherVector.getSize(); i++) {
+            copyVectorComponents[i] += anotherVector.getVectorComponent(i);
+        }
+
+        vectorComponents = copyVectorComponents;
+    }
+
+    public void subtract(Vector anotherVector) {
+        if (vectorComponents == null) {
+            throw new IllegalArgumentException("VectorComponents is null!");
+        }
+
+        if (anotherVector == null) {
+            throw new IllegalArgumentException("AnotherVector is null!");
+        }
+
+        double[] copyVectorComponents = null;
+
+        if (vectorComponents.length <= anotherVector.getSize()) {
+            copyVectorComponents = new double[anotherVector.getSize()];
+
+            copyVectorComponents = Arrays.copyOf(vectorComponents, anotherVector.getSize());
+        } else {
+            copyVectorComponents = new double[vectorComponents.length];
+            copyVectorComponents = Arrays.copyOf(vectorComponents, vectorComponents.length);
+        }
+
+        for (int i = 0; i < anotherVector.getSize(); i++) {
+            copyVectorComponents[i] -= anotherVector.getVectorComponent(i);
+        }
+
+        vectorComponents = copyVectorComponents;
+    }
+
+    public void multiplyByScalar(double scalar) {
+        if (vectorComponents == null) {
+            throw new IllegalArgumentException("VectorComponents is null!");
+        }
+
+        for (int i = 0; i < vectorComponents.length; i++) {
+            vectorComponents[i] *= scalar;
+        }
+    }
+
+    public void reverse() {
+        if (vectorComponents == null) {
+            throw new IllegalArgumentException("VectorComponents is null!");
+        }
+
+        for (int i = 0; i < vectorComponents.length; i++) { // копию не обяз создавать т.к. scalar не ссылочный тип
+            vectorComponents[i] *= -1;
+        }
+
+        /* ф-я void т.к. она меняет текущий вектор,
+         метод не должен возвращать ссылку на массив компонент класса - это нарушение инкапсуляции */
+    }
+
+    public double getLength() { // e.Получение длины вектора
+        double vectorLength = 0;
+
+        for (double e : vectorComponents) {
+            vectorLength += e * e; // умножение т.к. это быстрее Math.pow
+        }
+
+        return Math.sqrt(vectorLength);
+    }
+
+    public double getVectorComponent(int index) {
+        if (vectorComponents == null) {
+            throw new IllegalArgumentException("Vector is null!");
+        }
+
+        double[] copyVectorComponents = new double[vectorComponents.length];
+        copyVectorComponents = Arrays.copyOf(vectorComponents, vectorComponents.length);
+
+        return copyVectorComponents[index];
+    }
+
+    public void setVectorComponent(int index, double value) {
+        if (vectorComponents == null) {
+            throw new IllegalArgumentException("Vector is null!");
+        }
+
+        if (index >= vectorComponents.length) {
+            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds, because length = " + vectorComponents.length);
+        }
+
+        vectorComponents[index] = value;
+    }
 }

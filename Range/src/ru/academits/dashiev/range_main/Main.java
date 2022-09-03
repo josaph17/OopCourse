@@ -3,6 +3,9 @@ package ru.academits.dashiev.range_main;
 import ru.academits.dashiev.range.Range;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class Main {
     public static void printRangesArray(Range range) {
