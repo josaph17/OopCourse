@@ -172,6 +172,43 @@ public class Vector {
         vectorComponents[index] = value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this || o ==null && this == null) {
+            return true;
+        }
+
+        if (o == null || this == null || o.getClass() != getClass()) {
+            return false;
+        }
+
+        Vector anotherVector = (Vector) o;
+
+        if (vectorComponents.length != anotherVector.getSize()) {
+            return false;
+        }
+
+        for (int i = 0; i < vectorComponents.length; ) {
+            if (vectorComponents[i] == anotherVector.getVectorComponent(i)) {
+                i++;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 94; // с помощью этого числа (константное число) вычисляют хэш-код
+        int hash = 1;  // начальное значение хэш-кода
+
+        hash = prime * hash + Arrays.hashCode(vectorComponents);
+
+        return 1;
+    }
+
     public static Vector add(Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new IllegalArgumentException("1st vector is null!");

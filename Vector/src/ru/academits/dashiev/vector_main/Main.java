@@ -90,10 +90,14 @@ public class Main {
         System.out.println("vector2.setVectorComponent(setIndex, value)");
         vector2.setVectorComponent(setIndex, value);
         System.out.println(vector2);
+
+        System.out.println();
     }
 
     public static void checkStaticOperations(Vector vector1, Vector vector2) {
-        System.out.println("Check vector static operations");
+        System.out.println("--Check vector static operations--");
+
+        System.out.println();
 
         System.out.print("Vectors Sum: ");
         Vector vectorsSum = Vector.add(vector2, vector1);
@@ -106,11 +110,13 @@ public class Main {
         System.out.print("Vectors MultiplyByScalar: ");
         Vector vectorMultiplyByScalar = Vector.multiplyByScalar(vector2, vector1);
         System.out.println(vectorMultiplyByScalar);
+
+        System.out.println();
     }
 
     public static void main(String[] args) {
-        // checkConstructors();
-        // checkNonStaticOperations();
+        checkConstructors();
+        checkNonStaticOperations();
 
         double[] array1 = {1, 1, 1, 2, 5};
         Vector vector1 = new Vector(array1);
@@ -118,6 +124,11 @@ public class Main {
         double[] array2 = {9, 9, 9, 8, 5, 5, 5};
         Vector vector2 = new Vector(array2);
 
-        //checkStaticOperations(vector1, vector2);
+        checkStaticOperations(vector1, vector2);
+
+        System.out.println("--Check equals--");
+        System.out.println();
+        System.out.println("vector1.equals(vector2");
+        System.out.println(vector1.equals(vector2));
     }
 }
