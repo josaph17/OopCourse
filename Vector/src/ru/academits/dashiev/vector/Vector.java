@@ -71,22 +71,22 @@ public class Vector {
             throw new IllegalArgumentException("AnotherVector is null!");
         }
 
-        double[] copyVectorComponents = null;
+        double[] vectorComponentsCopy = null;
 
         if (vectorComponents.length <= anotherVector.getSize()) {
-            copyVectorComponents = new double[anotherVector.getSize()];
+            vectorComponentsCopy = new double[anotherVector.getSize()];
 
-            copyVectorComponents = Arrays.copyOf(vectorComponents, anotherVector.getSize());
+            vectorComponentsCopy = Arrays.copyOf(vectorComponents, anotherVector.getSize());
         } else {
-            copyVectorComponents = new double[vectorComponents.length];
-            copyVectorComponents = Arrays.copyOf(vectorComponents, vectorComponents.length);
+            vectorComponentsCopy = new double[vectorComponents.length];
+            vectorComponentsCopy = Arrays.copyOf(vectorComponents, vectorComponents.length);
         }
 
         for (int i = 0; i < anotherVector.getSize(); i++) {
-            copyVectorComponents[i] += anotherVector.getVectorComponent(i);
+            vectorComponentsCopy[i] += anotherVector.getVectorComponent(i);
         }
 
-        vectorComponents = copyVectorComponents;
+        vectorComponents = vectorComponentsCopy;
     }
 
     public void subtract(Vector anotherVector) {
@@ -98,22 +98,22 @@ public class Vector {
             throw new IllegalArgumentException("AnotherVector is null!");
         }
 
-        double[] copyVectorComponents = null;
+        double[] vectorComponentsCopy = null;
 
         if (vectorComponents.length <= anotherVector.getSize()) {
-            copyVectorComponents = new double[anotherVector.getSize()];
+            vectorComponentsCopy = new double[anotherVector.getSize()];
 
-            copyVectorComponents = Arrays.copyOf(vectorComponents, anotherVector.getSize());
+            vectorComponentsCopy = Arrays.copyOf(vectorComponents, anotherVector.getSize());
         } else {
-            copyVectorComponents = new double[vectorComponents.length];
-            copyVectorComponents = Arrays.copyOf(vectorComponents, vectorComponents.length);
+            vectorComponentsCopy = new double[vectorComponents.length];
+            vectorComponentsCopy = Arrays.copyOf(vectorComponents, vectorComponents.length);
         }
 
         for (int i = 0; i < anotherVector.getSize(); i++) {
-            copyVectorComponents[i] -= anotherVector.getVectorComponent(i);
+            vectorComponentsCopy[i] -= anotherVector.getVectorComponent(i);
         }
 
-        vectorComponents = copyVectorComponents;
+        vectorComponents = vectorComponentsCopy;
     }
 
     public void multiplyByScalar(double scalar) {
@@ -170,5 +170,86 @@ public class Vector {
         }
 
         vectorComponents[index] = value;
+    }
+
+    public static Vector add(Vector vector1, Vector vector2) {
+        if (vector1 == null) {
+            throw new IllegalArgumentException("1st vector is null!");
+        }
+
+        if (vector2 == null) {
+            throw new IllegalArgumentException("2nd vector is null!");
+        }
+
+        Vector vector1Copy = new Vector(vector1);
+        Vector vector2Copy = new Vector(vector2);
+        Vector result = null;
+
+        if (vector1.getSize() <= vector2.getSize()) { // Длина vector2 больше или раввно
+            result = new Vector(vector2.getSize());
+        } else {
+            result = new Vector(vector1.getSize());
+        }
+
+        vector1Copy.add(vector2Copy);
+
+        result = vector1Copy;
+
+        return result;
+    }
+
+    public static Vector subtract(Vector vector1, Vector vector2) {
+        if (vector1 == null) {
+            throw new IllegalArgumentException("1st vector is null!");
+        }
+
+        if (vector2 == null) {
+            throw new IllegalArgumentException("2nd vector is null!");
+        }
+
+        Vector vector1Copy = new Vector(vector1);
+        Vector vector2Copy = new Vector(vector2);
+        Vector result = null;
+
+        if (vector1.getSize() <= vector2.getSize()) { // Длина vector2 больше или раввно
+            result = new Vector(vector2.getSize());
+        } else {
+            result = new Vector(vector1.getSize());
+        }
+
+        vector1Copy.subtract(vector2Copy);
+
+        result = vector1Copy;
+
+        return result;
+    }
+
+    public static Vector multiplyByScalar(Vector vector1, Vector vector2) {
+        if (vector1 == null) {
+            throw new IllegalArgumentException("1st vector is null!");
+        }
+
+        if (vector2 == null) {
+            throw new IllegalArgumentException("2nd vector is null!");
+        }
+
+        Vector result = null;
+        int multiplyByScalarIndex = 0;
+
+        if (vector1.getSize() <= vector2.getSize()) {
+            result = new Vector(vector2.getSize());
+
+            multiplyByScalarIndex = vector1.getSize();
+        } else {
+            result = new Vector(vector1.getSize());
+
+            multiplyByScalarIndex = vector2.getSize();
+        }
+
+        for (int i = 0; i < multiplyByScalarIndex; i++) {
+            result.setVectorComponent(i, vector1.getVectorComponent(i) * vector2.getVectorComponent(i));
+        }
+
+        return result;
     }
 }

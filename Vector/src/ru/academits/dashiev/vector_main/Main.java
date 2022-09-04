@@ -2,59 +2,122 @@ package ru.academits.dashiev.vector_main;
 
 import ru.academits.dashiev.vector.Vector;
 
+import java.util.Arrays;
+
 public class Main {
+    public static void checkConstructors() {
+        System.out.println("-- Check constructors --");
+
+        System.out.println();
+
+        int capacity = 5;
+
+        System.out.println("Vector(int capacity), capacity = " + capacity);
+        Vector test1 = new Vector(5);
+        System.out.println(test1);
+        System.out.println();
+
+        double[] array = {6.5, 5.5, 0, 11111.9, 5};
+        Vector test2 = new Vector(array);
+        System.out.println("Vector(double... array), array[] = " + Arrays.toString(array));
+        System.out.println(test2);
+        System.out.println();
+
+        Vector test3 = new Vector(test2);
+        System.out.println("Vector(Vector anotherVector), anotherVector = " + test3);
+        System.out.println(test3);
+        System.out.println();
+
+        capacity = 3;
+
+        Vector test4 = new Vector(capacity, array);
+        System.out.println("Vector(int capacity, double... array), capacity = " + capacity + ", array[] = " + Arrays.toString(array));
+        System.out.println(test4);
+        System.out.println();
+    }
+
+    public static void checkNonStaticOperations() {
+        System.out.println("-- Check non static operations --");
+
+        System.out.println();
+
+        double[] array1 = {10.5, 4.3, 0};
+        Vector vector1 = new Vector(array1);
+
+        double[] array2 = {1, 1, 1, 4.4, 5};
+        Vector vector2 = new Vector(array2);
+
+        System.out.println("vector1.add(vector2)");
+        vector1.add(vector2);
+        System.out.println(vector1);
+
+        System.out.println();
+
+        System.out.println("vector1.subtract(vector2)");
+        vector1.subtract(vector2);
+        System.out.println(vector1);
+
+        System.out.println();
+
+        System.out.println("vector1.multiplyByScalar(double scalar)");
+        int scalar = 5;
+        vector1.multiplyByScalar(scalar);
+        System.out.println(vector1);
+
+        System.out.println();
+
+        System.out.println("vector1.reverse()");
+        vector1.reverse();
+        System.out.println(vector1);
+
+        System.out.println();
+
+        System.out.println("vector2.getLength() ");
+        System.out.println(vector2.getLength());
+
+        System.out.println();
+
+        int getIndex = 3;
+        System.out.println("vector2 = " + vector2 + ", getIndex = " + getIndex);
+        System.out.println("vector2.getVectorComponent(getIndex)");
+        System.out.println(vector2.getVectorComponent(getIndex));
+
+        System.out.println();
+
+        int setIndex = 0;
+        double value = -21.4;
+        System.out.println("vector2 = " + vector2 + ", setIndex = " + setIndex + ", value = " + value);
+        System.out.println("vector2.setVectorComponent(setIndex, value)");
+        vector2.setVectorComponent(setIndex, value);
+        System.out.println(vector2);
+    }
+
+    public static void checkStaticOperations(Vector vector1, Vector vector2) {
+        System.out.println("Check vector static operations");
+
+        System.out.print("Vectors Sum: ");
+        Vector vectorsSum = Vector.add(vector2, vector1);
+        System.out.println(vectorsSum);
+
+        System.out.print("Vectors Subtraction: ");
+        Vector vectorsSubtraction = Vector.subtract(vector1, vector2);
+        System.out.println(vectorsSubtraction);
+
+        System.out.print("Vectors MultiplyByScalar: ");
+        Vector vectorMultiplyByScalar = Vector.multiplyByScalar(vector2, vector1);
+        System.out.println(vectorMultiplyByScalar);
+    }
+
     public static void main(String[] args) {
-//        Vector vector = new Vector(5);
-//
-//        Vector vector2 = new Vector(3);
-//        vector2.setVectorComponent(0, 1);
-//        vector2.setVectorComponent(1, 2);
-//        vector2.setVectorComponent(2, 3);
-//
-//        System.out.println(vector2);
-//
-//        Vector vector3  = new Vector(vector2);
-//        System.out.println(vector3);
-
-        //double[] array = {21, 23421, 77, 65, 56};
-//        double[] array = {21, 23421, 77, 65, 56};
-//        //Vector newVector = new Vector(6, array);
-//
-//        Vector newVector = new Vector(array);
-//        newVector.multiplyByScalar(2);
-//
-//        System.out.println(newVector);
-//
-//        newVector.reverse();
-//        System.out.println(newVector);
-//
-//        newVector.setVectorComponent(3, 777);
-//        System.out.println(newVector);
-
-
-//        double[] array1 = {21, 23421, 77, 65, 56};
-//        Vector vector1 = new Vector(array1);
-//        double[] array2 = {21, 23421, 77, 65, 56, 32, 7};
-//        Vector vector2 = new Vector(array2);
-
-//        double[] array1 = {21, 23421, 77, 65, 56, 32, 7};
-//        Vector vector1 = new Vector(array1);
-//        double[] array2 = {21, 23421, 77, 65, 56};
-//        Vector vector2 = new Vector(array2);
+        // checkConstructors();
+        // checkNonStaticOperations();
 
         double[] array1 = {1, 1, 1, 2, 5};
         Vector vector1 = new Vector(array1);
+
         double[] array2 = {9, 9, 9, 8, 5, 5, 5};
         Vector vector2 = new Vector(array2);
 
-//        System.out.println("----------");
-//        System.out.println("Subtract Vector.subtraction(another Vector)");
-//        vector1.subtract(vector2);
-//        System.out.println(vector1);
-
-        System.out.println("----------");
-        System.out.println("Add Vector.subtraction(another Vector)");
-        vector1.add(vector2);
-        System.out.println(vector1);
+        //checkStaticOperations(vector1, vector2);
     }
 }
