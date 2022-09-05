@@ -3,21 +3,8 @@ package ru.academits.dashiev.range_main;
 import ru.academits.dashiev.range.Range;
 
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class Main {
-    public static void printRangesArray(Range range) {
-        if (range.getLength() == 0) {
-            System.out.println("[]");
-
-            return;
-        }
-
-        System.out.println("[" + range + "]");
-    }
-
     public static void checkRangesOperations(double from1, double to1, double from2, double to2) {
         Range range1 = new Range(from1, to1);
         Range range2 = new Range(from2, to2);
@@ -31,7 +18,7 @@ public class Main {
             System.out.println("Пересечение интервалов: null");
         } else {
             System.out.print("Пересечение интервалов: ");
-            printRangesArray(intersection);
+            System.out.println(intersection);
         }
 
         Range[] union = range1.getUnion(range2);

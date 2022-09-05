@@ -206,7 +206,7 @@ public class Vector {
 
         hash = prime * hash + Arrays.hashCode(vectorComponents);
 
-        return 1;
+        return hash;
     }
 
     public static Vector add(Vector vector1, Vector vector2) {

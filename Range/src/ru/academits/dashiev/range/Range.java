@@ -1,7 +1,5 @@
 package ru.academits.dashiev.range;
 
-import java.util.Arrays;
-
 public class Range {
     private double from;
     private double to;
@@ -59,7 +57,6 @@ public class Range {
     public String toString() {
         return "(" + from + ", " + to + ")";
     }
-
 
     public Range getIntersection(Range range) {
         if (to <= range.from || range.to <= from) {
