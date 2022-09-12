@@ -16,6 +16,16 @@ public class Main {
         Circle circle1 = new Circle(5);
         Circle circle2 = new Circle(6);
 
-        Shape[] array = new Shape[]{square, triangle1, triangle2, rectangle1, rectangle2, circle1, circle2};
+        Shape[] array = {square, triangle1, triangle2, rectangle1, rectangle2, circle1, circle2};
+
+        for (Shape e:array) {
+            System.out.println(e);
+        }
+
+        System.out.println();
+
+        for (Shape e:array) {
+            System.out.println(e.getArea());
+        }
     }
 }
