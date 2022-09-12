@@ -4,6 +4,7 @@ import Circle.Circle;
 import Rectangle.Rectangle;
 import Square.Square;
 import Triangle.Triangle;
+import shapes.Shape;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,9 +16,6 @@ public class Main {
         Circle circle1 = new Circle(5);
         Circle circle2 = new Circle(6);
 
-        System.out.println(square);
-        System.out.println(triangle1);
-        System.out.println(rectangle1);
-        System.out.println(circle2);
+        Shape[] array = new Shape[]{square, triangle1, triangle2, rectangle1, rectangle2, circle1, circle2};
     }
 }
