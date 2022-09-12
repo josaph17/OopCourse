@@ -31,7 +31,7 @@ public class Square implements Shape {
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        return "Каждая сторона квадрата равна " + side;
+        return "It's square. side = " + side;
     }
 
     @Override
