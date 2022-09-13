@@ -6,6 +6,9 @@ import Square.Square;
 import Triangle.Triangle;
 import shapes.Shape;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class Main {
     public static void main(String[] args) {
         Square square = new Square(5);
@@ -18,14 +21,42 @@ public class Main {
 
         Shape[] array = {square, triangle1, triangle2, rectangle1, rectangle2, circle1, circle2};
 
-        for (Shape e:array) {
-            System.out.println(e);
+        Comparator<Shape> areaComparator = new Comparator<Shape>() {
+            @Override
+            public int compare(Shape o1, Shape o2) {
+                if (o1.getArea() != o2.getArea()) {
+                    return o1.getArea() > o2.getArea() ? 1 : -1;
+                } else {
+                    return 0;
+                }
+            }
+        };
+
+        Comparator<Shape> perimeterComparator = new Comparator<Shape>() {
+            @Override
+            public int compare(Shape o1, Shape o2) {
+                if (o1.getPerimeter() != o2.getPerimeter()) {
+                    return o1.getPerimeter() > o2.getPerimeter() ? 1 : -1;
+                } else {
+                    return 0;
+                }
+            }
+        };
+
+        System.out.println();
+
+        Arrays.sort(array, areaComparator);
+
+        for (Shape e : array) {
+            System.out.println(e.getArea());
         }
 
         System.out.println();
 
-        for (Shape e:array) {
-            System.out.println(e.getArea());
+        Arrays.sort(array, perimeterComparator);
+
+        for (Shape e : array) {
+            System.out.println(e.getPerimeter());
         }
     }
 }
