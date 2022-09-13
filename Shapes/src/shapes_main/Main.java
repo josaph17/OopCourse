@@ -43,20 +43,22 @@ public class Main {
             }
         };
 
-        System.out.println();
+        System.out.println("Using areaComparator:\n");
 
         Arrays.sort(array, areaComparator);
 
         for (Shape e : array) {
-            System.out.println(e.getArea());
+            System.out.println(e);
+            System.out.println();
         }
 
-        System.out.println();
+        System.out.println("Using areaComparator:\n");
 
         Arrays.sort(array, perimeterComparator);
 
         for (Shape e : array) {
-            System.out.println(e.getPerimeter());
+            System.out.println(e);
+            System.out.println();
         }
     }
 }

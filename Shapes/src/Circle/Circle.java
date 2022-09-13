@@ -31,7 +31,7 @@ public class Circle implements Shape {
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        return "It's circle. Radius = " + radius;
+        return "Circle. Radius = " + radius + "\nArea = " + getArea() + ", perimeter = " + getPerimeter();
     }
 
     @Override

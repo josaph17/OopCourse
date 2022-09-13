@@ -38,7 +38,8 @@ public class Rectangle implements Shape {
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        return "It's Rectangle. Width = " + width + ", length = " + length;
+        return "Rectangle. Width = " + width + ", length = " + length + "\nArea = " + getArea() +
+                ", perimeter = " + getPerimeter();
     }
 
     @Override
