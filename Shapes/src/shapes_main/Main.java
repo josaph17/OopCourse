@@ -43,22 +43,18 @@ public class Main {
             }
         };
 
-        System.out.println("Using areaComparator:\n");
+        System.out.println("maxArea element of array[]:");
 
         Arrays.sort(array, areaComparator);
 
-        for (Shape e : array) {
-            System.out.println(e);
-            System.out.println();
-        }
+        System.out.println(array[array.length-1]);
 
-        System.out.println("Using areaComparator:\n");
+        System.out.println();
+
+        System.out.println("Second maxPerimeter element of array[]:");
 
         Arrays.sort(array, perimeterComparator);
 
-        for (Shape e : array) {
-            System.out.println(e);
-            System.out.println();
-        }
+        System.out.println(array[array.length-2]);
     }
 }
