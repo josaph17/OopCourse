@@ -35,34 +35,23 @@ public class Vector {
             throw new IllegalArgumentException("array length must be > 0. Current value: " + array.length); // бросил исключение
         }
 
-        components = new double[array.length];
-
         components = Arrays.copyOf(array, array.length);
     }
 
-    public Vector(int capacity, double... array) {
+    public Vector(int vectorSize, double... array) {
         if (array.length <= 0) {
             throw new IllegalArgumentException("array length must be > 0. Current value: " + array.length); // бросил исключение
         }
 
-        if (capacity < 0) {
-            throw new IllegalArgumentException("Capacity must be > 0. Current value: " + capacity); // бросил исключение
+        if (vectorSize <= 0) {
+            throw new IllegalArgumentException("Capacity must be > 0. Current value: " + vectorSize); // бросил исключение
         }
 
         if (array == null) {
             throw new IllegalArgumentException("array is null!");
         }
 
-        components = new double[capacity];
-        components = Arrays.copyOf(array, capacity);
-
-        if (capacity > array.length) {
-            components = Arrays.copyOf(array, capacity);
-
-            for (int i = array.length; i < capacity; i++) {
-                components[i] = 0;
-            }
-        }
+        components = Arrays.copyOf(array, vectorSize);
     }
 
     public int size() {

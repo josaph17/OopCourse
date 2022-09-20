@@ -29,7 +29,6 @@ public class Main {
         System.out.println();
 
         capacity = 3;
-
         Vector test4 = new Vector(capacity, array);
         System.out.println("Vector(int capacity, double... array), capacity = " + capacity + ", array[] = " + Arrays.toString(array));
         System.out.println(test4);
