@@ -38,20 +38,20 @@ public class Vector {
         components = Arrays.copyOf(array, array.length);
     }
 
-    public Vector(int vectorSize, double... array) {
+    public Vector(int size, double... array) {
         if (array.length <= 0) {
             throw new IllegalArgumentException("array length must be > 0. Current value: " + array.length); // бросил исключение
         }
 
-        if (vectorSize <= 0) {
-            throw new IllegalArgumentException("Capacity must be > 0. Current value: " + vectorSize); // бросил исключение
+        if (size <= 0) {
+            throw new IllegalArgumentException("size must be > 0. Current value: " + size); // бросил исключение
         }
 
         if (array == null) {
             throw new IllegalArgumentException("array is null!");
         }
 
-        components = Arrays.copyOf(array, vectorSize);
+        components = Arrays.copyOf(array, size);
     }
 
     public int size() {
@@ -155,17 +155,7 @@ public class Vector {
 
         Vector vector = (Vector) o;
 
-        if (components.length != vector.components.length) {
-            return false;
-        }
-
-        for (int i = 0; i < components.length; i++) {
-            if (components[i] == vector.components[i]) {
-                return false;
-            }
-        }
-
-        return true;
+        return Arrays.equals(components, vector.components);
     }
 
     @Override

@@ -10,9 +10,9 @@ public class Main {
 
         System.out.println();
 
-        int capacity = 5;
+        int size = 5;
 
-        System.out.println("Vector(int capacity), capacity = " + capacity);
+        System.out.println("Vector(int size), size = " + size);
         Vector test1 = new Vector(5);
         System.out.println(test1);
         System.out.println();
@@ -24,13 +24,13 @@ public class Main {
         System.out.println();
 
         Vector test3 = new Vector(test2);
-        System.out.println("Vector(Vector anotherVector), anotherVector = " + test3);
+        System.out.println("Vector(Vector vector), vector = " + test3);
         System.out.println(test3);
         System.out.println();
 
-        capacity = 3;
-        Vector test4 = new Vector(capacity, array);
-        System.out.println("Vector(int capacity, double... array), capacity = " + capacity + ", array[] = " + Arrays.toString(array));
+        size = 3;
+        Vector test4 = new Vector(size, array);
+        System.out.println("Vector(int size, double... array), size = " + size + ", array[] = " + Arrays.toString(array));
         System.out.println(test4);
         System.out.println();
     }
@@ -74,23 +74,23 @@ public class Main {
 
         System.out.println();
 
-        System.out.println("vector2.getSum() ");
+        System.out.println("vector2.getSum()");
         System.out.println(vector2.getSum());
 
         System.out.println();
 
-        int getIndex = 2;
-        System.out.println("vector2 = " + vector2 + ", getIndex = " + getIndex);
-        System.out.println("vector2.getVectorComponent(getIndex)");
-        System.out.println(vector2.getComponent(getIndex));
+        int index = 2;
+        System.out.println("vector2 = " + vector2 + ", index = " + index);
+        System.out.println("vector2.getVectorComponent(index)");
+        System.out.println(vector2.getComponent(index));
 
         System.out.println();
 
-        int setIndex = 3;
+        index = 3;
         double value = -21.4;
-        System.out.println("vector2 = " + vector2 + ", setIndex = " + setIndex + ", value = " + value);
-        System.out.println("vector2.setVectorComponent(setIndex, value)");
-        vector2.setComponent(setIndex, value);
+        System.out.println("vector2 = " + vector2 + ", index = " + index + ", value = " + value);
+        System.out.println("vector2.setVectorComponent(index, value)");
+        vector2.setComponent(index, value);
         System.out.println(vector2);
 
         System.out.println();
