@@ -60,14 +60,14 @@ public class Vector {
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        return Arrays.toString(components);
+        String stringComponents = Arrays.toString(components);
+        stringComponents = stringComponents.replace("[", "{");
+        stringComponents = stringComponents.replace("]", "}");
+
+        return stringComponents;
     }
 
     public void add(Vector vector) {
-        if (components == null) {
-            throw new IllegalArgumentException("components is null!");
-        }
-
         if (vector == null) {
             throw new IllegalArgumentException("vector is null!");
         }
@@ -75,11 +75,8 @@ public class Vector {
         double[] vectorComponentsCopy = null;
 
         if (components.length <= vector.components.length) {
-            vectorComponentsCopy = new double[vector.components.length];
-
             vectorComponentsCopy = Arrays.copyOf(components, vector.components.length);
         } else {
-            vectorComponentsCopy = new double[components.length];
             vectorComponentsCopy = Arrays.copyOf(components, components.length);
         }
 
@@ -91,10 +88,6 @@ public class Vector {
     }
 
     public void subtract(Vector vector) {
-        if (components == null) {
-            throw new IllegalArgumentException("components is null!");
-        }
-
         if (vector == null) {
             throw new IllegalArgumentException("vector is null!");
         }
@@ -102,11 +95,8 @@ public class Vector {
         double[] vectorComponentsCopy = null;
 
         if (components.length <= vector.components.length) {
-            vectorComponentsCopy = new double[vector.components.length];
-
             vectorComponentsCopy = Arrays.copyOf(components, vector.components.length);
         } else {
-            vectorComponentsCopy = new double[components.length];
             vectorComponentsCopy = Arrays.copyOf(components, components.length);
         }
 
@@ -118,29 +108,16 @@ public class Vector {
     }
 
     public void multiplyByScalar(double scalar) {
-        if (components == null) {
-            throw new IllegalArgumentException("VectorComponents is null!");
-        }
-
         for (int i = 0; i < components.length; i++) {
             components[i] *= scalar;
         }
     }
 
     public void reverse() {
-        if (components == null) {
-            throw new IllegalArgumentException("VectorComponents is null!");
-        }
-
-        for (int i = 0; i < components.length; i++) { // копию не обяз создавать т.к. scalar не ссылочный тип
-            components[i] *= -1;
-        }
-
-        /* ф-я void т.к. она меняет текущий вектор,
-         метод не должен возвращать ссылку на массив компонент класса - это нарушение инкапсуляции */
+        this.multiplyByScalar(-1);
     }
 
-    public double getLength() { // e.Получение длины вектора
+    public double getSum() { // e.Получение длины вектора
         double vectorLength = 0;
 
         for (double e : components) {
@@ -150,24 +127,17 @@ public class Vector {
         return Math.sqrt(vectorLength);
     }
 
-    public double getVectorComponent(int index) {
-        if (components == null) {
-            throw new IllegalArgumentException("Vector is null!");
+    public double getComponent(int index) {
+        if (index >= components.length || index < 0) {
+            throw new IndexOutOfBoundsException("index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
-        double[] copyVectorComponents = new double[components.length];
-        copyVectorComponents = Arrays.copyOf(components, components.length);
-
-        return copyVectorComponents[index];
+        return components[index];
     }
 
-    public void setVectorComponent(int index, double value) {
-        if (components == null) {
-            throw new IllegalArgumentException("Vector is null!");
-        }
-
-        if (index >= components.length) {
-            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds, because length = " + components.length);
+    public void setComponent(int index, double value) {
+        if (index >= components.length || index < 0) {
+            throw new IndexOutOfBoundsException("index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         components[index] = value;
@@ -175,11 +145,11 @@ public class Vector {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this || o == null && this == null) {
+        if (o == this || o == null) {
             return true;
         }
 
-        if (o == null || this == null || o.getClass() != getClass()) {
+        if (o == null || o.getClass() != getClass()) {
             return false;
         }
 
@@ -189,10 +159,8 @@ public class Vector {
             return false;
         }
 
-        for (int i = 0; i < components.length; ) {
+        for (int i = 0; i < components.length; i++) {
             if (components[i] == vector.components[i]) {
-                i++;
-            } else {
                 return false;
             }
         }
@@ -202,7 +170,7 @@ public class Vector {
 
     @Override
     public int hashCode() {
-        final int prime = 94; // с помощью этого числа (константное число) вычисляют хэш-код
+        final int prime = 7; // с помощью этого числа (константное число) вычисляют хэш-код
         int hash = 1;  // начальное значение хэш-кода
 
         hash = prime * hash + Arrays.hashCode(components);
@@ -285,7 +253,7 @@ public class Vector {
         }
 
         for (int i = 0; i < multiplyByScalarIndex; i++) {
-            result.setVectorComponent(i, vector1.components[i] * vector2.components[i]);
+            result.setComponent(i, vector1.components[i] * vector2.components[i]);
         }
 
         return result;

@@ -38,13 +38,16 @@ public class Main {
     public static void checkNonStaticOperations() {
         System.out.println("-- Check non static operations --");
 
-        System.out.println();
-
         double[] array1 = {10.5, 4.3, 0};
         Vector vector1 = new Vector(array1);
 
         double[] array2 = {1, 1, 1, 4.4, 5};
         Vector vector2 = new Vector(array2);
+
+        System.out.println("vector1 = " + vector1);
+        System.out.println("vector2 = " + vector2);
+
+        System.out.println();
 
         System.out.println("vector1.add(vector2)");
         vector1.add(vector2);
@@ -71,23 +74,23 @@ public class Main {
 
         System.out.println();
 
-        System.out.println("vector2.getLength() ");
-        System.out.println(vector2.getLength());
+        System.out.println("vector2.getSum() ");
+        System.out.println(vector2.getSum());
 
         System.out.println();
 
-        int getIndex = 3;
+        int getIndex = 2;
         System.out.println("vector2 = " + vector2 + ", getIndex = " + getIndex);
         System.out.println("vector2.getVectorComponent(getIndex)");
-        System.out.println(vector2.getVectorComponent(getIndex));
+        System.out.println(vector2.getComponent(getIndex));
 
         System.out.println();
 
-        int setIndex = 0;
+        int setIndex = 3;
         double value = -21.4;
         System.out.println("vector2 = " + vector2 + ", setIndex = " + setIndex + ", value = " + value);
         System.out.println("vector2.setVectorComponent(setIndex, value)");
-        vector2.setVectorComponent(setIndex, value);
+        vector2.setComponent(setIndex, value);
         System.out.println(vector2);
 
         System.out.println();
