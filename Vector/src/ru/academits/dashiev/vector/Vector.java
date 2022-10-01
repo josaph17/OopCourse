@@ -7,7 +7,8 @@ public class Vector {
 
     public Vector(int size) { //Конструктор, размерность n, количество компонентов
         if (size <= 0) {
-            throw new IllegalArgumentException("Capacity must be > 0. Current value: " + size); // бросил исключение
+            throw new IllegalArgumentException(
+                    "Capacity must be > 0. Current value: " + size); // бросил исключение
         }
 
         components = new double[size]; // инициализировали vector, все компоненты равны 0
@@ -32,7 +33,8 @@ public class Vector {
 
     public Vector(double... array) {
         if (array.length <= 0) {
-            throw new IllegalArgumentException("array length must be > 0. Current value: " + array.length); // бросил исключение
+            throw new IllegalArgumentException(
+                    "array length must be > 0. Current value: " + array.length); // бросил исключение
         }
 
         components = Arrays.copyOf(array, array.length);
@@ -40,11 +42,13 @@ public class Vector {
 
     public Vector(int size, double... array) {
         if (array.length <= 0) {
-            throw new IllegalArgumentException("array length must be > 0. Current value: " + array.length); // бросил исключение
+            throw new IllegalArgumentException(
+                    "array length must be > 0. Current value: " + array.length); // бросил исключение
         }
 
         if (size <= 0) {
-            throw new IllegalArgumentException("size must be > 0. Current value: " + size); // бросил исключение
+            throw new IllegalArgumentException(
+                    "size must be > 0. Current value: " + size); // бросил исключение
         }
 
         if (array == null) {
@@ -128,16 +132,18 @@ public class Vector {
     }
 
     public double getComponent(int index) {
-        if (index >= components.length || index < 0) {
-            throw new IndexOutOfBoundsException("index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+        if (index < 0 || index >= components.length) {
+            throw new IndexOutOfBoundsException(
+                    "index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         return components[index];
     }
 
     public void setComponent(int index, double value) {
-        if (index >= components.length || index < 0) {
-            throw new IndexOutOfBoundsException("index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+        if (index < 0 || index >= components.length) {
+            throw new IndexOutOfBoundsException(
+                    "index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         components[index] = value;
