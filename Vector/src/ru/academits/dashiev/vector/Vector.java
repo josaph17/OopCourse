@@ -183,19 +183,8 @@ public class Vector {
             throw new IllegalArgumentException("2nd vector is null!");
         }
 
-        Vector vector1Copy = new Vector(vector1);
-        Vector vector2Copy = new Vector(vector2);
-        Vector result = null;
-
-        if (vector1.components.length <= vector2.components.length) { // Длина vector2 больше или раввно
-            result = new Vector(vector2.components.length);
-        } else {
-            result = new Vector(vector1.components.length);
-        }
-
-        vector1Copy.add(vector2Copy);
-
-        result = vector1Copy;
+        Vector result = new Vector(vector1);
+        result.add(vector2);
 
         return result;
     }
@@ -209,19 +198,8 @@ public class Vector {
             throw new IllegalArgumentException("2nd vector is null!");
         }
 
-        Vector vector1Copy = new Vector(vector1);
-        Vector vector2Copy = new Vector(vector2);
-        Vector result = null;
-
-        if (vector1.components.length <= vector2.components.length) { // Длина vector2 больше или раввно
-            result = new Vector(vector2.components.length);
-        } else {
-            result = new Vector(vector1.components.length);
-        }
-
-        vector1Copy.subtract(vector2Copy);
-
-        result = vector1Copy;
+        Vector result = new Vector(vector1);
+        result.subtract(vector2);
 
         return result;
     }
@@ -235,8 +213,8 @@ public class Vector {
             throw new IllegalArgumentException("2nd vector is null!");
         }
 
-        Vector result = null;
-        int multiplyByScalarIndex = 0;
+        Vector result; // так можно делать !!!
+        int multiplyByScalarIndex;
 
         if (vector1.components.length <= vector2.components.length) {
             result = new Vector(vector2.components.length);
