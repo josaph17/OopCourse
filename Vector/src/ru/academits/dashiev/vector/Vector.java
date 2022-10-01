@@ -42,10 +42,6 @@ public class Vector {
                     "size must be > 0. Current value: " + size); // бросил исключение
         }
 
-        if (array == null) {
-            throw new IllegalArgumentException("array is null!");
-        }
-
         components = Arrays.copyOf(array, size);
     }
 
@@ -67,19 +63,14 @@ public class Vector {
             throw new IllegalArgumentException("vector is null!");
         }
 
-        double[] vectorComponentsCopy = null;
-
-        if (components.length <= vector.components.length) {
-            vectorComponentsCopy = Arrays.copyOf(components, vector.components.length);
-        } else {
-            vectorComponentsCopy = Arrays.copyOf(components, components.length);
+        if (this.components.length <= vector.components.length) {
+            this.components = Arrays.copyOf(this.components,
+                                            vector.components.length); // создаем новый массив
         }
 
         for (int i = 0; i < vector.components.length; i++) {
-            vectorComponentsCopy[i] += vector.components[i];
+            this.components[i] += vector.components[i];
         }
-
-        components = vectorComponentsCopy;
     }
 
     public void subtract(Vector vector) {
@@ -89,37 +80,43 @@ public class Vector {
 
         double[] vectorComponentsCopy = null;
 
-        if (components.length <= vector.components.length) {
-            vectorComponentsCopy = Arrays.copyOf(components, vector.components.length);
-        } else {
-            vectorComponentsCopy = Arrays.copyOf(components, components.length);
+        if (this.components.length <= vector.components.length) {
+            this.components = Arrays.copyOf(this.components, vector.components.length);
         }
 
         for (int i = 0; i < vector.components.length; i++) {
-            vectorComponentsCopy[i] -= vector.components[i];
+            this.components[i] -= vector.components[i];
         }
-
-        components = vectorComponentsCopy;
     }
 
     public void multiplyByScalar(double scalar) {
-        for (int i = 0; i < components.length; i++) {
-            components[i] *= scalar;
+        for (int i = 0; i < this.components.length; i++) {
+            this.components[i] *= scalar;
         }
     }
 
     public void reverse() {
-        this.multiplyByScalar(-1);
+        multiplyByScalar(-1); // через this.multiplyByScalar(-1) не надо обращаться
     }
 
     public double getSum() { // e.Получение длины вектора
         double vectorLength = 0;
 
-        for (double e : components) {
+        for (double e : this.components) {
             vectorLength += e * e; // умножение т.к. это быстрее Math.pow
         }
 
         return Math.sqrt(vectorLength);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 7; // с помощью этого числа (константное число) вычисляют хэш-код
+        int hash = 1;  // начальное значение хэш-кода
+
+        hash = prime * hash + Arrays.hashCode(components);
+
+        return hash;
     }
 
     public double getComponent(int index) {
@@ -153,16 +150,6 @@ public class Vector {
         Vector vector = (Vector) o;
 
         return Arrays.equals(components, vector.components);
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 7; // с помощью этого числа (константное число) вычисляют хэш-код
-        int hash = 1;  // начальное значение хэш-кода
-
-        hash = prime * hash + Arrays.hashCode(components);
-
-        return hash;
     }
 
     public static Vector add(Vector vector1, Vector vector2) {
