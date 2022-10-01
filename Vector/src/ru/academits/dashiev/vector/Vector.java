@@ -15,20 +15,11 @@ public class Vector {
     }
 
     public Vector(Vector vector) { //конструктор копирования
-        if (vector.components.length <= 0) {
-            throw new IllegalArgumentException("vector length must be > 0. Current value: " +
-                    vector.components.length); // бросил исключение
-        }
-
         if (vector == null) {
             throw new IllegalArgumentException("vector is null!");
         }
 
-        components = new double[vector.components.length];
-
-        for (int i = 0; i < vector.components.length; i++) {
-            components[i] = vector.components[i];
-        }
+        components = Arrays.copyOf(vector.components, vector.components.length);
     }
 
     public Vector(double... array) {
@@ -151,7 +142,7 @@ public class Vector {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this || o == null) {
+        if (o == this) {
             return true;
         }
 
