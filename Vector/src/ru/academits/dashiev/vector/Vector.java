@@ -37,119 +37,12 @@ public class Vector {
                     "array length must be > 0. Current value: " + array.length); // бросил исключение
         }
 
-        if (size <= 0) {
+        if (size < 0) {
             throw new IllegalArgumentException(
-                    "size must be > 0. Current value: " + size); // бросил исключение
+                    "size must be => 0. Current value: " + size); // бросил исключение
         }
 
         components = Arrays.copyOf(array, size);
-    }
-
-    public int size() {
-        return components.length;
-    }
-
-    @Override
-    public String toString() { // переопределили toString для нашего собственного класса
-        String stringComponents = Arrays.toString(components);
-        stringComponents = stringComponents.replace("[", "{");
-        stringComponents = stringComponents.replace("]", "}");
-
-        return stringComponents;
-    }
-
-    public void add(Vector vector) {
-        if (vector == null) {
-            throw new IllegalArgumentException("vector is null!");
-        }
-
-        if (this.components.length <= vector.components.length) {
-            this.components = Arrays.copyOf(this.components,
-                                            vector.components.length); // создаем новый массив
-        }
-
-        for (int i = 0; i < vector.components.length; i++) {
-            this.components[i] += vector.components[i];
-        }
-    }
-
-    public void subtract(Vector vector) {
-        if (vector == null) {
-            throw new IllegalArgumentException("vector is null!");
-        }
-
-        double[] vectorComponentsCopy = null;
-
-        if (this.components.length <= vector.components.length) {
-            this.components = Arrays.copyOf(this.components, vector.components.length);
-        }
-
-        for (int i = 0; i < vector.components.length; i++) {
-            this.components[i] -= vector.components[i];
-        }
-    }
-
-    public void multiplyByScalar(double scalar) {
-        for (int i = 0; i < this.components.length; i++) {
-            this.components[i] *= scalar;
-        }
-    }
-
-    public void reverse() {
-        multiplyByScalar(-1); // через this.multiplyByScalar(-1) не надо обращаться
-    }
-
-    public double getSum() { // e.Получение длины вектора
-        double vectorLength = 0;
-
-        for (double e : this.components) {
-            vectorLength += e * e; // умножение т.к. это быстрее Math.pow
-        }
-
-        return Math.sqrt(vectorLength);
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 7; // с помощью этого числа (константное число) вычисляют хэш-код
-        int hash = 1;  // начальное значение хэш-кода
-
-        hash = prime * hash + Arrays.hashCode(components);
-
-        return hash;
-    }
-
-    public double getComponent(int index) {
-        if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException(
-                    "index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
-        }
-
-        return components[index];
-    }
-
-    public void setComponent(int index, double value) {
-        if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException(
-                    "index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
-        }
-
-        components[index] = value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-
-        if (o == null || o.getClass() != getClass()) {
-            return false;
-        }
-
-        Vector vector = (Vector) o;
-
-        return Arrays.equals(components, vector.components);
     }
 
     public static Vector add(Vector vector1, Vector vector2) {
@@ -209,5 +102,111 @@ public class Vector {
         }
 
         return result;
+    }
+
+    public int size() {
+        return components.length;
+    }
+
+    @Override
+    public String toString() { // переопределили toString для нашего собственного класса
+        StringBuilder sb = new StringBuilder();
+        sb.append("{").append(Arrays.toString(components)).append("}");
+
+        return sb.toString();
+    }
+
+    public void add(Vector vector) {
+        if (vector == null) {
+            throw new IllegalArgumentException("vector is null!");
+        }
+
+        if (this.components.length <= vector.components.length) {
+            this.components = Arrays.copyOf(this.components,
+                                            vector.components.length); // создаем новый массив
+        }
+
+        for (int i = 0; i < vector.components.length; i++) {
+            this.components[i] += vector.components[i];
+        }
+    }
+
+    public void subtract(Vector vector) {
+        if (vector == null) {
+            throw new IllegalArgumentException("vector is null!");
+        }
+
+        double[] vectorComponentsCopy = null;
+
+        if (this.components.length <= vector.components.length) {
+            this.components = Arrays.copyOf(this.components, vector.components.length);
+        }
+
+        for (int i = 0; i < vector.components.length; i++) {
+            this.components[i] -= vector.components[i]; // здесь this осдавили, чтобы указать, что это поле
+        }
+    }
+
+    public void multiplyByScalar(double scalar) {
+        for (int i = 0; i < components.length; i++) {
+            components[i] *= scalar;
+        }
+    }
+
+    public void reverse() {
+        multiplyByScalar(-1); // через this.multiplyByScalar(-1) не надо обращаться
+    }
+
+    public double getLength() { // e.Получение длины вектора
+        double vectorComponentsSum = 0;
+
+        for (double e : this.components) {
+            vectorComponentsSum += e * e; // умножение т.к. это быстрее Math.pow
+        }
+
+        return Math.sqrt(vectorComponentsSum);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 7; // с помощью этого числа (константное число) вычисляют хэш-код
+        int hash = 1;  // начальное значение хэш-кода
+
+        hash = prime * hash + Arrays.hashCode(components);
+
+        return hash;
+    }
+
+    public double getComponent(int index) {
+        if (index < 0 || index >= components.length) {
+            throw new IndexOutOfBoundsException(
+                    "index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+        }
+
+        return components[index];
+    }
+
+    public void setComponent(int index, double value) {
+        if (index < 0 || index >= components.length) {
+            throw new IndexOutOfBoundsException(
+                    "index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+        }
+
+        components[index] = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (o == null || o.getClass() != getClass()) {
+            return false;
+        }
+
+        Vector vector = (Vector) o;
+
+        return Arrays.equals(components, vector.components);
     }
 }

@@ -75,7 +75,7 @@ public class Main {
         System.out.println();
 
         System.out.println("vector2.getSum()");
-        System.out.println(vector2.getSum());
+        System.out.println(vector2.getLength());
 
         System.out.println();
 
