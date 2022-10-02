@@ -111,7 +111,9 @@ public class Vector {
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
         StringBuilder sb = new StringBuilder();
-        sb.append("{").append(Arrays.toString(components)).append("}");
+
+        sb.append(Arrays.toString(components)).setCharAt(0,'{');
+        sb.setCharAt(sb.length()-1, '}');
 
         return sb.toString();
     }

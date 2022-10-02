@@ -130,7 +130,7 @@ public class Main {
 
         System.out.println("--Check equals--");
         System.out.println();
-        System.out.println("vector1.equals(vector2");
+        System.out.println("vector1.equals(vector2)");
         System.out.println(vector1.equals(vector2));
     }
 }
