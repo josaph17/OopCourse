@@ -1,9 +1,9 @@
-package Circle;
+package ru.academits.dashiev.shapes.circle;
 
-import shapes.Shape;
+import ru.academits.dashiev.shapes.shape.Shape;
 
 public class Circle implements Shape {
-    double radius;
+    private final double radius;
 
     public Circle(double radius) {
         this.radius = radius;
@@ -21,41 +21,37 @@ public class Circle implements Shape {
 
     @Override
     public double getArea() {
-        return 3.14 * radius * radius;
+        return Math.PI * radius * radius;
     }
 
     @Override
     public double getPerimeter() {
-        return 2 * 3.14 * radius;
+        return 2 * Math.PI * radius;
     }
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        return "Circle. Radius = " + radius + "\nArea = " + getArea() + ", perimeter = " + getPerimeter();
+        return "Circle. Radius = " + radius + System.lineSeparator() + "Area = " + getArea() + ", perimeter = " + getPerimeter();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == this || o == null && this == null) {
+        if (o == this) {
             return true;
         }
 
-        if (o == null || this == null || o.getClass() != getClass()) {
+        if (o == null || o.getClass() != getClass()) {
             return false;
         }
 
-        Circle anotherSquare = (Circle) o;
+        Circle circle = (Circle) o;
 
-        if (this.radius != anotherSquare.radius) {
-            return false;
-        }
-
-        return true;
+        return radius == circle.radius;
     }
 
     @Override
     public int hashCode() {
-        final int prime = 94; // с помощью этого числа (константное число) вычисляют хэш-код
+        final int prime = 13; // с помощью этого числа (константное число) вычисляют хэш-код
         int hash = 1;  // начальное значение хэш-кода
 
         hash = prime * hash + Double.hashCode(radius);
