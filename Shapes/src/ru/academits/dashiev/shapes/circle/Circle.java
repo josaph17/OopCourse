@@ -58,5 +58,4 @@ public class Circle implements Shape {
 
         return hash;
     }
-
 }
