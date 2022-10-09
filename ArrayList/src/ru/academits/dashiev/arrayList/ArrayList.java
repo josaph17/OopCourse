@@ -71,7 +71,7 @@ public class ArrayList<T> {
 
     public boolean remove(T item) {
         // удаление узла по значению, пусть выдает true, если элемент был удален
-
+        return true;
     }
 
     public T removeStart() { // удаление первого элемента, пусть выдает значение элемента
