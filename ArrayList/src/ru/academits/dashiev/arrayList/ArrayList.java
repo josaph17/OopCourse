@@ -66,7 +66,6 @@ public class ArrayList<T> {
             throw new IndexOutOfBoundsException(
                     "IndexOutOfBoundsException. List capacity = " + size + ".Current value = " + index); // выход за sizes
         }
-
     }
 
     public boolean remove(T item) {

@@ -3,7 +3,7 @@ package ru.academits.dashiev.list;
 import ru.academits.dashiev.listItem.Node;
 
 public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не привязываться к типу
-    private Node<T> head;
+    private Node<T> head; // переменная, которая указывает на начало списка
     private int count; // здесь храним длину списка
 
     public List() {
@@ -27,10 +27,10 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         }
     }
 
-    public T getValue(int index) {
+    public T get(int index) {
         if (index >= getSize()) {
             throw new ArrayIndexOutOfBoundsException(
-                    "IndexOutOfBoundsException. List capacity = " + getSize() + ".Current value = " + index);
+                    "IndexOutOfBoundsException. List max index = " + (getSize() - 1) + ".Current value = " + index);
         }
 
         if (head == null) {
@@ -39,11 +39,47 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
 
         Node<T> current = head;
 
-        for (int i = getSize(); i != index; i--) {
+        for (int i = getSize()-1; i != index; i--) {
             current = current.getNext();
         }
 
         return current.getData();
+    }
+
+    public void set(int index, T value){
+        if (index >= getSize()) {
+            throw new ArrayIndexOutOfBoundsException(
+                    "IndexOutOfBoundsException. List max index = " + (getSize() - 1) + ".Current value = " + index);
+        }
+
+        if (head == null) {
+            throw new NullPointerException("1st Node is null!!!"); // выход за sizes
+        }
+
+        Node<T> current = head;
+
+        for (int i = getSize()-1; i != index; i--) {
+            current = current.getNext();
+        }
+
+        current.setData(value);
+    }
+
+    public void removeFirst(){
+        if (head == null) {
+            throw new NullPointerException("1st Node is null!!!"); // выход за sizes
+        }
+
+        Node<T> current = head.getNext();
+
+        for (int i = getSize()-1; i != 0; i--) {
+            current = current.getNext();
+        }
+
+        head = current;
+
+        count--;
+        // или head = head.getNext();
     }
 
 
