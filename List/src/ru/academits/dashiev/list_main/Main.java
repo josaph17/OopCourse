@@ -10,14 +10,15 @@ public class Main {
         list.add(15);
         list.add(20);
 
-//        System.out.println(list.getSize());
-//        System.out.println(list.getFirstElement());
-//        System.out.println("Конец.");
-//        System.out.println(list.get(3));
-//        list.set(3, 25);
-//        System.out.println(list.get(3));
+        System.out.println(list.getSize());
+        System.out.println(list.getFirstElement());
+        System.out.println("Конец.");
+        System.out.println(list.get(2)); // до сюда правильно
+        System.out.println("List set(1,25)");
+        System.out.println(list.get(1));
+        list.set(1, 25);
+        System.out.println(list.get(1));
         System.out.println(".removeFirst()");
-        System.out.println(list.get(0));
         list.removeFirst();
         System.out.println(list.get(0));
     }

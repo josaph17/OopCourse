@@ -33,50 +33,44 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
                     "IndexOutOfBoundsException. List max index = " + (getSize() - 1) + ".Current value = " + index);
         }
 
+
         if (head == null) {
             throw new NullPointerException("1st Node is null!!!"); // выход за sizes
         }
 
         Node<T> current = head;
 
-        for (int i = getSize()-1; i != index; i--) {
+        for (int i = 0; i != index; i++) {
             current = current.getNext();
         }
 
         return current.getData();
     }
 
-    public void set(int index, T value){
+    public void set(int index, T value) {
         if (index >= getSize()) {
             throw new ArrayIndexOutOfBoundsException(
                     "IndexOutOfBoundsException. List max index = " + (getSize() - 1) + ".Current value = " + index);
         }
 
         if (head == null) {
-            throw new NullPointerException("1st Node is null!!!"); // выход за sizes
+            throw new NullPointerException("Head is null!!!"); // выход за sizes
         }
 
         Node<T> current = head;
 
-        for (int i = getSize()-1; i != index; i--) {
-            current = current.getNext();
+        for (int i = 0; i != index; i++, current = current.getNext()) {
         }
 
         current.setData(value);
     }
 
-    public void removeFirst(){
+    public void removeFirst() {
         if (head == null) {
             throw new NullPointerException("1st Node is null!!!"); // выход за sizes
         }
 
-        Node<T> current = head.getNext();
-
-        for (int i = getSize()-1; i != 0; i--) {
-            current = current.getNext();
-        }
-
-        head = current;
+        head = head.getNext();
 
         count--;
         // или head = head.getNext();
