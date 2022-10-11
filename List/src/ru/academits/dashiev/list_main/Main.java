@@ -10,16 +10,23 @@ public class Main {
         list.add(15);
         list.add(20);
 
+        //        System.out.println(list.getSize());
+        //        System.out.println(list.getFirstElement());
+        //        System.out.println("Конец.");
+        //        System.out.println(list.get(2)); // до сюда правильно
+        //        System.out.println("List set(1,25)");
+        //        System.out.println(list.get(1));
+        //        list.set(1, 25);
+        //        System.out.println(list.get(1));
+        //        System.out.println(".removeFirst()");
+        //        list.removeFirst();
+        //        System.out.println(list.get(0));
+
+        System.out.println(list);
         System.out.println(list.getSize());
-        System.out.println(list.getFirstElement());
-        System.out.println("Конец.");
-        System.out.println(list.get(2)); // до сюда правильно
-        System.out.println("List set(1,25)");
-        System.out.println(list.get(1));
-        list.set(1, 25);
-        System.out.println(list.get(1));
-        System.out.println(".removeFirst()");
-        list.removeFirst();
-        System.out.println(list.get(0));
+
+        list.add(65);
+        list.reverse();
+        System.out.println(list);
     }
 }

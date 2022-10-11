@@ -65,6 +65,97 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         current.setData(value);
     }
 
+    public void remove(int index) {
+        if (index >= getSize()) {
+            throw new ArrayIndexOutOfBoundsException(
+                    "IndexOutOfBoundsException. List max index = " + (getSize() - 1) + ".Current value = " + index);
+        }
+
+        if (head == null) {
+            throw new NullPointerException("Head is null!!!"); // выход за sizes
+        }
+
+        if (index == 0) {
+            removeFirst();
+            return;
+        }
+
+        Node<T> current = head;
+
+        for (int i = 0; i != index - 1; i++, current = current.getNext()) {
+            System.out.println(current.getData());
+        }
+
+        if (current.getNext().getNext() == null) {
+            current.setNext(null);
+        } else {
+            current.setNext(current.getNext().getNext());
+        }
+
+        count--;
+    }
+
+    public void add(T data) { // вставка элемента в начало
+        if (head == null) {
+            head = new Node<T>(data); // head указ на ноую ноду
+        } else {
+            Node<T> current = new Node<>(data, head); // head здесь указывает на предыдующую ноду
+            head = current; // head указывает на текующую ноду
+        }
+
+        count++;
+    }
+
+    public void addIndexElement(int index, T data) { // вставка элемента по индексу
+        if (index >= getSize()) {
+            throw new ArrayIndexOutOfBoundsException(
+                    "IndexOutOfBoundsException. List max index = " + (getSize() - 1) + ".Current value = " + index);
+        }
+
+        if (head == null) {
+            throw new NullPointerException("Head is null!!!"); // выход за sizes
+        }
+
+        if (index == 0) { // если нужно вставить в самое начало
+            add(data);
+            return;
+        }
+
+        Node<T> current = head;
+
+        for (int i = 0; i != index - 1; i++, current = current.getNext()) {
+            System.out.println(current.getData());
+        }
+
+        Node<T> newNode = new Node<T>(data);
+
+        newNode.setNext(current.getNext());
+        current.setNext(newNode); // присваивание current = newMode не работает
+
+        count++;
+    }
+
+    public boolean removeValue(T data) {
+        if (head == null) {
+            throw new NullPointerException("Head is null!!!"); // выход за sizes
+        }
+
+        int i = 0;
+
+        for (Node<T> p = head; p != null; p = p.getNext()) {
+            if (p.getData() == data) {
+                remove(i);
+
+                return true;
+            }
+            ;
+
+            i++;
+        }
+
+        return false;
+    }
+
     public void removeFirst() {
         if (head == null) {
             throw new NullPointerException("1st Node is null!!!"); // выход за sizes
@@ -76,60 +167,35 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         // или head = head.getNext();
     }
 
+    public void reverse() { // разворот за линейное время
+        Node<T> current = head;
 
-    //    public T getItem(int index) { // получение значения по указанному индексу
-    //
-    //    }
-    //
-    //    public T setItem(int index, T listItem) {
-    //        // изменение значения по указанному индексу, Изменение значения по индексу пусть выдает старое значение.
-    //    }
-    //
-    //    public void remove(int index) { // удаление элемента по индексу, пусть выдает значение элемента
-    //    }
+        T temp;
 
-    public void add(T data) { // вставка элемента в начало
-        if (head == null) {
-            head = new Node<T>(data);
-        } else {
-            Node<T> current = new Node<>(data, head);
-            head = current;
+        for (int i = 0; i != (getSize() - 1)/2; i++) {
+            temp = get(i);
+            set(i, get(getSize()-1-i));
+            set(getSize()-1-i, temp);
         }
-
-        count++;
     }
 
-    //    public void pushBack(T data) { // вставка элемента в начало
-    //        if (head == null) {
-    //            head = new Node<T>(data);
-    //        } else {
-    //            Node<T> current = head;
-    //
-    //            while (current.getNext() != null) {
-    //                current = current.getNext(); // переходим на след ссылку
-    //            }
-    //
-    //            current = new Node<T>(
-    //                    data); // если нынешний эл-т указ на null, то создаем новый узел с данными
-    //        }
-    //
-    //        count++;
-    //    }
+    public void show() {
+        for (Node<T> p = head; p != null; p = p.getNext()) {
+            System.out.print(p.getData() + " ");
+        }
+        System.out.println();
+    }
 
-    //    public void addIndexItem(int index, T item) { //вставка элемента по индексу
-    //    }
-    //
-    //    public boolean remove(T item) {
-    //        // удаление узла по значению, пусть выдает true, если элемент был удален
-    //        return true;
-    //    }
-    //
-    //    public T removeStart() { // удаление первого элемента, пусть выдает значение элемента
-    //    }
-    //
-    //    public void reverse() { // разворот списка за линейное время
-    //
-    //    }
-    //
-    //    public void copyList() {
+    @Override
+    public String toString() { // переопределили toString для нашего собственного класса
+        StringBuilder sb = new StringBuilder();
+
+        for (Node p = head; p != null; p = p.getNext()) {
+            sb.append(p).append(" ");
+        }
+
+        sb.deleteCharAt(sb.length() - 1);
+
+        return sb.toString();
+    }
 }
