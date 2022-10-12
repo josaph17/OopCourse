@@ -55,7 +55,7 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         return current.getData();
     }
 
-    public void set(int index, T value) {
+    public T set(int index, T value) {
         if (index >= getSize()) {
             throw new ArrayIndexOutOfBoundsException(
                     "IndexOutOfBoundsException. List max index = " + (getSize() - 1) + ".Current value = " + index);
@@ -70,10 +70,14 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         for (int i = 0; i != index; i++, current = current.getNext()) {
         }
 
+        T editedValue = current.getData();
+
         current.setData(value);
+
+        return editedValue;
     }
 
-    public void remove(int index) {
+    public T remove(int index) {
         if (index >= getSize()) {
             throw new ArrayIndexOutOfBoundsException(
                     "IndexOutOfBoundsException. List max index = " + (getSize() - 1) + ".Current value = " + index);
@@ -84,8 +88,7 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         }
 
         if (index == 0) {
-            removeFirst();
-            return;
+            return removeFirst();
         }
 
         Node<T> current = head;
@@ -94,6 +97,8 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
             // System.out.println(current.getData());
         }
 
+        T deletedValue = current.getNext().getData(); // удаляемое значение
+
         if (current.getNext().getNext() == null) {
             current.setNext(null);
         } else {
@@ -101,6 +106,8 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         }
 
         count--;
+
+        return deletedValue;
     }
 
     public void add(T data) { // вставка элемента в начало
@@ -162,15 +169,19 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         return false;
     }
 
-    public void removeFirst() {
+    public T removeFirst() {
         if (head == null) {
             throw new NullPointerException("1st Node is null!!!"); // выход за sizes
         }
+
+        T deletedValue = head.getData();
 
         head = head.getNext();
 
         count--;
         // или head = head.getNext();
+
+        return deletedValue;
     }
 
     public void reverse() { // разворот за линейное время

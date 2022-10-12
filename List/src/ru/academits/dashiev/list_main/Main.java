@@ -28,9 +28,12 @@ public class Main {
         System.out.println();
 
         int value = 77;
+        System.out.println("Список: " + list);
         System.out.println("set(int index, T value) - изменение значения по указанному индексу");
-        list.set(index, value);
-        System.out.println("Элемент по индексу = " + index + ", значение = " + value);
+        System.out.println(
+                "В элементе по индексу = " + index + " меняем значение = " + list.set(index,
+                                                                                      value));
+        System.out.println("На новое значение = " + value);
         System.out.println(list);
         System.out.println();
 
@@ -38,10 +41,12 @@ public class Main {
         System.out.println(list.getFirstElement());
         System.out.println();
 
-        System.out.println("remove() - удаление элемента по индексу");
+        //TODO проверить
+        System.out.println("Список: " + list);
+        System.out.println("remove(int index) - удаление элемента по индексу");
         int deleteIndex = 1;
         System.out.println("Удаляем элемент по индексу = " + deleteIndex);
-        list.remove(deleteIndex);
+        System.out.println("Удален элемент со значением = " + list.remove(deleteIndex));
         System.out.println(list);
         System.out.println();
 
@@ -53,7 +58,7 @@ public class Main {
         System.out.println();
 
         int addIndex = 3, addValue = 1007;
-        System.out.println("addIndexElement(int index, T data) - вставка элемента по индексу" );
+        System.out.println("addIndexElement(int index, T data) - вставка элемента по индексу");
         System.out.println("Индекс = " + addIndex + ", значение = " + addValue);
         list.addIndexElement(addIndex, addValue);
         System.out.println(list);
@@ -69,7 +74,7 @@ public class Main {
         System.out.println();
 
         System.out.println("removeFirst() - удаление первого элемента");
-        list.removeFirst();
+        System.out.println("Был удален элменет со значением =  " + list.removeFirst());
         System.out.println(list);
         System.out.println();
 
@@ -78,7 +83,8 @@ public class Main {
         System.out.println(list);
         System.out.println();
 
-        System.out.println("Копирование списка через конструктор копирования  List<Integer> copyList = new List<>(list)");
+        System.out.println(
+                "Копирование списка через конструктор копирования  List<Integer> copyList = new List<>(list)");
         List<Integer> copyList = new List<>(list);
         System.out.println(copyList);
     }
