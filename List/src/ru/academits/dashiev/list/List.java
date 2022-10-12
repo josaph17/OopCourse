@@ -15,6 +15,14 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         this.head = head;
     }
 
+    public List(List<T> list) {
+        for (Node<T> p = list.head; p != null; p = p.getNext()) {
+            this.add(p.getData());
+        }
+
+        this.reverse();
+    }
+
     public int getSize() { // получение размера списка
         return count; // размер списка называют вместимостью, capacity
     }
@@ -83,7 +91,7 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         Node<T> current = head;
 
         for (int i = 0; i != index - 1; i++, current = current.getNext()) {
-            System.out.println(current.getData());
+            // System.out.println(current.getData());
         }
 
         if (current.getNext().getNext() == null) {
@@ -97,10 +105,9 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
 
     public void add(T data) { // вставка элемента в начало
         if (head == null) {
-            head = new Node<T>(data); // head указ на ноую ноду
+            head = new Node<>(data); // head указ на ноую ноду
         } else {
-            Node<T> current = new Node<>(data, head); // head здесь указывает на предыдующую ноду
-            head = current; // head указывает на текующую ноду
+            head = new Node<>(data, head); // head указывает на текующую ноду
         }
 
         count++;
@@ -124,10 +131,10 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
         Node<T> current = head;
 
         for (int i = 0; i != index - 1; i++, current = current.getNext()) {
-            System.out.println(current.getData());
+            // System.out.println(current.getData());
         }
 
-        Node<T> newNode = new Node<T>(data);
+        Node<T> newNode = new Node<>(data);
 
         newNode.setNext(current.getNext());
         current.setNext(newNode); // присваивание current = newMode не работает
@@ -148,7 +155,6 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
 
                 return true;
             }
-            ;
 
             i++;
         }
@@ -168,29 +174,26 @@ public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не 
     }
 
     public void reverse() { // разворот за линейное время
+        Node<T> prev = null;
         Node<T> current = head;
 
-        T temp;
+        while (current != null) {
+            Node<T> next = current.getNext();
 
-        for (int i = 0; i != (getSize() - 1)/2; i++) {
-            temp = get(i);
-            set(i, get(getSize()-1-i));
-            set(getSize()-1-i, temp);
+            current.setNext(prev);
+            prev = current;
+            current = next;
         }
-    }
 
-    public void show() {
-        for (Node<T> p = head; p != null; p = p.getNext()) {
-            System.out.print(p.getData() + " ");
-        }
-        System.out.println();
+        head = prev; // т.к. к этому моменту current = null
+
     }
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
         StringBuilder sb = new StringBuilder();
 
-        for (Node p = head; p != null; p = p.getNext()) {
+        for (Node<T> p = head; p != null; p = p.getNext()) {
             sb.append(p).append(" ");
         }
 
