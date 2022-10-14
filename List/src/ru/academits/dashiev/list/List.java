@@ -1,6 +1,6 @@
 package ru.academits.dashiev.list;
 
-import ru.academits.dashiev.listItem.Node;
+import ru.academits.dashiev.node.Node;
 
 public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не привязываться к типу
     private Node<T> head; // переменная, которая указывает на начало списка

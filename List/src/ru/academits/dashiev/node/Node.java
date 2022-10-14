@@ -1,4 +1,4 @@
-package ru.academits.dashiev.listItem;
+package ru.academits.dashiev.node;
 
 public class Node<T> {
     private T data;
