@@ -1,21 +1,21 @@
-package ru.academits.dashiev.list;
+package ru.academits.dashiev.my_list;
 
 import ru.academits.dashiev.node.Node;
 
-public class List<T> { // класс List  должен быть generic, чтобы тоже жестко не привязываться к типу
+public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко не привязываться к типу
     private Node<T> head; // переменная, которая указывает на начало списка
     private int count; // здесь храним длину списка
 
-    public List() {
+    public MyList() {
         count = 0;
         head = null;
     }
 
-    public List(Node<T> head) {
+    public MyList(Node<T> head) {
         this.head = head;
     }
 
-    public List(List<T> list) {
+    public MyList(MyList<T> list) {
         for (Node<T> p = list.head; p != null; p = p.getNext()) {
             this.add(p.getData());
         }

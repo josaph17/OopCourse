@@ -1,10 +1,10 @@
-package ru.academits.dashiev.list_main;
+package ru.academits.dashiev.my_list_main;
 
-import ru.academits.dashiev.list.List;
+import ru.academits.dashiev.my_list.MyList;
 
 public class Main {
     public static void main(String[] args) {
-        List<Integer> list = new List<>();
+        MyList<Integer> list = new MyList<>();
         list.add(4);
         list.add(3);
         list.add(2);
@@ -85,7 +85,7 @@ public class Main {
 
         System.out.println(
                 "Копирование списка через конструктор копирования  List<Integer> copyList = new List<>(list)");
-        List<Integer> copyList = new List<>(list);
+        MyList<Integer> copyList = new MyList<>(list);
         System.out.println(copyList);
     }
 }

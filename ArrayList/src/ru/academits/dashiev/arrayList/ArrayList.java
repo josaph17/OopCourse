@@ -1,8 +1,12 @@
 package ru.academits.dashiev.arrayList;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import java.util.Arrays;
 
-public class ArrayList<T> {
+public class ArrayList<T> implements List {
     private T[] items;
     private int size; // 0, по умолчанию , вместимость списка , длина массива и вместимость списка могут отличаться
 
@@ -15,17 +19,99 @@ public class ArrayList<T> {
         return size; // размер списка называют вместимостью, capacity
     }
 
-    public T getHead() { // получение значения первого элемента
-        return items[0];
+    @Override
+    public boolean isEmpty() {
+        return false;
     }
 
-    public T getItem(int index) { // получение значения по указанному индексу
-        if (index >= size) {
-            throw new IndexOutOfBoundsException(
-                    "IndexOutOfBoundsException. List capacity = " + size + ".Current value = " + index); // выход за sizes
-        }
+    @Override
+    public boolean contains(Object o) {
+        return false;
+    }
 
-        return items[index];
+    @Override
+    public Iterator iterator() {
+        return null;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public boolean add(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(int index, Collection c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public Object get(int index) {
+        return null;
+    }
+
+    @Override
+    public Object set(int index, Object element) {
+        return null;
+    }
+
+    @Override
+    public void add(int index, Object element) {
+
+    }
+
+    @Override
+    public Object remove(int index) {
+        return null;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return 0;
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return 0;
+    }
+
+    @Override
+    public boolean retainAll(Collection c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection c) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection c) {
+        return false;
+    }
+
+    @Override
+    public Object[] toArray(Object[] a) {
+        return new Object[0];
     }
 
     public void increaseCapacity() {
@@ -48,50 +134,5 @@ public class ArrayList<T> {
         items[index] = listItem;
 
         return oldValue;
-    }
-
-    public void remove(int index) { // удаление элемента по индексу, пусть выдает значение элемента
-        if (index >= size) {
-            throw new IndexOutOfBoundsException(
-                    "IndexOutOfBoundsException. List capacity = " + size + ".Current value = " + index); // выход за sizes
-        }
-    }
-
-    public void addStart(T item) { // вставка элемента в начало
-
-    }
-
-    public void addIndexItem(int index, T item) { //вставка элемента по индексу
-        if (index >= size) {
-            throw new IndexOutOfBoundsException(
-                    "IndexOutOfBoundsException. List capacity = " + size + ".Current value = " + index); // выход за sizes
-        }
-    }
-
-    public boolean remove(T item) {
-        // удаление узла по значению, пусть выдает true, если элемент был удален
-        return true;
-    }
-
-    public T removeStart() { // удаление первого элемента, пусть выдает значение элемента
-        T deletedItem = items[0];
-
-        if (size > 0) {
-            System.arraycopy(items, 1, items, 0, size - 1);
-        }
-
-        items[size - 1] = null; // зануляем ссылку на освобожденный элемент, чтобы сборщик мусоре его собрал
-
-        size--;
-
-        return items[0];
-    }
-
-    public void reverse() { // разворот списка за линейное время
-
-    }
-
-    public void copyList() {
-
     }
 }
