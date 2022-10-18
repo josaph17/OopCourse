@@ -9,7 +9,7 @@ public class MyArrayList<T> implements List<T> {
     // вместимость списка , длина списка и длина массива могут
 
     public MyArrayList() {
-        items = (T[]) new Object[5]; // 5м - начальный размер (вместимость, capacity)
+        items = (T[]) new Object[3]; // 5м - начальный размер (вместимость, capacity)
         /*Чтобы не было ошибки компиляции, массив типа T приводится к Object*/
     }
 
@@ -46,7 +46,10 @@ public class MyArrayList<T> implements List<T> {
 
             @Override
             public boolean hasNext() {
-                return currentIndex < size || items[currentIndex] != null;
+                if (currentIndex < size && items[currentIndex] != null)
+                    return true;
+
+                return false;
             }
 
             @Override
@@ -85,11 +88,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        if (size >= items.length) {
-            increaseCapacity();
-        }
-
-        if (items.length >= c.size()) {
+        if (size >= items.length || items.length >= c.size()) {
             increaseCapacity();
         }
 
@@ -101,7 +100,7 @@ public class MyArrayList<T> implements List<T> {
             this.add(t);
         }
 
-        return oldSize == size;
+        return oldSize != size;
     }
 
     @Override

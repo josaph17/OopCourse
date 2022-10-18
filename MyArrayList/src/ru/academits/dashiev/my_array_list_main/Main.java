@@ -8,28 +8,11 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-//        List<String> it = new MyArrayList<>();
-//
-//        it.add("Java");
-//        it.add("SQL");
-//        it.add("GIT");
-//
-//        Iterator<String> itIterator = it.iterator();
-//
-//        while(itIterator.hasNext()){
-//            System.out.println(itIterator.next());
-//        }
-
-        //it.add(3, "Kafka");
-
         List<Integer> list = new MyArrayList<>();
 
         list.add(4);
         list.add(10);
         list.add(18);
-        list.add(45);
-        list.add(77);
-        list.add(4,7);
 
         Iterator listIterator = list.iterator();
 
@@ -39,6 +22,23 @@ public class Main {
 
         System.out.println();
 
-        System.out.println(list.size());
+        System.out.println("list size = " + list.size());
+
+        List<Integer> newList = new MyArrayList<>();
+
+        newList.add(301);
+        newList.add(302);
+
+        System.out.println("function listAll");
+
+        list.addAll(newList);
+
+        Iterator newListIterator = list.iterator();
+
+        while(newListIterator.hasNext()){
+            System.out.print(newListIterator.next() + " ");
+        }
+
+        System.out.println();
     }
 }
