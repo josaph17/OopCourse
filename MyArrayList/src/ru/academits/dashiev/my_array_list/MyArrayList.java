@@ -3,16 +3,18 @@ package ru.academits.dashiev.my_array_list;
 import java.util.*;
 
 public class MyArrayList<T> implements List<T> {
-    private T[] items;
-    private int size; // 0, по умолчанию , вместимость списка , длина массива и вместимость списка могут отличаться
+    private static Iterator instance;
+    private T[] items; // внутренний массив
+    private int size; // длина списка(кол-ва эл-в в списке) = 0, по умолчанию ,
+    // вместимость списка , длина списка и длина массива могут
 
     public MyArrayList() {
-        items = (T[]) new Object[10];
+        items = (T[]) new Object[5]; // 5м - начальный размер (вместимость, capacity)
         /*Чтобы не было ошибки компиляции, массив типа T приводится к Object*/
     }
 
-    public MyArrayList(int capacity) {
-        items = (T[]) new Object[capacity];
+    public MyArrayList(int length) {
+        items = (T[]) new Object[length];
     }
 
     public void ensureCapacity() {
@@ -38,8 +40,22 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public Iterator iterator() {
-        return null;
+    public Iterator<T> iterator() {
+        Iterator<T> instance = new Iterator<T>() {
+            int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < size || items[currentIndex] != null;
+            }
+
+            @Override
+            public T next() {
+                return items[currentIndex++]; // возвр. текущий элемент и переходит к след.
+            }
+        };
+
+        return instance;
     }
 
     @Override
@@ -62,6 +78,8 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean remove(Object o) {
+
+
         return false;
     }
 
@@ -78,11 +96,6 @@ public class MyArrayList<T> implements List<T> {
         int oldSize = size;
 
         int i = 0;
-
-        //        for (T t : c) {
-        //            items[size] = t;
-        //            size++;
-        //        }
 
         for (T t : c) {
             this.add(t);
@@ -127,16 +140,28 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public void add(int index, Object element) {
-        if (size >= items.length) {
-            increaseCapacity();
-        }
-
-        if (index >= size) {
-            throw new ArrayIndexOutOfBoundsException(
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException(
                     "IndexOutOfBoundsException. List max index = " + (size - 1) + ".Current value = " + index);
         }
 
+        if (element == null) {
+            throw new NullPointerException("Element is null!!!");
+        }
+
+        T objectElement = (T) element;
+
+        if (size + 1 >= items.length) {
+            increaseCapacity();
+        }
+
+        for (int i = size - 1; i >= 0; i--) {
+            items[i+1] = items[i];
+        }
+
         items[index] = (T) element;
+
+        size++;
     }
 
     @Override
