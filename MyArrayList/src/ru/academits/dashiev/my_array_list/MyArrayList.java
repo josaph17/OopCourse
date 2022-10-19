@@ -22,7 +22,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public void trimToSize() {
-        items = Arrays.copyOf(items, items.length * 2);
+        items = Arrays.copyOf(items, size);
     }
 
     public int size() { // получение размера списка
@@ -88,7 +88,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        if (size >= items.length || items.length >= c.size()) {
+        if (size >= items.length || items.length >= c.size()) { // т.к. size увеличивается после add
             increaseCapacity();
         }
 
@@ -105,12 +105,33 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        return false;
+        if (index >= size) {
+            throw new ArrayIndexOutOfBoundsException(
+                    "IndexOutOfBoundsException. List max index = " + (size - 1) + ".Current value = " + index);
+        }
+
+        if (index < 0) {
+            throw new ArrayIndexOutOfBoundsException("IndexOutOfBoundsException. index < 0");
+        }
+
+        if (size + items.length >= items.length) {
+            increaseCapacity();
+        }
+
+        int oldSize = size;
+
+        for (T t : c) {
+            this.add(index, t);
+        }
+
+        return oldSize != size;
     }
 
     @Override
     public void clear() {
+        items = (T[]) new Object[3];
 
+        size = 0;
     }
 
     @Override
@@ -155,7 +176,7 @@ public class MyArrayList<T> implements List<T> {
         }
 
         for (int i = size - 1; i >= 0; i--) {
-            items[i+1] = items[i];
+            items[i + 1] = items[i];
         }
 
         items[index] = (T) element;
@@ -165,17 +186,56 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        return null;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException(
+                    "IndexOutOfBoundsException. List max index = " + (size - 1) + ".Current value = " + index);
+        }
+
+        T deletedElement = items[index];
+
+        for (int i = index; i < size-1; i++) {
+            items[i] = items[i + 1];
+        }
+
+        size--;
+
+        trimToSize();
+
+        return deletedElement;
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        T element = (T) o;
+
+        if (element == null) { // если это данные ссылочного типа
+            return -1;
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (items[i].equals(element)) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        T element = (T) o;
+
+        if (element == null) { // если это данные ссылочного типа
+            return -1;
+        }
+
+        for (int i = size - 1; i >= 0; i--) {
+            if (items[i].equals(element)) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     @Override

@@ -29,9 +29,9 @@ public class Main {
         newList.add(301);
         newList.add(302);
 
-        System.out.println("function listAll");
+        System.out.println("function addAll(index, collection)");
 
-        list.addAll(newList);
+        list.addAll(0, newList);
 
         Iterator newListIterator = list.iterator();
 
@@ -40,5 +40,26 @@ public class Main {
         }
 
         System.out.println();
+
+        //list.clear();
+
+        System.out.println("after clear()");
+
+        Iterator delListIterator = list.iterator();
+
+        while(delListIterator.hasNext()){
+            System.out.print(delListIterator.next() + " ");
+        }
+
+        System.out.println();
+
+        list.add(301);
+
+        System.out.println(list);
+        System.out.println(list.size());
+
+        list.remove(5);
+        System.out.println(list);
+        System.out.println(list.size());
     }
 }
