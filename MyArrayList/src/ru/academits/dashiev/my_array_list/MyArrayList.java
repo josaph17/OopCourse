@@ -17,8 +17,10 @@ public class MyArrayList<T> implements List<T> {
         items = (T[]) new Object[length];
     }
 
-    public void ensureCapacity() {
-        items = Arrays.copyOf(items, items.length * 2);
+    public void ensureCapacity(int capacity) {
+        if (items.length > capacity) {
+            items = Arrays.copyOf(items, capacity);
+        }
     }
 
     public void trimToSize() {
@@ -36,6 +38,10 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean contains(Object o) {
+        if (indexOf(o) != -1) {
+            return true;
+        }
+
         return false;
     }
 
@@ -63,11 +69,20 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        // нужно создать копию и возвратить копию, т.к. если вернуть оригинальный массив, то его могут поменять
+        //извне, если возвр ориг - я предоставля прямой доступ к данным, инкапсуляции не будет
+
+        T[] copyItems = Arrays.copyOf(items, size);
+
+        return copyItems;
     }
 
     @Override
     public boolean add(Object o) {
+        if (o == null) {
+            throw new NullPointerException("Add element is null!!!");
+        }
+
         if (size >= items.length) {
             increaseCapacity();
         }
@@ -81,9 +96,19 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean remove(Object o) {
+        if (o == null) {
+            return false;
+        }
 
+        int objIndex = indexOf(o); // находим индекс элемента
 
-        return false;
+        if (objIndex == -1) {
+            return false;
+        }
+
+        remove(objIndex);
+
+        return true;
     }
 
     @Override
@@ -97,7 +122,7 @@ public class MyArrayList<T> implements List<T> {
         int i = 0;
 
         for (T t : c) {
-            this.add(t);
+            add(t);
         }
 
         return oldSize != size;
@@ -129,7 +154,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public void clear() {
-        items = (T[]) new Object[3];
+        items = (T[]) new Object[3]; // items = null не обязвтельно делать
 
         size = 0;
     }
@@ -140,7 +165,7 @@ public class MyArrayList<T> implements List<T> {
             throw new ArrayIndexOutOfBoundsException(
                     "IndexOutOfBoundsException. List max index = " + (size - 1) + ".Current value = " + index);
         }
-
+        // этот get возвращает просто конкретный элемент, это не геттер, т.к. он не возвращает сам массив
         return items[index];
     }
 
@@ -193,13 +218,10 @@ public class MyArrayList<T> implements List<T> {
 
         T deletedElement = items[index];
 
-        for (int i = index; i < size-1; i++) {
-            items[i] = items[i + 1];
-        }
+        System.arraycopy(items, index + 1, items, index, size - 1 - index);
 
-        size--;
-
-        trimToSize();
+        items[size - 1] = null;
+        --size;
 
         return deletedElement;
     }
@@ -255,17 +277,38 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean retainAll(Collection c) {
-        return false;
+        int oldSize = size;
+
+        clear();
+        addAll(c);
+
+        return size != oldSize;
     }
 
     @Override
     public boolean removeAll(Collection c) {
-        return false;
+        if (c == null) {
+            throw new NullPointerException("Collection is null!!!");
+        }
+
+        int oldSize = size;
+
+        for (Object t : c) {
+            remove(t);
+        }
+
+        return size != oldSize;
     }
 
     @Override
     public boolean containsAll(Collection c) {
-        return false;
+        for (Object t : c) {
+            if (contains(t) == false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -298,7 +341,13 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        final int prime = 31; // просто число
+        int hash = 1;
+
+        hash = prime * hash + Arrays.hashCode(items);
+        hash = prime * hash + size;
+
+        return hash;
     }
 
     @Override
@@ -310,6 +359,7 @@ public class MyArrayList<T> implements List<T> {
         if (getClass() != obj.getClass() || obj == null) {
             return false;
         }
+
         MyArrayList o = (MyArrayList) obj;
 
         if (size != o.size) {
@@ -327,6 +377,18 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public String toString() {
-        return Arrays.toString(items);
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("[");
+
+        for (int i = 0; i < size; i++) {
+            sb.append(items[i] + " ");
+        }
+
+        sb.deleteCharAt(size-1);
+
+        sb.append("]");
+
+        return sb.toString();
     }
 }

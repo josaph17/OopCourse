@@ -19,7 +19,8 @@ public class Vector {
             throw new IllegalArgumentException("vector is null!");
         }
 
-        components = Arrays.copyOf(vector.components, vector.components.length);
+        components = Arrays.copyOf(vector.components, vector.components.length); // если не делать копию,
+        // то 2 разных вектора ссылаются на один массив, именения в одном привед к изменения к другому
     }
 
     public Vector(double... array) {
