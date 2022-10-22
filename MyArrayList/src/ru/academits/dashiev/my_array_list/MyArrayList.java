@@ -9,7 +9,7 @@ public class MyArrayList<T> implements List<T> {
     // вместимость списка , длина списка и длина массива могут
 
     public MyArrayList() {
-        items = (T[]) new Object[3]; // 5м - начальный размер (вместимость, capacity)
+        items = (T[]) new Object[4]; // 5м - начальный размер (вместимость, capacity)
         /*Чтобы не было ошибки компиляции, массив типа T приводится к Object*/
     }
 
@@ -18,8 +18,11 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public void ensureCapacity(int capacity) {
-        if (items.length > capacity) {
-            items = Arrays.copyOf(items, capacity);
+        if (items.length < capacity) {
+            T[] copy = (T[]) new Object[capacity];
+
+            System.arraycopy(items,0,copy,0,size);
+            items = copy;
         }
     }
 
@@ -147,6 +150,7 @@ public class MyArrayList<T> implements List<T> {
 
         for (T t : c) {
             this.add(index, t);
+            ++ index;
         }
 
         return oldSize != size;
@@ -185,7 +189,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public void add(int index, Object element) {
-        if (index < 0 || index >= size) {
+        if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException(
                     "IndexOutOfBoundsException. List max index = " + (size - 1) + ".Current value = " + index);
         }
@@ -200,7 +204,7 @@ public class MyArrayList<T> implements List<T> {
             increaseCapacity();
         }
 
-        for (int i = size - 1; i >= 0; i--) {
+        for (int i = size - 1; i >= index; i--) {
             items[i + 1] = items[i];
         }
 
@@ -312,8 +316,24 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public Object[] toArray(Object[] a) {
-        return new Object[0];
+    public <E> E[] toArray(E[] array) { // E- т.к. этот нек-й класс может отличаться от T
+        if (array == null) {
+            throw new NullPointerException("Array is null");
+        }
+
+        if (array.length < size) {
+            return Arrays.copyOf(array, size);
+            // возвращаем новый массив того же типа< что и переданный
+        }
+
+        System.arraycopy(items, 0, array, 0, size); // возвр переданный массив,
+        //заполненный элементами из списка
+
+        if (array.length > size) {
+            array[size] = null;
+        }
+
+        return array;
     }
 
 
@@ -377,6 +397,10 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public String toString() {
+        if(size == 0){
+            return "[]";
+        }
+
         StringBuilder sb = new StringBuilder();
 
         sb.append("[");
@@ -385,7 +409,7 @@ public class MyArrayList<T> implements List<T> {
             sb.append(items[i] + " ");
         }
 
-        sb.deleteCharAt(size-1);
+        sb.deleteCharAt(sb.length() - 1);
 
         sb.append("]");
 
