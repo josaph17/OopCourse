@@ -276,7 +276,7 @@ public class MyArrayList<T> implements List<T> {
         return null;
     }
 
-    //TODO прошу проверить функцию retainAll(Collection c), испытывал трудности
+    //TODO прошу проверить функцию retainAll(Collection c), были затруднения
     @Override
     public boolean retainAll(Collection c) {
         if (c == null) {
@@ -285,7 +285,18 @@ public class MyArrayList<T> implements List<T> {
 
         int oldSize = size;
 
+        MyArrayList<T> instanceList = new MyArrayList<>();
 
+        for (T t : this) {
+            for (Object o : c) {
+                if (t.equals(o)) {
+                    instanceList.add((T) o);
+                }
+            }
+        }
+
+        this.clear();
+        this.addAll(instanceList);
 
         return size != oldSize;
     }

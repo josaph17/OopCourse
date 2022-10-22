@@ -102,7 +102,27 @@ public class Main {
         list1.removeAll(removeList);
         System.out.println("list1 after .removeAll(removeList): " + list1);
 
-        //TODO прошу проверить функцию retainAll(Collection c), испытывал трудности
+        //TODO прошу проверить функцию retainAll(Collection c), были затруднения
+        System.out.println("-----------------------");
+        System.out.println("Для ф-ии retainA:(Collection C) возьмем 2 ArrayList");
+        MyArrayList<Double> list5 = new MyArrayList<>();
+        list5.add(432.3);
+        list5.add(32.4);
+        list5.add(9.7);
+        list5.add(564.65);
+        list5.add(9.7);
+        System.out.println("list5: " + list5);
+
+        MyArrayList<Double> list6 = new MyArrayList<>();
+        list6.add(564.65);
+        list6.add(9.7);
+        list6.add(99.3);
+        list6.add(32.4);
+        System.out.println("list6: " + list6);
+
+        list5.retainAll(list6);
+        System.out.println("list5 after list5.retainAll(list6): " + list5);
+        System.out.println("-----------------------");
 
         System.out.print("list1.toArray(), создадим массив newArray и выведем: ");
         Object[] array1 = list1.toArray();
