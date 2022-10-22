@@ -80,7 +80,52 @@ public class Main {
                 "public Iterator<T> iterator() мы переопределили, использование iterator покажем в следующем методе ");
         System.out.print("showWithIterator(MyArrayList arrayList): ");
         showWithIterator(list1);
+
+        double lastIndexElement = 3777.9;
+        list1.add(lastIndexElement);
+        System.out.println("list1 after .add(" + lastIndexElement + "): " + list1);
+        System.out.println("list1.lastIndexOf(" + lastIndexElement + ") = " + list1.lastIndexOf(
+                lastIndexElement));
+
+        int removeIndexElement = 8;
+        list1.remove(removeIndexElement);
+        System.out.println("removeIndexElement(" + removeIndexElement + "), list: " + list1);
+
+        MyArrayList<Double> removeList = new MyArrayList<>();
+        removeList.add(1.1);
+        removeList.add(3777.9);
+        removeList.add(2.2);
+        removeList.add(66.7);
+        removeList.add(4.4);
+
+        System.out.println("removeList: " + removeList);
+        list1.removeAll(removeList);
+        System.out.println("list1 after .removeAll(removeList): " + list1);
+
+        //TODO прошу проверить функцию retainAll(Collection c), испытывал трудности
+
+        System.out.print("list1.toArray(), создадим массив newArray и выведем: ");
+        Object[] array1 = list1.toArray();
+
+        for (Object o : array1) {
+            System.out.print(o + " ");
+        }
         System.out.println();
 
+        System.out.println("list1: " + list1);
+        System.out.print("array2: ");
+        Double[] array2 = new Double[]{2.43, 543.4, 43.65, 321.0, 0.0, 21.4, 7777.7};
+        for (Double aDouble : array2) {
+            System.out.print(aDouble + " ");
+        }
+        System.out.println();
+        System.out.print("Double[] afterToArray = list1.toArray(array2): ");
+        Double[] afterToArray = list1.toArray(array2);
+        for (Double aDouble : afterToArray) {
+            System.out.print(aDouble + " ");
+        }
+        System.out.println();
+
+        list1.trimToSize();
     }
 }

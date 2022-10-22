@@ -21,7 +21,7 @@ public class MyArrayList<T> implements List<T> {
         if (items.length < capacity) {
             T[] copy = (T[]) new Object[capacity];
 
-            System.arraycopy(items,0,copy,0,size);
+            System.arraycopy(items, 0, copy, 0, size);
             items = copy;
         }
     }
@@ -74,10 +74,7 @@ public class MyArrayList<T> implements List<T> {
     public Object[] toArray() {
         // нужно создать копию и возвратить копию, т.к. если вернуть оригинальный массив, то его могут поменять
         //извне, если возвр ориг - я предоставля прямой доступ к данным, инкапсуляции не будет
-
-        T[] copyItems = Arrays.copyOf(items, size);
-
-        return copyItems;
+        return Arrays.copyOf(items, size);
     }
 
     @Override
@@ -150,7 +147,7 @@ public class MyArrayList<T> implements List<T> {
 
         for (T t : c) {
             this.add(index, t);
-            ++ index;
+            ++index;
         }
 
         return oldSize != size;
@@ -279,12 +276,16 @@ public class MyArrayList<T> implements List<T> {
         return null;
     }
 
+    //TODO прошу проверить функцию retainAll(Collection c), испытывал трудности
     @Override
     public boolean retainAll(Collection c) {
+        if (c == null) {
+            throw new NullPointerException("Collection is null!!!");
+        }
+
         int oldSize = size;
 
-        clear();
-        addAll(c);
+
 
         return size != oldSize;
     }
@@ -397,7 +398,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public String toString() {
-        if(size == 0){
+        if (size == 0) {
             return "[]";
         }
 
