@@ -1,25 +1,23 @@
-package array_list_home_main;
+package ru.academits.dashiev.array_list_home_main3;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
+public class Main3 {
     public static void main(String[] args) throws FileNotFoundException {
         //создаем сканер от FileInputStream
         try (Scanner scanner = new Scanner(new FileInputStream("input.txt"), "UTF-8")) {
             // дальше работаем сосканером как обычно
-            while(scanner.hasNextLine()){
-                int count = scanner.nextInt();
-                ArrayList<Integer> a = new ArrayList<>(count);
+            ArrayList<String> a = new ArrayList<>();
 
-                for (int i = 0; i < count; i++) {
-                    a.add(scanner.nextInt());
-                }
+            while (scanner.hasNextLine()) {
+                a.add(scanner.nextLine());
                 // теперь close Не нужен о вызовется сам2
-                System.out.println("Привет, как дела");
             }
+
+            System.out.println("Привет, как дела");
         }
     }
 }
