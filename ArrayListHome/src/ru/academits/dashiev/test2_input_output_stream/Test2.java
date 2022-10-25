@@ -1,4 +1,4 @@
-package ru.academits.dashiev.test2;
+package ru.academits.dashiev.test2_input_output_stream;
 
 import java.io.*;
 
