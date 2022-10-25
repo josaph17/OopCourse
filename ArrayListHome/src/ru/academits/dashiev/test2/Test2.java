@@ -1,23 +1,34 @@
 package ru.academits.dashiev.test2;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
+import java.io.*;
 
 public class Test2 {
     public static void main(String[] args) throws IOException {
-        // InputSTream - €вл€етс€ базовым абстрактным классом дл€ всех потоков ввода. ќн €вл€етс€ байтовым
-        try(InputStream stream = new FileInputStream("input.txt")){
+        // InputStream - €вл€етс€ базовым абстрактным классом дл€ всех потоков ввода. ќн €вл€етс€ байтовым
+        try (InputStream stream = new FileInputStream(
+                "input.txt"); OutputStream outStream = new FileOutputStream("output.txt")) {
             int read = 0;
-            int off =0 ;
+            int off = 0; // off - пока 0 символов, 1 сивол - 1 байт, char - 1 байт2
 
-            byte[] res = new byte[10000];
+            byte[] res = new byte[5];
 
-            while((read= stream.read(res,off, res.length - off))!=-1){
-                off+=read;
+            while ((read = stream.read(res, off, res.length - off)) != -1) {
+                off += read;
             }
+
+            int write = 0;
+            int off2 = 0;
+
+            outStream.write(res);
+
+//            while((write = outStream.write(resOut, off2, resOut.length-off2))!=-1){
+//                off2+= write;
+//            }
+
+            // off = stream.read(res); // возвра реальне кол-во при=очит бай
+
+
+            System.out.println(off);
         }
     }
 }

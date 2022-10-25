@@ -285,18 +285,20 @@ public class MyArrayList<T> implements List<T> {
 
         int oldSize = size;
 
-        MyArrayList<T> instanceList = new MyArrayList<>();
+        Set<T> set = new HashSet<>(c);
+        T[] newItems = (T[]) new Object[size];
+
+        int i = 0;
 
         for (T t : this) {
-            for (Object o : c) {
-                if (t.equals(o)) {
-                    instanceList.add((T) o);
-                }
+            if (set.contains(t)) {
+                newItems[i] = t;
+                i++;
             }
         }
 
-        this.clear();
-        this.addAll(instanceList);
+        items = newItems;
+        size = i;
 
         return size != oldSize;
     }
