@@ -286,18 +286,16 @@ public class MyArrayList<T> implements List<T> {
         int oldSize = size;
 
         Set<T> set = new HashSet<>(c);
-        T[] newItems = (T[]) new Object[size];
 
         int i = 0;
 
         for (T t : this) {
             if (set.contains(t)) {
-                newItems[i] = t;
-                i++;
+                items[i] = t;
+                i++; // передвигаемся по массиву
             }
         }
 
-        items = newItems;
         size = i;
 
         return size != oldSize;
