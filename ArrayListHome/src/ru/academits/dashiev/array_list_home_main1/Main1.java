@@ -14,10 +14,8 @@ public class Main1 {
 
             while (scanner.hasNextLine()) {
                 a.add(scanner.nextLine());
-                // теперь close Не нужен о вызовется сам2
+                // теперь close Не нужен он вызовется сам
             }
-
-            System.out.println("Привет, как дела");
         }
     }
 }

@@ -1,4 +1,4 @@
-package ru.academits.dashiev.test1;
+package test1;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

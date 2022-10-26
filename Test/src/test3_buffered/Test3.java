@@ -1,4 +1,4 @@
-package ru.academits.dashiev.test3_buffered;
+package test3_buffered;
 
 import java.io.*;
 

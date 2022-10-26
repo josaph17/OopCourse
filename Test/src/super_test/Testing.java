@@ -1,4 +1,4 @@
-package ru.academits.dashiev.super_test;
+package super_test;
 
 import ru.academits.dashiev.my_array_list.MyArrayList;
 
