@@ -5,19 +5,25 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class MyHashTable<V> implements Collection<V> {
-    private LinkedList<V>[] items;
+    private LinkedList<V>[] items; // это точно правильно
+    private int arraySize;
 
-    public MyHashTable(){
-        items = (LinkedList<V>[]) new Object[20];
+    public MyHashTable() {
+        arraySize = 20;
+
+        items = (LinkedList<V>[]) new Object[arraySize];
     }
 
-    public MyHashTable(int length){
-        items = (LinkedList<V>[]) new Object[length];
+    public MyHashTable(int arraySize) {
+        this.arraySize = arraySize;
+
+        items = new LinkedList[arraySize];
     }
+
 
     @Override
     public int size() {
-        return 0;
+        return arraySize;
     }
 
     @Override
@@ -46,9 +52,23 @@ public class MyHashTable<V> implements Collection<V> {
     }
 
     @Override
-    public boolean add(V v) {
-        return false;
+    public boolean add(V value) {
+
+        int index = Math.abs((value != null ? value.hashCode() : 0) % arraySize);
+
+        try {
+            System.out.println(items.getClass());
+            System.out.println(value.getClass());
+            items[index].add(value);
+        } catch (ArrayStoreException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Continuing execution");
+
+
+        return items[index] != null;
     }
+
 
     @Override
     public boolean remove(Object o) {
