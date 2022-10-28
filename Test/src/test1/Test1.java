@@ -8,14 +8,14 @@ import java.util.Scanner;
 
 public class Test1 {
     public static void main(String[] args) throws FileNotFoundException {
-        // считываем в arrayLIst данные, если офайл состоит из intов
+        // СЃС‡РёС‚С‹РІР°РµРј РІ arrayLIst РґР°РЅРЅС‹Рµ, РµСЃР»Рё РѕС„Р°Р№Р» СЃРѕСЃС‚РѕРёС‚ РёР· intРѕРІ
         try (Scanner scanner = new Scanner(new FileInputStream("input.txt"))) {
 
 
             ArrayList<Integer> list1 = new ArrayList<>();
 
             while (scanner.hasNext()) {
-                // scanner.hasNext() - есть ли в потоке еще что-нибудь
+                // scanner.hasNext() - РµСЃС‚СЊ Р»Рё РІ РїРѕС‚РѕРєРµ РµС‰Рµ С‡С‚Рѕ-РЅРёР±СѓРґСЊ
                 if(scanner.hasNext() == scanner.hasNextInt()){
                     Integer x = scanner.nextInt();
 

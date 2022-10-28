@@ -5,13 +5,13 @@ public class Node<T> {
     private Node<T> next;
 
     public Node() {
-        // пустой конструктор
+        // РїСѓСЃС‚РѕР№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
     }
 
     public Node(T data) {
         this.data = data;
-        next = null; // указатель указывает на null
-    }// добавление последнего эл-а в список
+        next = null; // СѓРєР°Р·Р°С‚РµР»СЊ СѓРєР°Р·С‹РІР°РµС‚ РЅР° null
+    }// РґРѕР±Р°РІР»РµРЅРёРµ РїРѕСЃР»РµРґРЅРµРіРѕ СЌР»-Р° РІ СЃРїРёСЃРѕРє
 
     public Node(T data, Node<T> next) {
         this.data = data;
@@ -19,7 +19,7 @@ public class Node<T> {
     }
 
     @Override
-    public String toString() { // переопределили toString для нашего собственного класса
+    public String toString() { // РїРµСЂРµРѕРїСЂРµРґРµР»РёР»Рё toString РґР»СЏ РЅР°С€РµРіРѕ СЃРѕР±СЃС‚РІРµРЅРЅРѕРіРѕ РєР»Р°СЃСЃР°
         return data.toString();
     }
 

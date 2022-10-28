@@ -4,8 +4,8 @@ import java.io.*;
 
 public class Test3 {
     public static void main(String[] args) throws IOException {
-        // Буфферизованные потоки
-        byte[] inBytes = new byte[2]; // буфер
+        // Р‘СѓС„С„РµСЂРёР·РѕРІР°РЅРЅС‹Рµ РїРѕС‚РѕРєРё
+        byte[] inBytes = new byte[2]; // Р±СѓС„РµСЂ
 
         int readBytes = 0;
 
@@ -13,7 +13,7 @@ public class Test3 {
                 "input.txt")); OutputStream outputStream = new BufferedOutputStream(
                 new FileOutputStream("test3.txt"))) {
             while((readBytes = inputStream.read(inBytes))!= -1){
-                // inputStream.read(inBytes); -- не надо! т.к. и так в while считываю
+                // inputStream.read(inBytes); -- РЅРµ РЅР°РґРѕ! С‚.Рє. Рё С‚Р°Рє РІ while СЃС‡РёС‚С‹РІР°СЋ
 
                 outputStream.write(inBytes, 0, readBytes);
             }

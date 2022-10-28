@@ -4,11 +4,11 @@ import java.io.*;
 
 public class Test2 {
     public static void main(String[] args) throws IOException {
-        // InputStream - является базовым абстрактным классом для всех потоков ввода. Он является байтовым
+        // InputStream - СЏРІР»СЏРµС‚СЃСЏ Р±Р°Р·РѕРІС‹Рј Р°Р±СЃС‚СЂР°РєС‚РЅС‹Рј РєР»Р°СЃСЃРѕРј РґР»СЏ РІСЃРµС… РїРѕС‚РѕРєРѕРІ РІРІРѕРґР°. РћРЅ СЏРІР»СЏРµС‚СЃСЏ Р±Р°Р№С‚РѕРІС‹Рј
         try (InputStream stream = new FileInputStream(
                 "input.txt"); OutputStream outStream = new FileOutputStream("output.txt")) {
             int read = 0;
-            int off = 0; // off - пока 0 символов, 1 сивол - 1 байт, char - 1 байт2
+            int off = 0; // off - РїРѕРєР° 0 СЃРёРјРІРѕР»РѕРІ, 1 СЃРёРІРѕР» - 1 Р±Р°Р№С‚, char - 1 Р±Р°Р№С‚2
 
             byte[] res = new byte[5];
 
@@ -25,7 +25,7 @@ public class Test2 {
 //                off2+= write;
 //            }
 
-            // off = stream.read(res); // возвра реальне кол-во при=очит бай
+            // off = stream.read(res); // РІРѕР·РІСЂР° СЂРµР°Р»СЊРЅРµ РєРѕР»-РІРѕ РїСЂРё=РѕС‡РёС‚ Р±Р°Р№
 
 
             System.out.println(off);

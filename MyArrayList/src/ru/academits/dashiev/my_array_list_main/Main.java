@@ -77,7 +77,7 @@ public class Main {
 
         System.out.println();
         System.out.println(
-                "public Iterator<T> iterator() мы переопределили, использование iterator покажем в следующем методе ");
+                "public Iterator<T> iterator() пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ iterator пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ");
         System.out.print("showWithIterator(MyArrayList arrayList): ");
         showWithIterator(list1);
 
@@ -102,9 +102,9 @@ public class Main {
         list1.removeAll(removeList);
         System.out.println("list1 after .removeAll(removeList): " + list1);
 
-        //TODO прошу проверить функцию retainAll(Collection c), были затруднения
+        //TODO пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ retainAll(Collection c), пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         System.out.println("-----------------------");
-        System.out.println("Для ф-ии retainA:(Collection C) возьмем 2 ArrayList");
+        System.out.println("пїЅпїЅпїЅ пїЅ-пїЅпїЅ retainA:(Collection C) пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2 ArrayList");
         MyArrayList<Double> list5 = new MyArrayList<>();
         list5.add(432.3);
         list5.add(32.4);
@@ -119,12 +119,12 @@ public class Main {
         list6.add(99.3);
         list6.add(32.4);
         System.out.println("list6: " + list6);
-
+        
         list5.retainAll(list6);
         System.out.println("list5 after list5.retainAll(list6): " + list5);
         System.out.println("-----------------------");
 
-        System.out.print("list1.toArray(), создадим массив newArray и выведем: ");
+        System.out.print("list1.toArray(), пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ newArray пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ");
         Object[] array1 = list1.toArray();
 
         for (Object o : array1) {

@@ -2,9 +2,9 @@ package ru.academits.dashiev.my_list;
 
 import ru.academits.dashiev.node.Node;
 
-public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко не привязываться к типу
-    private Node<T> head; // переменная, которая указывает на начало списка
-    private int count; // здесь храним длину списка
+public class MyList<T> { // РєР»Р°СЃСЃ List  РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ generic, С‡С‚РѕР±С‹ С‚РѕР¶Рµ Р¶РµСЃС‚РєРѕ РЅРµ РїСЂРёРІСЏР·С‹РІР°С‚СЊСЃСЏ Рє С‚РёРїСѓ
+    private Node<T> head; // РїРµСЂРµРјРµРЅРЅР°СЏ, РєРѕС‚РѕСЂР°СЏ СѓРєР°Р·С‹РІР°РµС‚ РЅР° РЅР°С‡Р°Р»Рѕ СЃРїРёСЃРєР°
+    private int count; // Р·РґРµСЃСЊ С…СЂР°РЅРёРј РґР»РёРЅСѓ СЃРїРёСЃРєР°
 
     public MyList() {
         count = 0;
@@ -23,13 +23,13 @@ public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко н
         this.reverse();
     }
 
-    public int getSize() { // получение размера списка
-        return count; // размер списка называют вместимостью, capacity
+    public int getSize() { // РїРѕР»СѓС‡РµРЅРёРµ СЂР°Р·РјРµСЂР° СЃРїРёСЃРєР°
+        return count; // СЂР°Р·РјРµСЂ СЃРїРёСЃРєР° РЅР°Р·С‹РІР°СЋС‚ РІРјРµСЃС‚РёРјРѕСЃС‚СЊСЋ, capacity
     }
 
-    public T getFirstElement() { // получение значения первого элемента
+    public T getFirstElement() { // РїРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
         if (head == null) {
-            throw new NullPointerException("1st Node is null!!!"); // выход за sizes
+            throw new NullPointerException("1st Node is null!!!"); // РІС‹С…РѕРґ Р·Р° sizes
         } else {
             return head.getData();
         }
@@ -43,7 +43,7 @@ public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко н
 
 
         if (head == null) {
-            throw new NullPointerException("1st Node is null!!!"); // выход за sizes
+            throw new NullPointerException("1st Node is null!!!"); // РІС‹С…РѕРґ Р·Р° sizes
         }
 
         Node<T> current = head;
@@ -62,7 +62,7 @@ public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко н
         }
 
         if (head == null) {
-            throw new NullPointerException("Head is null!!!"); // выход за sizes
+            throw new NullPointerException("Head is null!!!"); // РІС‹С…РѕРґ Р·Р° sizes
         }
 
         Node<T> current = head;
@@ -84,7 +84,7 @@ public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко н
         }
 
         if (head == null) {
-            throw new NullPointerException("Head is null!!!"); // выход за sizes
+            throw new NullPointerException("Head is null!!!"); // РІС‹С…РѕРґ Р·Р° sizes
         }
 
         if (index == 0) {
@@ -97,7 +97,7 @@ public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко н
             // System.out.println(current.getData());
         }
 
-        T deletedValue = current.getNext().getData(); // удаляемое значение
+        T deletedValue = current.getNext().getData(); // СѓРґР°Р»СЏРµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ
 
         if (current.getNext().getNext() == null) {
             current.setNext(null);
@@ -110,27 +110,27 @@ public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко н
         return deletedValue;
     }
 
-    public void add(T data) { // вставка элемента в начало
+    public void add(T data) { // РІСЃС‚Р°РІРєР° СЌР»РµРјРµРЅС‚Р° РІ РЅР°С‡Р°Р»Рѕ
         if (head == null) {
-            head = new Node<>(data); // head указ на ноую ноду
+            head = new Node<>(data); // head СѓРєР°Р· РЅР° РЅРѕСѓСЋ РЅРѕРґСѓ
         } else {
-            head = new Node<>(data, head); // head указывает на текующую ноду
+            head = new Node<>(data, head); // head СѓРєР°Р·С‹РІР°РµС‚ РЅР° С‚РµРєСѓСЋС‰СѓСЋ РЅРѕРґСѓ
         }
 
         count++;
     }
 
-    public void addIndexElement(int index, T data) { // вставка элемента по индексу
+    public void addIndexElement(int index, T data) { // РІСЃС‚Р°РІРєР° СЌР»РµРјРµРЅС‚Р° РїРѕ РёРЅРґРµРєСЃСѓ
         if (index >= getSize()) {
             throw new ArrayIndexOutOfBoundsException(
                     "IndexOutOfBoundsException. List max index = " + (getSize() - 1) + ".Current value = " + index);
         }
 
         if (head == null) {
-            throw new NullPointerException("Head is null!!!"); // выход за sizes
+            throw new NullPointerException("Head is null!!!"); // РІС‹С…РѕРґ Р·Р° sizes
         }
 
-        if (index == 0) { // если нужно вставить в самое начало
+        if (index == 0) { // РµСЃР»Рё РЅСѓР¶РЅРѕ РІСЃС‚Р°РІРёС‚СЊ РІ СЃР°РјРѕРµ РЅР°С‡Р°Р»Рѕ
             add(data);
             return;
         }
@@ -144,14 +144,14 @@ public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко н
         Node<T> newNode = new Node<>(data);
 
         newNode.setNext(current.getNext());
-        current.setNext(newNode); // присваивание current = newMode не работает
+        current.setNext(newNode); // РїСЂРёСЃРІР°РёРІР°РЅРёРµ current = newMode РЅРµ СЂР°Р±РѕС‚Р°РµС‚
 
         count++;
     }
 
     public boolean removeValue(T data) {
         if (head == null) {
-            throw new NullPointerException("Head is null!!!"); // выход за sizes
+            throw new NullPointerException("Head is null!!!"); // РІС‹С…РѕРґ Р·Р° sizes
         }
 
         int i = 0;
@@ -171,7 +171,7 @@ public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко н
 
     public T removeFirst() {
         if (head == null) {
-            throw new NullPointerException("1st Node is null!!!"); // выход за sizes
+            throw new NullPointerException("1st Node is null!!!"); // РІС‹С…РѕРґ Р·Р° sizes
         }
 
         T deletedValue = head.getData();
@@ -179,12 +179,12 @@ public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко н
         head = head.getNext();
 
         count--;
-        // или head = head.getNext();
+        // РёР»Рё head = head.getNext();
 
         return deletedValue;
     }
 
-    public void reverse() { // разворот за линейное время
+    public void reverse() { // СЂР°Р·РІРѕСЂРѕС‚ Р·Р° Р»РёРЅРµР№РЅРѕРµ РІСЂРµРјСЏ
         Node<T> prev = null;
         Node<T> current = head;
 
@@ -196,12 +196,12 @@ public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко н
             current = next;
         }
 
-        head = prev; // т.к. к этому моменту current = null
+        head = prev; // С‚.Рє. Рє СЌС‚РѕРјСѓ РјРѕРјРµРЅС‚Сѓ current = null
 
     }
 
     @Override
-    public String toString() { // переопределили toString для нашего собственного класса
+    public String toString() { // РїРµСЂРµРѕРїСЂРµРґРµР»РёР»Рё toString РґР»СЏ РЅР°С€РµРіРѕ СЃРѕР±СЃС‚РІРµРЅРЅРѕРіРѕ РєР»Р°СЃСЃР°
         StringBuilder sb = new StringBuilder();
 
         for (Node<T> p = head; p != null; p = p.getNext()) {
