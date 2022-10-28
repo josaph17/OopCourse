@@ -76,8 +76,7 @@ public class Main {
         System.out.println("emptyList.isEmpty(): " + emptyList.isEmpty());
 
         System.out.println();
-        System.out.println(
-                "public Iterator<T> iterator() �� ��������������, ������������� iterator ������� � ��������� ������ ");
+        System.out.println("public Iterator<T> iterator(). ");
         System.out.print("showWithIterator(MyArrayList arrayList): ");
         showWithIterator(list1);
 
@@ -102,9 +101,8 @@ public class Main {
         list1.removeAll(removeList);
         System.out.println("list1 after .removeAll(removeList): " + list1);
 
-        //TODO ����� ��������� ������� retainAll(Collection c), ���� �����������
+        //TODO прошу поверить ф-ю retainAll(Collection c)
         System.out.println("-----------------------");
-        System.out.println("��� �-�� retainA:(Collection C) ������� 2 ArrayList");
         MyArrayList<Double> list5 = new MyArrayList<>();
         list5.add(432.3);
         list5.add(32.4);
@@ -119,12 +117,12 @@ public class Main {
         list6.add(99.3);
         list6.add(32.4);
         System.out.println("list6: " + list6);
-        
+
         list5.retainAll(list6);
         System.out.println("list5 after list5.retainAll(list6): " + list5);
         System.out.println("-----------------------");
 
-        System.out.print("list1.toArray(), �������� ������ newArray � �������: ");
+        System.out.print("list1.toArray(): ");
         Object[] array1 = list1.toArray();
 
         for (Object o : array1) {
