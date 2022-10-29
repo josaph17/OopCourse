@@ -15,7 +15,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        MyHashTable<Integer> hashTable = new MyHashTable<>(15);
+        MyHashTable<Integer> hashTable = new MyHashTable<>(3);
 
         hashTable.add(87);
         hashTable.add(111);
@@ -30,6 +30,15 @@ public class Main {
 
         for (Object o : array) { // выводим массив
             System.out.print(o + " ");
+        }
+        System.out.println();
+
+        Integer[] testArray = new Integer[]{1};
+
+        testArray = hashTable.toArray(testArray);
+
+        for (Integer integer : testArray) {
+            System.out.print(integer + " ");
         }
         System.out.println();
     }

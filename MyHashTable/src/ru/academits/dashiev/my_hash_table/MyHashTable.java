@@ -1,9 +1,9 @@
 package ru.academits.dashiev.my_hash_table;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 
 public class MyHashTable<V> implements Collection<V> {
     private LinkedList<V>[] items; // это точно правильно
@@ -36,12 +36,12 @@ public class MyHashTable<V> implements Collection<V> {
     @Override
     public boolean contains(Object o) {
         if (o == null) {
-            throw new NullPointerException("0 is null.");
+            throw new NullPointerException("o is null.");
         }
 
         V element = (V) o;
 
-        int oIndex = Math.abs((element != null ? element.hashCode() : 0) % items.length);
+        int oIndex = Math.abs(element.hashCode() % items.length);
 
         if (items[oIndex] == null) {
             return false;
@@ -60,9 +60,11 @@ public class MyHashTable<V> implements Collection<V> {
 
             int lastNotNullElementIndex = findLastElIndex();
 
+            boolean isHashTableEmpty = (size() == 0); // будет созд при созд итератора только раз
+
             @Override
             public boolean hasNext() {
-                if (size() != 0 && currentIndex <= lastNotNullElementIndex) {
+                if (!isHashTableEmpty && currentIndex <= lastNotNullElementIndex) {
                     while (items[currentIndex] == null) {
                         currentIndex++;
                     }
@@ -75,10 +77,11 @@ public class MyHashTable<V> implements Collection<V> {
             @Override
             public V next() {
                 if (currentIndex >= items.length) {
-                    throw new NoSuchElementException("Коллекция закончилась!"); // лекция 13 стр.15
+                    throw new IndexOutOfBoundsException(
+                            "Коллекция закончилась!"); // лекция 13 стр.15
                 }
 
-                return items[currentIndex++].getFirst();
+                return items[currentIndex++].getFirst(); //т.к. Колллизии не рассматриваем
             }
         };
 
@@ -89,39 +92,65 @@ public class MyHashTable<V> implements Collection<V> {
     public Object[] toArray() {
         Object[] result = new Object[size()];
 
-        int i = 0;
-        Iterator<V> iterator = iterator();
+        int resultIndex = 0;
 
-        while(iterator.hasNext()){
-            result[i++] = iterator.next();
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                for (V v : items[i]) {
+                    result[resultIndex++] = v;
+                }
+            }
         }
 
         return result;
     }
 
     @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
+    public <T> T[] toArray(T[] a) {  // // T- т.к. этот нек-й класс может отличаться от V
+        if (a == null) {
+            throw new NullPointerException("a is null!");
+        }
+
+        int hashTableSize = size();
+        T[] hashTableArray = (T[]) toArray();
+
+        System.out.println(hashTableArray.getClass().getSimpleName());
+
+        if (hashTableSize > a.length) {
+            T[] newArray = Arrays.copyOf(a, hashTableSize);
+
+            int i = 0;
+
+            for (T t : hashTableArray) {
+                newArray[i++] = t;
+            }
+
+            return newArray; // возвр новый ф, но длины хэш Таблицы
+        }
+
+        System.arraycopy(hashTableArray, 0, a, 0, hashTableSize); // если равны , на этом закончится
+
+        if (hashTableSize < a.length) {
+            a[hashTableSize] = null;
+        }
+
+        return a;
     }
 
     @Override
     public boolean add(V value) {
-        int oldSize = size();
-
-        int index = Math.abs((value != null ? value.hashCode() : 0) % items.length);
-
-        try {
-            if (items[index] == null) {
-                items[index] = new LinkedList<>();
-                items[index].add(value);
-            } else {
-                items[index].add(value);
-            }
-        } catch (ArrayStoreException e) {
-            e.printStackTrace();
+        if (value == null) {
+            throw new NullPointerException("value is null!");
         }
 
-        return size() != oldSize;
+        int index = Math.abs(value.hashCode() % items.length);
+
+        if (items[index] == null) {
+            items[index] = new LinkedList<>();
+        }
+
+        return items[index].add(
+                value); // вернет true т.к. у лтсь=та нет случаев ьк он может не добавить
     }
 
     @Override
@@ -132,7 +161,7 @@ public class MyHashTable<V> implements Collection<V> {
 
         V element = (V) o;
 
-        int oIndex = Math.abs((element != null ? element.hashCode() : 0) % items.length);
+        int oIndex = Math.abs(element.hashCode() % items.length);
 
         return items[oIndex].remove(o); // чтобы не делать двойного приведения
     }
@@ -144,7 +173,7 @@ public class MyHashTable<V> implements Collection<V> {
         }
 
         for (Object o : c) {
-            if (contains(o) == false) {
+            if (!contains(o)) { // вместо contains(o) == false
                 return false;
             }
         }
@@ -158,13 +187,14 @@ public class MyHashTable<V> implements Collection<V> {
             throw new NullPointerException("c is null!");
         }
 
-        int oldSize = size();
+        boolean isHashTableChanged = false;
 
         for (V v : c) {
             add(v);
+            isHashTableChanged = true;
         }
 
-        return size() != oldSize;
+        return isHashTableChanged;
     }
 
     @Override
@@ -173,32 +203,35 @@ public class MyHashTable<V> implements Collection<V> {
             throw new NullPointerException("c is null!");
         }
 
-        int oldSize = size();
+        boolean isHashTableChanged = false;
 
         for (Object o : c) {
-            remove(o);
+            if (remove(
+                    o) == true) { // remove(o) выполнится и сразу даст ответ, куьщму см по javaDoc
+                isHashTableChanged = true;
+            }
         }
 
-        return size() != oldSize;
+        return isHashTableChanged;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        int oldSize = size();
-
         if (c == null) {
             throw new NullPointerException("c is null!");
         }
 
-        //TODO здесь надо идти по нашему итератору верно?
+        boolean isHashTableChanged = false;
 
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null) {
-                items[i].retainAll(c);
+                if (items[i].retainAll(c)) { // если retainAll вернет true
+                    isHashTableChanged = true;
+                }
             }
         }
 
-        return size() != oldSize;
+        return isHashTableChanged;
     }
 
     @Override
