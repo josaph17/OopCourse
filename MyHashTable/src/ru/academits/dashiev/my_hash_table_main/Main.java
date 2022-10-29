@@ -21,8 +21,16 @@ public class Main {
         hashTable.add(111);
         hashTable.add(421);
 
-        System.out.println(hashTable.size());
-
         showHashTable(hashTable);
+
+        System.out.println(hashTable.size());
+        System.out.println(hashTable.contains(87));
+
+        Object[] array = hashTable.toArray();
+
+        for (Object o : array) { // выводим массив
+            System.out.print(o + " ");
+        }
+        System.out.println();
     }
 }

@@ -16,7 +16,6 @@ public class MyHashTable<V> implements Collection<V> {
         items = new LinkedList[arrayCapacity];
     }
 
-
     @Override
     public int size() {
         int size = 0;
@@ -31,12 +30,24 @@ public class MyHashTable<V> implements Collection<V> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size() == 0;
     }
 
     @Override
     public boolean contains(Object o) {
-        return false;
+        if (o == null) {
+            throw new NullPointerException("0 is null.");
+        }
+
+        V element = (V) o;
+
+        int oIndex = Math.abs((element != null ? element.hashCode() : 0) % items.length);
+
+        if (items[oIndex] == null) {
+            return false;
+        }
+
+        return items[oIndex].contains(o);
     }
 
     @Override
@@ -52,7 +63,7 @@ public class MyHashTable<V> implements Collection<V> {
             @Override
             public boolean hasNext() {
                 if (size() != 0 && currentIndex <= lastNotNullElementIndex) {
-                    while (items[currentIndex]==null){
+                    while (items[currentIndex] == null) {
                         currentIndex++;
                     }
                     return true;
@@ -63,7 +74,7 @@ public class MyHashTable<V> implements Collection<V> {
 
             @Override
             public V next() {
-                if(currentIndex >= items.length){
+                if (currentIndex >= items.length) {
                     throw new NoSuchElementException("Коллекция закончилась!"); // лекция 13 стр.15
                 }
 
@@ -76,7 +87,16 @@ public class MyHashTable<V> implements Collection<V> {
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        Object[] result = new Object[size()];
+
+        int i = 0;
+        Iterator<V> iterator = iterator();
+
+        while(iterator.hasNext()){
+            result[i++] = iterator.next();
+        }
+
+        return result;
     }
 
     @Override
@@ -86,6 +106,7 @@ public class MyHashTable<V> implements Collection<V> {
 
     @Override
     public boolean add(V value) {
+        int oldSize = size();
 
         int index = Math.abs((value != null ? value.hashCode() : 0) % items.length);
 
@@ -97,41 +118,96 @@ public class MyHashTable<V> implements Collection<V> {
                 items[index].add(value);
             }
         } catch (ArrayStoreException e) {
-             e.printStackTrace();
+            e.printStackTrace();
         }
 
-        return items[index] != null;
+        return size() != oldSize;
     }
-
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        if (o == null) {
+            throw new NullPointerException("o is null!");
+        }
+
+        V element = (V) o;
+
+        int oIndex = Math.abs((element != null ? element.hashCode() : 0) % items.length);
+
+        return items[oIndex].remove(o); // чтобы не делать двойного приведения
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        if (c == null) {
+            throw new NullPointerException("c is null!");
+        }
+
+        for (Object o : c) {
+            if (contains(o) == false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
     public boolean addAll(Collection<? extends V> c) {
-        return false;
+        if (c == null) {
+            throw new NullPointerException("c is null!");
+        }
+
+        int oldSize = size();
+
+        for (V v : c) {
+            add(v);
+        }
+
+        return size() != oldSize;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        if (c == null) {
+            throw new NullPointerException("c is null!");
+        }
+
+        int oldSize = size();
+
+        for (Object o : c) {
+            remove(o);
+        }
+
+        return size() != oldSize;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        int oldSize = size();
+
+        if (c == null) {
+            throw new NullPointerException("c is null!");
+        }
+
+        //TODO здесь надо идти по нашему итератору верно?
+
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                items[i].retainAll(c);
+            }
+        }
+
+        return size() != oldSize;
     }
 
     @Override
     public void clear() {
-
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                items[i] = null;
+            }
+        }
     }
 
     private int findLastElIndex() {
