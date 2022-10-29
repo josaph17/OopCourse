@@ -114,8 +114,6 @@ public class MyHashTable<V> implements Collection<V> {
         int hashTableSize = size();
         T[] hashTableArray = (T[]) toArray();
 
-        System.out.println(hashTableArray.getClass().getSimpleName());
-
         if (hashTableSize > a.length) {
             T[] newArray = Arrays.copyOf(a, hashTableSize);
 
@@ -150,7 +148,7 @@ public class MyHashTable<V> implements Collection<V> {
         }
 
         return items[index].add(
-                value); // вернет true т.к. у лтсь=та нет случаев ьк он может не добавить
+                value); // true т.к. у односвязного списка нет случаев когда он может не добавить
     }
 
     @Override
@@ -206,8 +204,7 @@ public class MyHashTable<V> implements Collection<V> {
         boolean isHashTableChanged = false;
 
         for (Object o : c) {
-            if (remove(
-                    o) == true) { // remove(o) выполнится и сразу даст ответ, куьщму см по javaDoc
+            if (remove(o) == true) { // remove(o) выполнится и сразу даст ответ
                 isHashTableChanged = true;
             }
         }
