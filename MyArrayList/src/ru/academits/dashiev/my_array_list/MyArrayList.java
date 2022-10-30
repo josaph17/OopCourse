@@ -1,4 +1,5 @@
 package ru.academits.dashiev.my_array_list;
+// Крммент на будущее ! null - это нормальные данные для любой коллекции, для них все должно работать
 
 import java.util.*;
 
@@ -39,34 +40,34 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean isEmpty() {
-        return (size == 0);
+        return size == 01;
     }
 
     @Override
     public boolean contains(Object o) {
-        if (indexOf(o) != -1) {
-            return true;
-        }
-
-        return false;
+        return indexOf(o) != -1;
     }
 
     @Override
     public Iterator<T> iterator() {
         Iterator<T> instance = new Iterator<T>() {
-            int currentIndex = 0;
+            private int currentIndex = -1; // обязательно должен быть модификатор доступа
 
             @Override
             public boolean hasNext() {
-                if (currentIndex < size && items[currentIndex] != null)
-                    return true;
-
-                return false;
+                return currentIndex < size; /* && items[currentIndex] != null - на null нельзя
+                ориентироваться т.к. это нормально значение данных */
             }
 
             @Override
             public T next() { // возвр. текущий элемент и переходит к следующему
-                return items[currentIndex++];
+                if (currentIndex >= items.length) {
+                    throw new NoSuchElementException("Не больше элементов в ArrayList");
+                }
+
+                ++currentIndex;
+
+                return items[currentIndex];
             }
         };
 
@@ -74,42 +75,26 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public Object[] toArray() {    /* нужно создать копию и ее возвратить , т.к. если вернуть
-    оригинальный массив, то его могут поменять извне, если возвр. ориг. - то я предоставлю прямой
-    доступ к данным, инкапсуляции не будет */
-        return Arrays.copyOf(items, size);
-    }
-
-    @Override
-    public boolean add(Object o) {
-        if (o == null) {
-            throw new NullPointerException("Add element is null!!!");
-        }
-
+    public boolean add(T element) {
         if (size >= items.length) {
             increaseCapacity();
         }
 
-        items[size] = (T) o;
-
-        size++;
+        add(size, element); // чтобы не дублировать код !, size сам увеличится
 
         return true;
     }
 
     @Override
-    public boolean remove(Object o) {
-        if (o == null) {
+    public boolean remove(
+            Object o) { // метод должен удалять null-данные так же, как любые другие данные.
+        int index = indexOf(o);
+
+        if (index == -1) {
             return false;
         }
 
-        int objIndex = indexOf(o);
-
-        if (objIndex == -1) {
-            return false;
-        }
-
-        remove(objIndex);
+        remove(index);
 
         changesCount++; // увеличиваем счетчик изменений
 
@@ -137,13 +122,9 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        if (index >= size) {
-            throw new ArrayIndexOutOfBoundsException(
-                    "IndexOutOfBoundsException. List max index = " + (size - 1) + ".Current value = " + index);
-        }
-
-        if (index < 0) {
-            throw new ArrayIndexOutOfBoundsException("IndexOutOfBoundsException. index < 0");
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException(
+                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
         }
 
         if (size + items.length >= items.length) {
@@ -175,18 +156,18 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public T get(int index) { /* возвращает просто конкретный элемент, это не геттер, т.к. он не
     возвращает сам массив */
-        if (index >= size) {
-            throw new ArrayIndexOutOfBoundsException(
-                    "IndexOutOfBoundsException. List max index = " + (size - 1) + ".Current value = " + index);
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException(
+                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
         }
         return items[index];
     }
 
     @Override
     public T set(int index, T element) {
-        if (index >= size) {
-            throw new ArrayIndexOutOfBoundsException(
-                    "IndexOutOfBoundsException. List max index = " + (size - 1) + ".Current value = " + index);
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException(
+                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
         }
 
         T oldValue = items[index];
@@ -197,17 +178,11 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public void add(int index, Object element) {
-        if (index < 0 || index > size) {
+    public void add(int index, T element) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException(
-                    "IndexOutOfBoundsException. List max index = " + (size - 1) + ".Current value = " + index);
+                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
         }
-
-        if (element == null) {
-            throw new NullPointerException("Element is null!!!");
-        }
-
-        T objectElement = (T) element;
 
         if (size + 1 >= items.length) {
             increaseCapacity();
@@ -217,7 +192,7 @@ public class MyArrayList<T> implements List<T> {
             items[i + 1] = items[i];
         }
 
-        items[index] = (T) element;
+        items[index] = element;
 
         size++;
 
@@ -228,7 +203,7 @@ public class MyArrayList<T> implements List<T> {
     public T remove(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException(
-                    "IndexOutOfBoundsException. List max index = " + (size - 1) + ".Current value = " + index);
+                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
         }
 
         T deletedElement = items[index];
@@ -348,6 +323,13 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
+    public Object[] toArray() {    /* нужно создать копию и ее возвратить , т.к. если вернуть
+    оригинальный массив, то его могут поменять извне, если возвр. ориг. - то я предоставлю прямой
+    доступ к данным, инкапсуляции не будет */
+        return Arrays.copyOf(items, size);
+    }
+
+    @Override
     public <E> E[] toArray(E[] array) { // E, т.к. этот нек-й класс, который может отличаться от T
         if (array == null) {
             throw new NullPointerException("Array is null");
@@ -373,9 +355,9 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public T setItem(int index, T listItem) { // выдает старое значение элемена
-        if (index >= size) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException(
-                    "IndexOutOfBoundsException. List capacity = " + size + ".Current value = " + index);
+                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
         }
 
         if (size >= items.length) {
