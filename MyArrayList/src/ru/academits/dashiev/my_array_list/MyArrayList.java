@@ -22,16 +22,21 @@ public class MyArrayList<T> implements List<T> {
 
     public void ensureCapacity(int capacity) {
         if (items.length < capacity) {
-            @SuppressWarnings("unchecked") T[] copy = (T[]) new Object[capacity]; // обычная заглушка не ставится
-
-            items = Arrays.copyOf(items, size);
+            items = Arrays.copyOf(items, capacity);
         }
     }
 
     private void checkIndex(int index) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
+                    "List min index = 0, max index = " + size + ". Current value = " + index);
+        }
+    }
+
+    private void checkAddIndex(int index) {
+        if (index < 0 || index >= items.length) {
+            throw new IndexOutOfBoundsException(
+                    "List min index = 0, max index = " + size + ". Current value = " + index);
         }
     }
 
@@ -47,7 +52,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean isEmpty() {
-        return size == 01;
+        return size == 0;
     }
 
     @Override
@@ -62,7 +67,7 @@ public class MyArrayList<T> implements List<T> {
 
             @Override
             public boolean hasNext() {
-                return currentIndex < size-1; /* && items[currentIndex] != null - на null нельзя
+                return currentIndex < size - 1; /* && items[currentIndex] != null - на null нельзя
                 ориентироваться т.к. это нормально значение данных, size-1 чтобы не убежали! */
             }
 
@@ -110,36 +115,29 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        if (size >= items.length || items.length >= c.size()) { // т.к. size увеличивается после add
-            increaseCapacity();
-        }
-
-        int oldSize = size;
-
-        int i = 0;
-
-        for (T t : c) {
-            add(t);
-        }
-
-        changesCount += (oldSize - size); // правильно ли я увеличил счетчик изменений?
-
-        return oldSize != size;
+        return addAll(size, c); // п.26 чтобы не дублировать код
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        checkIndex(index);
+        checkAddIndex(index);
 
-        if (size + items.length >= items.length) {
-            increaseCapacity();
+        if (c.isEmpty()) { // если массив пустой
+            return false;
         }
 
         int oldSize = size;
 
+        int requiredCapacity = size + c.size(); //п.27 Массив может пересоздаваться несколько раз, и много раз будут двигаться элементы
+
+        ensureCapacity(requiredCapacity);
+
+        int i = index;
+
+        System.out.println(items.length);
+
         for (T t : c) {
-            this.add(index, t);
-            ++index;
+            set(i++, t); // вместо add п.27 чтобы не пересоздавать массив
         }
 
         changesCount += (oldSize - size); // правильно ли я увеличил счетчик изменений?
@@ -149,8 +147,14 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public void clear() {
-        //noinspection unchecked
-        items = (T[]) new Object[3]; // items = null не обязвтельно делать, заглушил
+        if (isEmpty()) {
+            return;
+        }
+
+        for (int i = 0; i < size; i++) {
+            set(i, null); /* нужно занулить ссылки на объекты, хранящиеся в массиве, чтобы сборщик
+             мусора мог очистить эти объекты если они больше нигде не используются */
+        }
 
         changesCount++; // увеличиваем счетчик изменений
 
@@ -158,8 +162,8 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public T get(int index) { /* возвращает просто конкретный элемент, это не геттер, т.к. он не
-    возвращает сам массив */
+    public T get(
+            int index) { /* возвращает просто конкретный элемент, это геттер, он выдает эл-т по индексу*/
         checkIndex(index);
 
         return items[index];
@@ -167,18 +171,18 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public T set(int index, T element) {
-        checkIndex(index);
+        checkAddIndex(index);
 
         T oldValue = items[index];
 
-        items[index] = (T) element;
+        items[index] = element;
 
         return oldValue;
     }
 
     @Override
     public void add(int index, T element) {
-        checkIndex(index);
+        checkAddIndex(index);
 
         if (size + 1 >= items.length) {
             increaseCapacity();
@@ -197,6 +201,10 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
+        if (index >= size) {
+            return null; // TODO не знаю что вернуть если напечатали индекс >= size
+        }
+
         checkIndex(index);
 
         T deletedElement = items[index];
@@ -354,7 +362,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public T setItem(int index, T listItem) { // выдает старое значение элемена
-        checkIndex(index);
+        checkAddIndex(index);
 
         if (size >= items.length) {
             increaseCapacity();

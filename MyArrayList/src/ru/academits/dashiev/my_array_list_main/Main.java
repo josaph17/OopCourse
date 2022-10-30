@@ -90,8 +90,9 @@ public class Main {
                 lastIndexElement));
 
         int removeIndexElement = 8;
-        list1.remove(removeIndexElement);
-        System.out.println("removeIndexElement(" + removeIndexElement + "), list: " + list1);
+        System.out.println(list1);
+        Double removeElement = list1.remove(removeIndexElement);
+        System.out.println("removeIndexElement(" + removeIndexElement + "), removeElement: " + removeElement);
 
         MyArrayList<Double> removeList = new MyArrayList<>();
         removeList.add(1.1);
