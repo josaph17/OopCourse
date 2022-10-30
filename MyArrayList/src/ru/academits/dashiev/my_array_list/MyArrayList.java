@@ -29,14 +29,14 @@ public class MyArrayList<T> implements List<T> {
     private void checkIndex(int index) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + size + ". Current value = " + index);
+                    "List min index = 0, max index = " + size + ". Current index = " + index);
         }
     }
 
     private void checkAddIndex(int index) {
         if (index < 0 || index >= items.length) {
             throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + size + ". Current value = " + index);
+                    "List min index = 0, max index = " + size + ". Current index = " + index);
         }
     }
 
@@ -87,12 +87,12 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public boolean add(T element) {
+    public boolean add(T item) {
         if (size >= items.length) {
             increaseCapacity();
         }
 
-        add(size, element); // чтобы не дублировать код !, size сам увеличится
+        add(size, item); // чтобы не дублировать код !, size сам увеличится
 
         return true;
     }
@@ -170,18 +170,18 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public T set(int index, T element) {
+    public T set(int index, T item) {
         checkAddIndex(index);
 
-        T oldValue = items[index];
+        T oldItem = items[index];
 
-        items[index] = element;
+        items[index] = item;
 
-        return oldValue;
+        return oldItem;
     }
 
     @Override
-    public void add(int index, T element) {
+    public void add(int index, T item) {
         checkAddIndex(index);
 
         if (size + 1 >= items.length) {
@@ -192,7 +192,7 @@ public class MyArrayList<T> implements List<T> {
             items[i + 1] = items[i];
         }
 
-        items[index] = element;
+        items[index] = item;
 
         size++;
 
@@ -207,7 +207,7 @@ public class MyArrayList<T> implements List<T> {
 
         checkIndex(index);
 
-        T deletedElement = items[index];
+        T deletedItem = items[index];
 
         System.arraycopy(items, index + 1, items, index, size - 1 - index);
 
@@ -216,19 +216,19 @@ public class MyArrayList<T> implements List<T> {
 
         changesCount++; // увеличиваем счетчик изменений
 
-        return deletedElement;
+        return deletedItem;
     }
 
     @Override
     public int indexOf(Object o) {
-        T element = (T) o;
+        T item = (T) o;
 
-        if (element == null) { // если это данные ссылочного типа
+        if (item == null) { // если это данные ссылочного типа
             return -1;
         }
 
         for (int i = 0; i < size; i++) {
-            if (items[i].equals(element)) {
+            if (items[i].equals(item)) {
                 return i;
             }
         }
@@ -238,14 +238,14 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public int lastIndexOf(Object o) {
-        T element = (T) o;
+        T item = (T) o;
 
-        if (element == null) { // если это данные ссылочного типа
+        if (item == null) { // если это данные ссылочного типа
             return -1;
         }
 
         for (int i = size - 1; i >= 0; i--) {
-            if (items[i].equals(element)) {
+            if (items[i].equals(item)) {
                 return i;
             }
         }
@@ -368,11 +368,11 @@ public class MyArrayList<T> implements List<T> {
             increaseCapacity();
         }
 
-        T oldValue = items[index];
+        T oldItem = items[index];
 
         items[index] = listItem;
 
-        return oldValue;
+        return oldItem;
     }
 
     @Override
