@@ -1,5 +1,5 @@
 package ru.academits.dashiev.my_array_list;
-// Крммент на будущее ! null - это нормальные данные для любой коллекции, для них все должно работать
+// Коммент на будущее ! null - это нормальные данные для любой коллекции, для них все должно работать
 
 import java.util.*;
 
@@ -28,6 +28,13 @@ public class MyArrayList<T> implements List<T> {
         }
     }
 
+    private void checkIndex(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException(
+                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
+        }
+    }
+
     public void trimToSize() {
         if (size < items.length) { // если нет необходимости не будем пересоздавать массив
             items = Arrays.copyOf(items, size);
@@ -45,7 +52,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean contains(Object o) {
-        return indexOf(o) != -1;
+        return indexOf(o) != -1; // вернуть резутат
     }
 
     @Override
@@ -55,8 +62,8 @@ public class MyArrayList<T> implements List<T> {
 
             @Override
             public boolean hasNext() {
-                return currentIndex < size; /* && items[currentIndex] != null - на null нельзя
-                ориентироваться т.к. это нормально значение данных */
+                return currentIndex < size-1; /* && items[currentIndex] != null - на null нельзя
+                ориентироваться т.к. это нормально значение данных, size-1 чтобы не убежали! */
             }
 
             @Override
@@ -65,7 +72,7 @@ public class MyArrayList<T> implements List<T> {
                     throw new NoSuchElementException("Не больше элементов в ArrayList");
                 }
 
-                ++currentIndex;
+                ++currentIndex; // сначало увеличиваем индекс
 
                 return items[currentIndex];
             }
@@ -122,10 +129,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
-        }
+        checkIndex(index);
 
         if (size + items.length >= items.length) {
             increaseCapacity();
@@ -156,19 +160,14 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public T get(int index) { /* возвращает просто конкретный элемент, это не геттер, т.к. он не
     возвращает сам массив */
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
-        }
+        checkIndex(index);
+
         return items[index];
     }
 
     @Override
     public T set(int index, T element) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
-        }
+        checkIndex(index);
 
         T oldValue = items[index];
 
@@ -179,10 +178,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public void add(int index, T element) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
-        }
+        checkIndex(index);
 
         if (size + 1 >= items.length) {
             increaseCapacity();
@@ -201,10 +197,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
-        }
+        checkIndex(index);
 
         T deletedElement = items[index];
 
@@ -313,8 +306,14 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean containsAll(Collection c) {
+        if (this == null) {
+            System.out.println("this is null");
+        }
+
         for (Object t : c) {
-            if (contains(t) == false) {
+            boolean result = this.contains(t);
+
+            if (result == false) {
                 return false;
             }
         }
@@ -355,10 +354,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public T setItem(int index, T listItem) { // выдает старое значение элемена
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (size - 1) + ". Current value = " + index);
-        }
+        checkIndex(index);
 
         if (size >= items.length) {
             increaseCapacity();

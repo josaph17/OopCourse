@@ -32,7 +32,9 @@ public class Main {
         list2.add(66.7);
 
         System.out.println("list1: " + list1);
+        System.out.println("list1 size = " + list1.size());
         System.out.println("list2: " + list2);
+        System.out.println("list2 size = " + list2.size());
 
         list1.addAll(list2);
         System.out.println("list1.addAll(list2), list1: " + list1);
@@ -55,6 +57,7 @@ public class Main {
         list4.add(6789.9);
         list4.add(4.0);
         list4.add(1.5654);
+        System.out.println("list1: " + list1);
         System.out.println("list4: " + list4);
         System.out.println("list1.containsAll(list4): " + list1.containsAll(list4));
 
@@ -145,5 +148,7 @@ public class Main {
         System.out.println();
 
         list1.trimToSize();
+
+        System.out.println(list6);
     }
 }
