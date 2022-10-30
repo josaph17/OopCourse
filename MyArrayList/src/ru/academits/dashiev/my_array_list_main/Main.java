@@ -101,7 +101,7 @@ public class Main {
         list1.removeAll(removeList);
         System.out.println("list1 after .removeAll(removeList): " + list1);
 
-        //TODO прошу поверить ф-ю retainAll(Collection c)
+        // TODO прошу поверить ф-ю retainAll(Collection c)
         System.out.println("-----------------------");
         MyArrayList<Double> list5 = new MyArrayList<>();
         list5.add(432.3);
