@@ -7,24 +7,21 @@ import java.util.Arrays;
 
 public class Testing {
     public static void main(String[] args) {
-        MyArrayList<Integer> list3 = new MyArrayList<>();
-        list3.add(1);
-        list3.add(3);
-        list3.add(4);
-        list3.add(3);
-        list3.add(1);
-        list3.add(45);
-        list3.add(88);
-        list3.add(4);
-        list3.add(3);
-        MyArrayList<Integer> list4 = new MyArrayList<>();
-        list4.add(4);
-        list4.add(2);
-        list4.add(3);
-        list4.add(3);
+        MyArrayList<Integer> list1 = new MyArrayList<>();
+        list1.add(1);
+        list1.add(3);
+        list1.add(4);
+        list1.add(1);
+        list1.add(7);
 
-        list3.retainAll(list4);
-        System.out.println(list3);
+        MyArrayList<Integer> list2 = new MyArrayList<>();
+        list2.add(1);
+        list2.add(5);
+
+        System.out.println(list1.removeAll(list2));
+        System.out.println(list1);
+
+//        ArrayList<Integer> list1 = new ArrayList<>();
     }
 
 }

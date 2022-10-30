@@ -184,13 +184,11 @@ public class MyArrayList<T> implements List<T> {
     public void add(int index, T item) {
         checkAddIndex(index);
 
-        if (size + 1 >= items.length) {
+        if (size + 1 > items.length) {
             increaseCapacity();
         }
 
-        for (int i = size - 1; i >= index; i--) {
-            items[i + 1] = items[i];
-        }
+        System.arraycopy(items, index, items, index + 1, size - index);
 
         items[index] = item;
 
@@ -221,14 +219,9 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public int indexOf(Object o) {
-        T item = (T) o;
-
-        if (item == null) { // если это данные ссылочного типа
-            return -1;
-        }
-
+        // TODO прошу проверить правильно ли работает на null
         for (int i = 0; i < size; i++) {
-            if (items[i].equals(item)) {
+            if (items[i].equals(o)) { // equals принмиает Object, Не нужно приведение
                 return i;
             }
         }
@@ -238,14 +231,9 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public int lastIndexOf(Object o) {
-        T item = (T) o;
-
-        if (item == null) { // если это данные ссылочного типа
-            return -1;
-        }
-
+        // 2TODO прошу проверить правильно ли работает на null
         for (int i = size - 1; i >= 0; i--) {
-            if (items[i].equals(item)) {
+            if (items[i].equals(o)) {
                 return i;
             }
         }
@@ -277,12 +265,10 @@ public class MyArrayList<T> implements List<T> {
 
         int oldSize = size;
 
-        Set<T> set = new HashSet<>(c);
-
         int i = 0;
 
         for (T t : this) {
-            if (set.contains(t)) {
+            if (c.contains(t)) {
                 items[i] = t;
                 i++; // передвигаемся по массиву
             }
@@ -290,13 +276,17 @@ public class MyArrayList<T> implements List<T> {
 
         size = i;
 
+        for (int j = size; j < oldSize; j++) {
+            items[i] = null;
+        }
+
         changesCount += (oldSize - size); // правильно ли я увеличил счетчик изменений ?
 
         return size != oldSize;
     }
 
     @Override
-    public boolean removeAll(Collection c) {
+    public boolean removeAll(Collection c) { // удаляет все вхожде
         if (c == null) {
             throw new NullPointerException("Collection is null!!!");
         }
@@ -304,7 +294,11 @@ public class MyArrayList<T> implements List<T> {
         int oldSize = size;
 
         for (Object t : c) {
-            remove(t);
+            for (int i = size-1; i >=0; i--) {
+                if (items[i].equals(t)) {
+                    remove(i);
+                }
+            }
         }
 
         changesCount += (oldSize - size); // правильно ли я увеличил счетчик изменений
@@ -358,30 +352,22 @@ public class MyArrayList<T> implements List<T> {
 
 
     public void increaseCapacity() {
-        items = Arrays.copyOf(items, items.length * 2);
-    }
+        final int defaultCapacity = 4; // константа для вместимости по умолчанию
 
-    public T setItem(int index, T listItem) { // выдает старое значение элемена
-        checkAddIndex(index);
+        if (items.length == 0) {
+            items = Arrays.copyOf(items, defaultCapacity);
 
-        if (size >= items.length) {
-            increaseCapacity();
+            return;
         }
 
-        T oldItem = items[index];
-
-        items[index] = listItem;
-
-        return oldItem;
+        items = Arrays.copyOf(items, items.length * 2);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31; // просто число
-        int hash = 1;
 
-        hash = prime * hash + Arrays.hashCode(items);
-        hash = prime * hash + size;
+        int hash = prime + Arrays.hashCode(items);
 
         return hash;
     }
@@ -392,18 +378,18 @@ public class MyArrayList<T> implements List<T> {
             return true;
         }
 
-        if (getClass() != obj.getClass() || obj == null) {
+        if (obj == null || getClass() != obj.getClass()) { // если я прохожу, то что это О. этого класса
             return false;
         }
 
-        MyArrayList o = (MyArrayList) obj;
+        MyArrayList<?> o = (MyArrayList<?>) obj; // TODO поставил вайлдкард т.к. точно не знаю тип Obj
 
         if (size != o.size) {
             return false;
         }
 
         for (int i = 0; i < size; i++) {
-            if (items[i] != o.items[i]) {
+            if (!items[i].equals(o.items[i])) { // TODO сравниваем только по equals!
                 return false;
             }
         }
