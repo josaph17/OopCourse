@@ -11,6 +11,7 @@ public class Main {
         while (newListIterator.hasNext()) {
             System.out.print(newListIterator.next() + " ");
         }
+
         System.out.println();
     }
 
@@ -79,7 +80,7 @@ public class Main {
         System.out.println("emptyList.isEmpty(): " + emptyList.isEmpty());
 
         System.out.println();
-        System.out.println("public Iterator<T> iterator(). ");
+        System.out.println("public Iterator<T> iterator().");
         System.out.print("showWithIterator(MyArrayList arrayList): ");
         showWithIterator(list1);
 
@@ -136,16 +137,20 @@ public class Main {
 
         System.out.println("list1: " + list1);
         System.out.print("array2: ");
-        Double[] array2 = new Double[]{2.43, 543.4, 43.65, 321.0, 0.0, 21.4, 7777.7};
-        for (Double aDouble : array2) {
-            System.out.print(aDouble + " ");
+        Double[] array2 = {2.43, 543.4, 43.65, 321.0, 0.0, 21.4, 7777.7};
+
+        for (Double element : array2) {
+            System.out.print(element + " ");
         }
+
         System.out.println();
         System.out.print("Double[] afterToArray = list1.toArray(array2): ");
         Double[] afterToArray = list1.toArray(array2);
-        for (Double aDouble : afterToArray) {
-            System.out.print(aDouble + " ");
+
+        for (Double element : afterToArray) {
+            System.out.print(element + " ");
         }
+
         System.out.println();
 
         list1.trimToSize();
