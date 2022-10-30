@@ -408,9 +408,11 @@ public class MyArrayList<T> implements List<T> {
         sb.append("[");
 
         for (int i = 0; i < size; i++) {
-            sb.append(items[i] + " ");
+            sb.append(items[i])
+                .append(", ");
         }
 
+        sb.deleteCharAt(sb.length() - 1);
         sb.deleteCharAt(sb.length() - 1);
 
         sb.append("]");
