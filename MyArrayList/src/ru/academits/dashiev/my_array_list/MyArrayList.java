@@ -382,7 +382,7 @@ public class MyArrayList<T> implements List<T> {
             return false;
         }
 
-        MyArrayList<?> o = (MyArrayList<?>) obj; // TODO поставил вайлдкард т.к. точно не знаю тип Obj
+        MyArrayList<?> o = (MyArrayList<?>) obj; // TODO поставил widcard т.к. точно не знаю тип Obj
 
         if (size != o.size) {
             return false;
