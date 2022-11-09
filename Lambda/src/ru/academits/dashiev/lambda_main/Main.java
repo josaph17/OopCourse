@@ -2,12 +2,12 @@ package ru.academits.dashiev.lambda_main;
 
 import ru.academits.dashiev.person.Person;
 
-import java.io.FileInputStream;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
@@ -21,17 +21,19 @@ public class Main {
         persons.add(new Person("Джон", 33));
         persons.add(new Person("Джон", 10)); // 8 человек
 
-        //TODO System.out.println("Изначальный список: ");
-        //TODO persons.forEach(x -> System.out.print(x + " "));
-        //TODO System.out.println();
-        //TODO System.out.println("--------------");
+        System.out.println("Изначальный список: ");
+        persons.forEach(x -> System.out.print(x + " "));
+        System.out.println();
+        System.out.println("--------------");
 
         // А) получить список униковльных имен
-        List<String> uniqueNamesPersonsList = persons.stream().map(x -> x.getName()).distinct().collect(
-                Collectors.toList());
+        List<String> uniqueNamesPersonsList = persons.stream()
+                .map(x -> x.getName())
+                .distinct()
+                .collect(Collectors.toList());
 
         // Б) вывести список уникальных имен
-        //TODO System.out.println("Б) Имена: " + uniqueNamesPersonsList.stream().collect(Collectors.joining(", ")));
+        System.out.println("Б) Имена: " + uniqueNamesPersonsList.stream().collect(Collectors.joining(", ")));
 
         // В) получить список людей младше 18 и посчитать для них средний возраст
         List<Person> younger18PersonsList = persons.stream()
@@ -40,13 +42,12 @@ public class Main {
 
         //TODO System.out.println("В) List людей младше 18: " + younger18PersonsList);
 
-        younger18PersonsList.stream()
-                .mapToInt(x-> x.getAge())
+        younger18PersonsList.stream().mapToInt(x -> x.getAge())
                 .average()
                 .stream()
-                .mapToInt(x->(int)x)
+                .mapToInt(x -> (int) x)
                 .findFirst()
-                .ifPresent(x->System.out.println("Средний возраст людей младше 18: " + x));
+                .ifPresent(x -> System.out.println("Средний возраст людей младше 18: " + x));
 
         // Г) при помощи группировки получить Map, в котором ключи - имена, а значения - средний возраст
 
@@ -57,29 +58,35 @@ public class Main {
                 -- прошу не считать за ошибку, создать Map, где ключ - возраст*/
 
         Map<String, Double> personsMap = persons.stream()
-               .collect(Collectors.groupingBy(p->p.getName(), Collectors.averagingInt(p->p.getAge())));
+                                                .collect(Collectors.groupingBy(p -> p.getName(), Collectors.averagingInt(p -> p.getAge())));
 
-        //TODO System.out.println("Г) peopleMap: " + personsMap);
+        System.out.println("Г) peopleMap: " + personsMap);
 
         // Д) от 20 до 45
-        String from20To45Persons =  persons.stream()
-                .filter(x-> x.getAge()>=20 && x.getAge()<=45 )
-                .sorted((p1,p2)->p2.getAge()-p1.getAge())
-                .map(x->x.getName())
-                .collect(Collectors.joining(", "));
+        String from20To45Persons = persons.stream()
+                                          .filter(x -> x.getAge() >= 20 && x.getAge() <= 45)
+                                          .sorted((p1, p2) -> p2.getAge() - p1.getAge())
+                                          .map(x -> x.getName())
+                                          .collect(Collectors.joining(", "));
 
-        //TODO System.out.println("Д) Люди от 20 до 45: " + from20To45Persons);
+        System.out.println("Д) Люди от 20 до 45: " + from20To45Persons);
 
         System.out.println("Задача 2");
 
-        int computeElements = 5;
-
-        System.out.print("Введите число для которого следует вычислить " + computeElements + " корней: ");
-
         try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print("Введите число для которого следует вычислить корни: ");
+
             double x = scanner.nextDouble();
 
-            DoubleStream squares = DoubleStream.iterate(x, Math::sqrt).map(Math::sqrt).limit(computeElements);
+            System.out.print("Введите сколько элементов надо вычислить: ");
+
+            int computeElements = scanner.nextInt();
+
+            //TODO в какой последовательности выполняется код ниже?
+            DoubleStream squares = DoubleStream.iterate(x, result->Math.sqrt(result))
+                                               .map(result->Math.sqrt(result))
+                                               .limit(computeElements);
+
             squares.forEach(System.out::println);
         }
     }
