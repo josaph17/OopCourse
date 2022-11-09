@@ -2,8 +2,11 @@ package ru.academits.dashiev.lambda_main;
 
 import ru.academits.dashiev.person.Person;
 
+import java.io.FileInputStream;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
@@ -18,24 +21,24 @@ public class Main {
         persons.add(new Person("Джон", 33));
         persons.add(new Person("Джон", 10)); // 8 человек
 
-        System.out.println("Изначальный список: ");
-        persons.forEach(x -> System.out.print(x + " "));
-        System.out.println();
-        System.out.println("--------------");
+        //TODO System.out.println("Изначальный список: ");
+        //TODO persons.forEach(x -> System.out.print(x + " "));
+        //TODO System.out.println();
+        //TODO System.out.println("--------------");
 
         // А) получить список униковльных имен
         List<String> uniqueNamesPersonsList = persons.stream().map(x -> x.getName()).distinct().collect(
                 Collectors.toList());
 
         // Б) вывести список уникальных имен
-        System.out.println("Б) Имена: " + uniqueNamesPersonsList.stream().collect(Collectors.joining(", ")));
+        //TODO System.out.println("Б) Имена: " + uniqueNamesPersonsList.stream().collect(Collectors.joining(", ")));
 
         // В) получить список людей младше 18 и посчитать для них средний возраст
         List<Person> younger18PersonsList = persons.stream()
                 .filter(x -> x.getAge() < 18)
                 .collect(Collectors.toList());
 
-        System.out.println("В) List людей младше 18: " + younger18PersonsList);
+        //TODO System.out.println("В) List людей младше 18: " + younger18PersonsList);
 
         younger18PersonsList.stream()
                 .mapToInt(x-> x.getAge())
@@ -56,7 +59,7 @@ public class Main {
         Map<String, Double> personsMap = persons.stream()
                .collect(Collectors.groupingBy(p->p.getName(), Collectors.averagingInt(p->p.getAge())));
 
-        System.out.println("Г) peopleMap: " + personsMap);
+        //TODO System.out.println("Г) peopleMap: " + personsMap);
 
         // Д) от 20 до 45
         String from20To45Persons =  persons.stream()
@@ -65,6 +68,19 @@ public class Main {
                 .map(x->x.getName())
                 .collect(Collectors.joining(", "));
 
-        System.out.println("Д) Люди от 20 до 45: " + from20To45Persons);
+        //TODO System.out.println("Д) Люди от 20 до 45: " + from20To45Persons);
+
+        System.out.println("Задача 2");
+
+        int computeElements = 5;
+
+        System.out.print("Введите число для которого следует вычислить " + computeElements + " корней: ");
+
+        try (Scanner scanner = new Scanner(System.in)) {
+            double x = scanner.nextDouble();
+
+            DoubleStream squares = DoubleStream.iterate(x, Math::sqrt).map(Math::sqrt).limit(computeElements);
+            squares.forEach(System.out::println);
+        }
     }
 }
