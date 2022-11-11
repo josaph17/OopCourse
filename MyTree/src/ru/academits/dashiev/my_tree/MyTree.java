@@ -25,7 +25,7 @@ public class MyTree<T extends Comparable> {
             return; // обязательно, чтобы код ниже не выполнялся
         }
 
-        while (true) { // что будет если значения будут повторяться
+        while (true) { // если значения будут повторяться то ветка перейдет вправо
             if (current.getData().compareTo(data) > 0) { // из лекции если x<0 18 стр.
                 if (current.getLeft() != null) {
                     current = current.getLeft();
