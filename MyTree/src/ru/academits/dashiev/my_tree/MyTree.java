@@ -26,7 +26,7 @@ public class MyTree<T extends Comparable> {
         }
 
         while (true) { // если значения будут повторяться то ветка перейдет вправо
-            if (current.getData().compareTo(data) > 0) { // из лекции если x<0 18 стр.
+            if (current.getData().compareTo(data) > 0) { // из лекции если x<узла 18 стр.
                 if (current.getLeft() != null) {
                     current = current.getLeft();
                 } else {
@@ -39,6 +39,37 @@ public class MyTree<T extends Comparable> {
                 } else {
                     current.setRight(new MyTreeNode<>(data)); // вставляем data как левого сына
                     return;
+                }
+            }
+        }
+    }
+
+    public boolean isExist (T data) {
+        // сделать current
+        MyTreeNode<T> current = new MyTreeNode<>(data);
+
+        current = root;
+
+        if (root == data) {
+            return true; // узел существует
+        }
+
+        while (true) {
+            if (current.getData().compareTo(data) == 0){
+                return true;
+            }
+
+            if (current.getData().compareTo(data) > 0) { // из лекции если x < узла 17 стр.
+                if (current.getLeft() != null) {
+                    current = current.getLeft();
+                } else {
+                    return false;
+                }
+            } else {
+                if (current.getRight() != null) {
+                    current = current.getRight();
+                } else {
+                    return false;
                 }
             }
         }

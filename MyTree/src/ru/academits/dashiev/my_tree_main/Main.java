@@ -14,6 +14,10 @@ public class Main {
         tree.add(7);
         tree.add(7);
 
+        int findingElement = 6;
+        System.out.println(
+                "Element = " + findingElement + " isExist: " + tree.isExist(findingElement));
+
         System.out.println("Hello");
     }
 }
