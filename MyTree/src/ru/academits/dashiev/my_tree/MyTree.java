@@ -25,21 +25,27 @@ public class MyTree<T extends Comparable> {
             return; // обязательно, чтобы код ниже не выполнялся
         }
 
-        if (current.getData().compareTo(data) > 0) { // из лекции если x<0 18 стр.
-            if (current.getLeft() != null) {
-                current = current.getLeft();
+        boolean isFindPlace = false;
 
-                add(data);
-            } else {
-                current.setLeft(new MyTreeNode<>(data)); // вставляем data как левого сына
-            }
-        } else {
-            if (current.getRight() != null) {
-                current = current.getRight();
+        while (!isFindPlace) {
+            if (current.getData().compareTo(data) > 0) { // из лекции если x<0 18 стр.
+                if (current.getLeft() != null) {
+                    current = current.getLeft();
 
-                add(data);
+                    // add(data);
+                } else {
+                    current.setLeft(new MyTreeNode<>(data)); // вставляем data как левого сына
+                    return;
+                }
             } else {
-                current.setRight(new MyTreeNode<>(data)); // вставляем data как левого сына
+                if (current.getRight() != null) {
+                    current = current.getRight();
+
+                    // add(data);
+                } else {
+                    current.setRight(new MyTreeNode<>(data)); // вставляем data как левого сына
+                    return;
+                }
             }
         }
     }
