@@ -10,6 +10,8 @@ public class Main {
         tree.add(10);
         tree.add(20);
         tree.add(16);
+        tree.add(9);
+        tree.add(7);
 
         System.out.println("Hello");
     }
