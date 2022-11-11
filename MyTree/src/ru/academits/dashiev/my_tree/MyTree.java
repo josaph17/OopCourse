@@ -15,28 +15,31 @@ public class MyTree<T extends Comparable> {
 
     public void add(T data) {
         // сделать current
+        MyTreeNode<T> current = new MyTreeNode<>(data);
+
+        current = root;
 
         if (root == null) {
             root = new MyTreeNode<>(data);
 
-            return; // обяхательно
+            return; // обязательно, чтобы код ниже не выполнялся
         }
 
-        if (root.getData().compareTo(data) > 0) { // из лекции если x<0 18 стр.
-            if (root.getLeft() != null) {
-                root = root.getLeft();
+        if (current.getData().compareTo(data) > 0) { // из лекции если x<0 18 стр.
+            if (current.getLeft() != null) {
+                current = current.getLeft();
 
                 add(data);
             } else {
-                root.setLeft(new MyTreeNode<>(data)); // вставляем data как левого сына
+                current.setLeft(new MyTreeNode<>(data)); // вставляем data как левого сына
             }
         } else {
-            if (root.getRight() != null) {
-                root = root.getRight();
+            if (current.getRight() != null) {
+                current = current.getRight();
 
                 add(data);
             } else {
-                root.setRight(new MyTreeNode<>(data)); // вставляем data как левого сына
+                current.setRight(new MyTreeNode<>(data)); // вставляем data как левого сына
             }
         }
     }
