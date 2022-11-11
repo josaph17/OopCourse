@@ -29,8 +29,6 @@ public class MyTree<T extends Comparable> {
             if (current.getData().compareTo(data) > 0) { // из лекции если x<0 18 стр.
                 if (current.getLeft() != null) {
                     current = current.getLeft();
-
-                    // add(data);
                 } else {
                     current.setLeft(new MyTreeNode<>(data)); // вставляем data как левого сына
                     return;
@@ -38,8 +36,6 @@ public class MyTree<T extends Comparable> {
             } else {
                 if (current.getRight() != null) {
                     current = current.getRight();
-
-                    // add(data);
                 } else {
                     current.setRight(new MyTreeNode<>(data)); // вставляем data как левого сына
                     return;
@@ -47,5 +43,4 @@ public class MyTree<T extends Comparable> {
             }
         }
     }
-
 }
