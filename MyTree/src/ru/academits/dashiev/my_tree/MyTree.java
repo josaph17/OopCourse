@@ -71,40 +71,4 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
             }
         }
     }
-
-    public boolean deleteNode(T data) {
-        if(root.getData().equals(data)){
-            // TODO случай когда надо удалить корень дерева
-        }
-
-        MyTreeNode<T> nodeToDelete = findNode(data);
-        MyTreeNode<T> nodeToDeleteParent = findNode(data);
-        MyTreeNode<T> minLeftNode = findNode(data);
-        MyTreeNode<T> minLeftNodeParent = findNode(data);
-
-
-        minLeftNode = nodeToDelete.getRight();
-
-        while (true) {
-            if (minLeftNodeParent.getRight().getData().compareTo(data) == 0) {
-                // нашли родителя и элемент который надо удалить
-                nodeToDelete = minLeftNodeParent.getRight();
-            }
-
-            // TODO сначало найдем родителя и элемент, который надо удалить
-            if (minLeftNodeParent.getRight().getData().compareTo(data) > 0) { // из лекции если x < узла 17 стр.б, идем влево
-                if (minLeftNodeParent.getRight().getLeft() != null) {
-                    minLeftNodeParent = minLeftNodeParent.getRight().getLeft();
-                } else {
-                    return null;
-                }
-            } else {
-                if (minLeftNodeParent.getRight().getRight() != null) {
-                    minLeftNodeParent.getRight() = minLeftNodeParent.getRight().getRight();
-                } else {
-                    return null;
-                }
-            }
-        }
-    }
 }

@@ -13,9 +13,10 @@ public class Main {
         tree.add(250);
         tree.add(275);
         tree.add(225);
+        tree.add(215);
         tree.add(220);
 
-        int findingElement = 7;
+        int findingElement = 225;
         System.out.println(
                 "Element = " + findingElement + " findingElement: " + tree.findNode(findingElement));
 
