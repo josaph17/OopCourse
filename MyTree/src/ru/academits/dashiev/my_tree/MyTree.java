@@ -2,11 +2,16 @@ package ru.academits.dashiev.my_tree;
 
 import ru.academits.dashiev.my_tree_node.MyTreeNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!! чтобы указ с каким типом он сравнивается
     // Если Comparable указ без типа то будет выдаваться ошибка непрверяемого типа. Компилятор не может проверить тип
     private MyTreeNode<T> root;
+    private int treeSize;
 
     public MyTree() { // создаем пустое деревофф
+        treeSize = 0;
         root = null;
     }
 
@@ -17,6 +22,8 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
     public void add(T data) {
         if (root == null) {
             root = new MyTreeNode<>(data);
+
+            treeSize++;
 
             return; // обязательно, чтобы код ниже не выполнялся
         }
@@ -31,13 +38,19 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
                     current = current.getLeft();
                 } else {
                     current.setLeft(new MyTreeNode<>(data)); // вставляем data как левого сына
+
+                    treeSize++;
+
                     return;
                 }
             } else {
                 if (current.getRight() != null) {
                     current = current.getRight();
                 } else {
-                    current.setRight(new MyTreeNode<>(data)); // вставляем data как левого сына
+                    current.setRight(new MyTreeNode<>(data)); // вставляем data как правого сына
+
+                    treeSize++;
+
                     return;
                 }
             }
@@ -45,7 +58,7 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
     }
 
     public MyTreeNode<T> findNode(T data) {
-        if (root.getData().equals(data)) { // надо сравнивать через equals, а то сравнятся ссылки
+        if (root.getData().equals(data)) { // надо сравнивать через equals, а то сравнятся
             return root; // узел существует
         }
 
@@ -69,6 +82,41 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
                     return null;
                 }
             }
+        }
+    }
+
+    public int getSize() {
+        return treeSize;
+    }
+
+    public void widthTraversal() {
+        Queue<T> queue = new LinkedList<>();
+        int queueSize = treeSize;
+
+        MyTreeNode<T> current = root;
+
+        // положить в очередь в очередь корень дерева, false если не получается вставить
+        queue.offer(current.getData());
+
+        while (queueSize > 0) { // пока очередь не пуста
+            current = findNode(
+                    queue.element()); // удаляем из очереди, null если не получится удалить
+
+            T element = queue.peek(); // достаем 1-ый элемент из очереди
+
+            System.out.print(element + " "); //  выводим его
+
+            if (current.getLeft() != null) {
+                queue.offer(current.getLeft().getData());
+            }
+
+            if (current.getRight() != null) {
+                queue.offer(current.getRight().getData());
+
+            }
+
+            queue.remove();
+            queueSize--;
         }
     }
 }
