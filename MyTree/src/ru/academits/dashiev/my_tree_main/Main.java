@@ -16,8 +16,6 @@ public class Main {
         tree.add(7);
         tree.add(13);
 
-        System.out.println(tree.getSize());
-
         tree.widthTraversal();
 
         System.out.println();

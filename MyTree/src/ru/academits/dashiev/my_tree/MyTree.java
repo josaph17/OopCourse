@@ -90,33 +90,23 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
     }
 
     public void widthTraversal() {
-        Queue<T> queue = new LinkedList<>();
-        int queueSize = treeSize;
-
-        MyTreeNode<T> current = root;
+        Queue<MyTreeNode<T>> queue = new LinkedList<>();
 
         // положить в очередь в очередь корень дерева, false если не получается вставить
-        queue.offer(current.getData());
+        queue.offer(root);
 
-        while (queueSize > 0) { // пока очередь не пуста
-            current = findNode(
-                    queue.element()); // удаляем из очереди, null если не получится удалить
+        while (!queue.isEmpty()) { // пока очередь не пуста
+            MyTreeNode<T> element = queue.poll(); // достаем 1-ый элемент из очереди и удаляем его
 
-            T element = queue.peek(); // достаем 1-ый элемент из очереди
+            System.out.print(element.getData() + " "); //  выводим его
 
-            System.out.print(element + " "); //  выводим его
-
-            if (current.getLeft() != null) {
-                queue.offer(current.getLeft().getData());
+            if (element.getLeft() != null) {
+                queue.offer(element.getLeft());
             }
 
-            if (current.getRight() != null) {
-                queue.offer(current.getRight().getData());
-
+            if (element.getRight() != null) {
+                queue.offer(element.getRight());
             }
-
-            queue.remove();
-            queueSize--;
         }
     }
 }
