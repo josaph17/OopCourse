@@ -2,6 +2,8 @@ package ru.academits.dashiev.my_tree;
 
 import ru.academits.dashiev.my_tree_node.MyTreeNode;
 
+import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -89,7 +91,7 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
         return treeSize;
     }
 
-    public void widthTraversal() {
+    public void widthBypass() {
         Queue<MyTreeNode<T>> queue = new LinkedList<>();
 
         // положить в очередь в очередь корень дерева, false если не получается вставить
@@ -101,11 +103,32 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
             System.out.print(element.getData() + " "); //  выводим его
 
             if (element.getLeft() != null) {
-                queue.offer(element.getLeft());
+                queue.offer(element.getLeft()); //добавить эл-т
             }
 
             if (element.getRight() != null) {
                 queue.offer(element.getRight());
+            }
+        }
+    }
+
+    public void deepBypass() {
+        Deque<MyTreeNode<T>> stack = new LinkedList<>();
+
+        // положить в очередь в очередь корень дерева, false если не получается вставить
+        stack.addLast(root);
+
+        while (!stack.isEmpty()) { // пока очередь не пуста
+            MyTreeNode<T> element = stack.removeLast(); // достаем последний элемент из стэка и удаляем его
+
+            System.out.print(element.getData() + " "); //  выводим его
+
+            if (element.getRight() != null) { // ложим детей в обратном порядке
+                stack.addLast(element.getRight());
+            }
+
+            if (element.getLeft() != null) {
+                stack.addLast(element.getLeft());
             }
         }
     }

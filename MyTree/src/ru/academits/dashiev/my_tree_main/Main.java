@@ -16,7 +16,9 @@ public class Main {
         tree.add(7);
         tree.add(13);
 
-        tree.widthTraversal();
+        //tree.widthBypass();
+
+        tree.deepBypass();
 
         System.out.println();
         System.out.println("Hello");
