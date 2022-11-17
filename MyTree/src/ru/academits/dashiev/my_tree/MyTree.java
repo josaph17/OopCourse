@@ -143,15 +143,12 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
             return;
         }
 
-        if (node.getLeft() != null || node.getRight()!=null) {
-            if (node.getLeft() != null ){
-                recursionDeepBypass(node.getLeft()); //  когда достигается усл-е достигания дна перех на 149
-            }
+        if (node.getLeft() != null ){
+            recursionDeepBypass(node.getLeft()); //  когда достигается усл-е достигания дна перех на 149
+        }
 
-            if (node.getRight() != null ){
-                recursionDeepBypass(node.getRight()); //  когда достигается усл-е достигания дна перех на 149
-            }
-
+        if (node.getRight() != null ){
+            recursionDeepBypass(node.getRight()); //  когда достигается усл-е достигания дна перех на 149
         }
     }
 }
