@@ -17,8 +17,8 @@ public class Main {
         tree.add(13);
 
         //tree.widthBypass();
-
-        tree.deepBypass();
+        //tree.deepBypass();
+        tree.recursionDeepVisit();
 
         System.out.println();
         System.out.println("Hello");

@@ -2,7 +2,6 @@ package ru.academits.dashiev.my_tree;
 
 import ru.academits.dashiev.my_tree_node.MyTreeNode;
 
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -130,6 +129,29 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
             if (element.getLeft() != null) {
                 stack.addLast(element.getLeft());
             }
+        }
+    }
+
+    public void recursionDeepVisit() {
+        recursionDeepBypass(root);
+    }
+
+    public void recursionDeepBypass(MyTreeNode<T> node) {
+        System.out.print(node.getData() + " ");
+
+        if (node.getLeft() == null && node.getRight()==null) { // условие выхода из выекурсии
+            return;
+        }
+
+        if (node.getLeft() != null || node.getRight()!=null) {
+            if (node.getLeft() != null ){
+                recursionDeepBypass(node.getLeft()); //  когда достигается усл-е достигания дна перех на 149
+            }
+
+            if (node.getRight() != null ){
+                recursionDeepBypass(node.getRight()); //  когда достигается усл-е достигания дна перех на 149
+            }
+
         }
     }
 }
