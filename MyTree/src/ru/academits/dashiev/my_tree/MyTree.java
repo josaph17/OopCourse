@@ -139,10 +139,6 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
     public void recursionDeepBypass(MyTreeNode<T> node) {
         System.out.print(node.getData() + " ");
 
-        if (node.getLeft() == null && node.getRight()==null) { // условие выхода из выекурсии
-            return;
-        }
-
         if (node.getLeft() != null ){
             recursionDeepBypass(node.getLeft()); //  когда достигается усл-е достигания дна перех на 149
         }
