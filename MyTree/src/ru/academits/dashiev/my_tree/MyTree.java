@@ -31,6 +31,19 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
 
         MyTreeNode<T> current = root;
 
+        if (data == null) {
+            System.out.println("catch"); ;
+
+            while(current.getLeft()!=null){
+                System.out.println("hi");
+                current = current.getLeft();
+            }
+
+            current.setLeft( new MyTreeNode<>(null));
+
+            return;
+        }
+
         while (true) { // если значения будут повторяться то ветка перейдет вправо
             if (current.getData().compareTo(
                     data) > 0) { // из лекции если x<узла 18 стр., equals можно заменить на compare,
@@ -139,12 +152,14 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
     public void recursionDeepBypass(MyTreeNode<T> node) {
         System.out.print(node.getData() + " ");
 
-        if (node.getLeft() != null ){
-            recursionDeepBypass(node.getLeft()); //  когда достигается усл-е достигания дна перех на 149
+        if (node.getLeft() != null) {
+            recursionDeepBypass(
+                    node.getLeft()); //  когда достигается усл-е достигания дна перех на 149
         }
 
-        if (node.getRight() != null ){
-            recursionDeepBypass(node.getRight()); //  когда достигается усл-е достигания дна перех на 149
+        if (node.getRight() != null) {
+            recursionDeepBypass(
+                    node.getRight()); //  когда достигается усл-е достигания дна перех на 149
         }
     }
 }
