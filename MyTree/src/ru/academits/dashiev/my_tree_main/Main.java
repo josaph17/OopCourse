@@ -23,20 +23,19 @@ public class Main {
 
         tree.add(100);
         tree.add(200);
-        tree.add(150);
         tree.add(50);
+        tree.add(150);
         tree.add(250);
         tree.add(225);
-        tree.add(215);
-        tree.add(230);
         tree.add(275);
-        tree.add(220); //10
+        tree.add(215);
+        tree.add(220); //9
 
         //tree.widthBypass();
         //tree.deepBypass();
         //tree.recursionDeepVisit();
 
-        System.out.println(tree.deleteNode(4324323));
+        System.out.println(tree.deleteNode(6464654));
 
         System.out.println("Конец !!!");
     }

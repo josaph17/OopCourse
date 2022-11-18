@@ -159,13 +159,48 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         MyTreeNode<T> minLeftNodeParent = null;
         MyTreeNode<T> minLeftNode = null;
 
+        boolean isParentFind = false;
+        boolean isLeftNodeParentNotFind = true;
+
         if (root.getData().equals(data)) { // надо сравнивать через equals, а то сравнятся
-            deletedNode = root; //TODO удаляемый элемент -корень дерева
-        }
+//            deletedNode = root; //TODO удаляемый элемент -корень дерева
+//
+//            MyTreeNode<T> maxRightNodeParent = null;
+//            MyTreeNode<T> maxRightNode = null;
+//
+//            maxRightNodeParent = deletedNode.getLeft();
+//
+//            if (maxRightNodeParent.getRight() == null) { // если справа от родителя нет ничего
+//                root = maxRightNodeParent;
+//            }
+//
+//            boolean isLRightNodeParentNotFind = true;
+//
+//            while ( isLRightNodeParentNotFind){
+//                //TODO находим правого родителя
+//                while (maxRightNodeParent.getRight().getRight()!=null){
+//                    maxRightNodeParent = maxRightNodeParent.getRight();
+//                }
+//
+//                maxRightNode = maxRightNodeParent.getRight();
+//
+//                if (maxRightNode.getLeft()!=null){ // работаем с maxRightNode
+//                    maxRightNodeParent.setRight(maxRightNode.getLeft());
+//                }
+//
+//                maxRightNode.setRight(root.getRight());
+//                maxRightNode.setLeft(root.getLeft());
+//
+//                root = maxRightNode;
+//
+//                return deletedNode.getData();
+//            }
+            return null;
+
+        } // TODO - удвление корня
 
         deletedNodeParent = root;
 
-        boolean isParentFind = false;
 
         while (!isParentFind) { // пока !isParentFind = true TODO находим deletedNode и deletedNodeParent
             if (deletedNodeParent.getLeft() != null) {
@@ -202,8 +237,6 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         // System.out.println("Parent: " + deletedNodeParent.getData());
         // System.out.println("Deleted: " + deletedNode.getData());
 
-        boolean isLeftNodeParentNotFind = true;
-
         while (isLeftNodeParentNotFind) { // TODO находим левого родителя после удал
             if (deletedNode.getRight() != null) {
                 minLeftNodeParent = deletedNode.getRight();
@@ -223,11 +256,13 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
             }
         }
 
-        if (deletedNodeParent.getRight().getData().compareTo(
-                data) == 0) { // ролдительскую ссылку указна самые левый эл-т
-            deletedNodeParent.setRight(minLeftNode);
-        } else {
-            deletedNodeParent.setLeft(minLeftNode);
+        if (deletedNodeParent != null) {
+            if (deletedNodeParent.getRight().getData().compareTo(
+                    data) == 0) { // ролдительскую ссылку указна самые левый эл-т
+                deletedNodeParent.setRight(minLeftNode);
+            } else {
+                deletedNodeParent.setLeft(minLeftNode);
+            }
         }
 
         if (deletedNode.getRight() != null) { // передаем детей удаляемого узла
