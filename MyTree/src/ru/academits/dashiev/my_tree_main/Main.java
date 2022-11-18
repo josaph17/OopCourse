@@ -36,10 +36,8 @@ public class Main {
         //tree.deepBypass();
         //tree.recursionDeepVisit();
 
-        tree.deleteNode(220);
+        System.out.println(tree.deleteNode(4324323));
 
-        System.out.println("Hello");
-
-
+        System.out.println("Конец !!!");
     }
 }

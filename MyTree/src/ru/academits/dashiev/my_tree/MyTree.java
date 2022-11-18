@@ -153,7 +153,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         }
     }
 
-    public MyTreeNode<T> deleteNode(T data) {
+    public T deleteNode(T data) {
         MyTreeNode<T> deletedNodeParent = null;
         MyTreeNode<T> deletedNode = null;
         MyTreeNode<T> minLeftNodeParent = null;
@@ -167,7 +167,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
         boolean isParentFind = false;
 
-        while (!isParentFind) { // пока !isParentFind = true
+        while (!isParentFind) { // пока !isParentFind = true TODO находим deletedNode и deletedNodeParent
             if (deletedNodeParent.getLeft() != null) {
                 if (deletedNodeParent.getLeft().getData().compareTo(data) == 0) { // угадали
                     deletedNode = deletedNodeParent.getLeft(); // нашли удаляемый элемент
@@ -197,7 +197,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
                     return null;
                 }
             }
-        }
+        } // -- TODO конец находим deletedNode и deletedNodeParent
 
         // System.out.println("Parent: " + deletedNodeParent.getData());
         // System.out.println("Deleted: " + deletedNode.getData());
@@ -239,6 +239,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
             treeSize--;
         }
-        return deletedNode;
+
+        return deletedNode.getData();
     }
 }
