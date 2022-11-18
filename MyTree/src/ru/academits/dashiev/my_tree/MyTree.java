@@ -63,34 +63,6 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         }
     }
 
-    public MyTreeNode<T> findNode(T data) {
-        if (root.getData().equals(data)) { // надо сравнивать через equals, а то сравнятся
-            return root; // узел существует
-        }
-
-        MyTreeNode<T> current = root;
-
-        while (true) {
-            if (current.getData().compareTo(data) == 0) {
-                return current;
-            }
-
-            if (current.getData().compareTo(data) > 0) { // из лекции если x < узла 17 стр.
-                if (current.getLeft() != null) {
-                    current = current.getLeft();
-                } else {
-                    return null;
-                }
-            } else {
-                if (current.getRight() != null) {
-                    current = current.getRight();
-                } else {
-                    return null;
-                }
-            }
-        }
-    }
-
     public int getSize() {
         return treeSize;
     }
@@ -151,5 +123,82 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         if (node.getRight() != null) {
             recursionDeepBypass(node.getRight());
         }
+    }
+
+    public MyTreeNode<T> findNode(T data) {
+        if (root.getData().equals(data)) { // надо сравнивать через equals, а то сравнятся
+            return root; // узел существует
+        }
+
+        MyTreeNode<T> current = root;
+
+        while (true) {
+            if (current.getData().compareTo(data) == 0) {
+                return current;
+            }
+
+            if (current.getData().compareTo(data) > 0) { // из лекции если x < узла 17 стр.
+                if (current.getLeft() != null) {
+                    current = current.getLeft();
+                } else {
+                    return null;
+                }
+            } else {
+                if (current.getRight() != null) {
+                    current = current.getRight();
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+
+    public MyTreeNode<T> deleteNode(T data) {
+        MyTreeNode<T> deletedNodeParent;
+        MyTreeNode<T> deletedNode;
+        MyTreeNode<T> minLeftNodeParent;
+        MyTreeNode<T> minLeftNode;
+
+        if (root.getData().equals(data)) { // надо сравнивать через equals, а то сравнятся
+            deletedNode = root; //! удаляемый элемент -корень дерева
+        }
+
+        deletedNodeParent = root;
+
+        boolean isFind = false;
+
+        while (!isFind) { // пока !isFind = true
+            if (deletedNodeParent.getData().compareTo(data) > 0) { // идем влево
+                if (deletedNodeParent.getLeft() != null) {
+                    deletedNodeParent = deletedNodeParent.getLeft();
+                } else {
+                    return null;
+                }
+            } else { // идем вправо
+                if (deletedNodeParent.getRight() != null) {
+                    deletedNodeParent = deletedNodeParent.getRight();
+                } else {
+                    return null;
+                }
+            }
+
+            if(deletedNodeParent.getLeft()!=null){
+                if (deletedNodeParent.getLeft().getData().compareTo(data) == 0) { // угадали
+                    deletedNode = deletedNodeParent.getLeft(); // нашли удал элемент
+                    isFind = true;
+                }
+            }
+
+            if(deletedNodeParent.getRight()!=null){
+                if (deletedNodeParent.getRight().getData().compareTo(data) == 0) {
+                    deletedNode = deletedNodeParent.getRight(); // нашли удал элемент
+                    isFind = true;
+                }
+            }
+        }
+
+        System.out.println(deletedNodeParent.getData());
+
+        return deletedNodeParent;
     }
 }
