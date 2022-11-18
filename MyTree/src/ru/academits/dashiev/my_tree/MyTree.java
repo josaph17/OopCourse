@@ -6,8 +6,9 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!! чтобы указ с каким типом он сравнивается
-    // Если Comparable указ без типа то будет выдаваться ошибка непрверяемого типа. Компилятор не может проверить тип
+public class MyTree<T extends Comparable<T>> { /* Comparable обязан быть с generic!!! чтобы указ с
+    каким типом он сравнивается. Если Comparable указ без типа то будет выдаваться ошибка
+    непроверяемого типа. Компилятор не может проверить тип */
     private MyTreeNode<T> root;
     private int treeSize;
 
@@ -21,6 +22,10 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
     }
 
     public void add(T data) {
+        if (data == null) { // в своем дереве не допускаю null
+            throw new IllegalArgumentException("data не должна быть null!");
+        }
+
         if (root == null) {
             root = new MyTreeNode<>(data);
 
@@ -30,19 +35,6 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
         }
 
         MyTreeNode<T> current = root;
-
-        if (data == null) {
-            System.out.println("catch"); ;
-
-            while(current.getLeft()!=null){
-                System.out.println("hi");
-                current = current.getLeft();
-            }
-
-            current.setLeft( new MyTreeNode<>(null));
-
-            return;
-        }
 
         while (true) { // если значения будут повторяться то ветка перейдет вправо
             if (current.getData().compareTo(
@@ -149,17 +141,15 @@ public class MyTree<T extends Comparable<T>> { // Comparable обяз generic!!!
         recursionDeepBypass(root);
     }
 
-    public void recursionDeepBypass(MyTreeNode<T> node) {
+    private void recursionDeepBypass(MyTreeNode<T> node) { // private, чтобы не вызвать извне
         System.out.print(node.getData() + " ");
 
         if (node.getLeft() != null) {
-            recursionDeepBypass(
-                    node.getLeft()); //  когда достигается усл-е достигания дна перех на 149
+            recursionDeepBypass(node.getLeft());
         }
 
         if (node.getRight() != null) {
-            recursionDeepBypass(
-                    node.getRight()); //  когда достигается усл-е достигания дна перех на 149
+            recursionDeepBypass(node.getRight());
         }
     }
 }
