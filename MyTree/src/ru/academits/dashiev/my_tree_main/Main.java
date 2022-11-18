@@ -21,21 +21,29 @@ public class Main {
         //        tree.add(275);
         //        tree.add(220);
 
-        tree.add(100);
-        tree.add(200);
-        tree.add(50);
-        tree.add(150);
-        tree.add(250);
-        tree.add(225);
-        tree.add(275);
-        tree.add(215);
-        tree.add(220); //9
+//        tree.add(100);
+//        tree.add(200);
+//        tree.add(50);
+//        tree.add(150);
+//        tree.add(250);
+//        tree.add(225);
+//        tree.add(275);
+//        tree.add(215);
+//        tree.add(220); //9
+        tree.add(5);
+        tree.add(2);
+        tree.add(1);
+        tree.add(10);
+        tree.add(7);
+        tree.add(15);
+        tree.add(20);
+        tree.add(14);
 
         //tree.widthBypass();
         //tree.deepBypass();
         //tree.recursionDeepVisit();
 
-        System.out.println(tree.deleteNode(6464654));
+        System.out.println(tree.deleteNode(10));
 
         System.out.println("Конец !!!");
     }

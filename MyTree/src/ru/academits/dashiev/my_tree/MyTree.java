@@ -237,26 +237,31 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         // System.out.println("Parent: " + deletedNodeParent.getData());
         // System.out.println("Deleted: " + deletedNode.getData());
 
-        while (isLeftNodeParentNotFind) { // TODO находим левого родителя после удал
-            if (deletedNode.getRight() != null) {
-                minLeftNodeParent = deletedNode.getRight();
+        if (deletedNode.getRight() != null) { // TODO находим родителя самого левого потомка из правого узла
+            minLeftNodeParent = deletedNode.getRight();
 
-                while (minLeftNodeParent.getLeft().getLeft() != null) {
-                    minLeftNodeParent = minLeftNodeParent.getLeft();
-                    minLeftNode = minLeftNodeParent.getLeft(); // здесь инициализация
-
-                    if (minLeftNode.getRight() != null) { // если есть правый ребенок
-                        minLeftNodeParent.setLeft(
-                                minLeftNode.getRight()); // правого ребенка передали левому родителю
-                    }
+            if (minLeftNodeParent.getLeft()==null){
+                if (deletedNode.getLeft()!=null){
+                    minLeftNodeParent.setLeft(deletedNode.getLeft());
                 }
-                isLeftNodeParentNotFind = false;
-            } else {
-                break;
-            }
-        }
 
-        if (deletedNodeParent != null) {
+                deletedNodeParent.setRight(minLeftNodeParent); // обмен noteToDelete с minLeft Node
+
+                return  deletedNode.getData();
+            }
+
+            while (minLeftNodeParent.getLeft().getLeft() != null) {
+                minLeftNodeParent = minLeftNodeParent.getLeft();
+                minLeftNode = minLeftNodeParent.getLeft(); // здесь инициализация
+
+                if (minLeftNode.getRight() != null) { // если есть правый ребенок
+                    minLeftNodeParent.setLeft(
+                            minLeftNode.getRight()); // правого ребенка передали левому родителю
+                }
+            }
+        } // TODO -- КОНЕЦ находим родителя самого левого потомка из правого узла
+
+        if (deletedNodeParent != null) { // странное условие
             if (deletedNodeParent.getRight().getData().compareTo(
                     data) == 0) { // ролдительскую ссылку указна самые левый эл-т
                 deletedNodeParent.setRight(minLeftNode);
