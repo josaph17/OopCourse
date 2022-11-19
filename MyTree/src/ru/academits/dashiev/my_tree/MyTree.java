@@ -153,101 +153,77 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         }
     }
 
-    public T deleteNode(T data) {
-        MyTreeNode<T> deletedNodeParent = null;
-        MyTreeNode<T> deletedNode = null;
-        MyTreeNode<T> minLeftNodeParent = null;
-        MyTreeNode<T> minLeftNode = null;
+    private MyTreeNode<T> findNodeToDeleteParent(T data) {
+        MyTreeNode<T> nodeToDeleteParent = root;
 
-        boolean isParentFind = false;
-        boolean isLeftNodeParentNotFind = true;
-
-        if (root.getData().equals(data)) { // надо сравнивать через equals, а то сравнятся
-//            deletedNode = root; //TODO удаляемый элемент -корень дерева
-//
-//            MyTreeNode<T> maxRightNodeParent = null;
-//            MyTreeNode<T> maxRightNode = null;
-//
-//            maxRightNodeParent = deletedNode.getLeft();
-//
-//            if (maxRightNodeParent.getRight() == null) { // если справа от родителя нет ничего
-//                root = maxRightNodeParent;
-//            }
-//
-//            boolean isLRightNodeParentNotFind = true;
-//
-//            while ( isLRightNodeParentNotFind){
-//                //TODO находим правого родителя
-//                while (maxRightNodeParent.getRight().getRight()!=null){
-//                    maxRightNodeParent = maxRightNodeParent.getRight();
-//                }
-//
-//                maxRightNode = maxRightNodeParent.getRight();
-//
-//                if (maxRightNode.getLeft()!=null){ // работаем с maxRightNode
-//                    maxRightNodeParent.setRight(maxRightNode.getLeft());
-//                }
-//
-//                maxRightNode.setRight(root.getRight());
-//                maxRightNode.setLeft(root.getLeft());
-//
-//                root = maxRightNode;
-//
-//                return deletedNode.getData();
-//            }
-            return null;
-
-        } // TODO - удвление корня
-
-        deletedNodeParent = root;
-
-
-        while (!isParentFind) { // пока !isParentFind = true TODO находим deletedNode и deletedNodeParent
-            if (deletedNodeParent.getLeft() != null) {
-                if (deletedNodeParent.getLeft().getData().compareTo(data) == 0) { // угадали
-                    deletedNode = deletedNodeParent.getLeft(); // нашли удаляемый элемент
-                    isParentFind = true;
+        while (true) { // TODO находим deletedNode и deletedNodeParent
+            if (nodeToDeleteParent.getLeft() != null) {
+                if (nodeToDeleteParent.getLeft().getData().compareTo(data) == 0) {
                     break;
                 }
             }
 
-            if (deletedNodeParent.getRight() != null) {
-                if (deletedNodeParent.getRight().getData().compareTo(data) == 0) {
-                    deletedNode = deletedNodeParent.getRight(); // нашли удаляемый элемент
-                    isParentFind = true;
+            if (nodeToDeleteParent.getRight() != null) {
+                if (nodeToDeleteParent.getRight().getData().compareTo(data) == 0) {
                     break;
                 }
             }
 
-            if (deletedNodeParent.getData().compareTo(data) > 0) { // идем влево
-                if (deletedNodeParent.getLeft() != null) {
-                    deletedNodeParent = deletedNodeParent.getLeft();
+            if (nodeToDeleteParent.getData().compareTo(data) > 0) { // идем влево
+                if (nodeToDeleteParent.getLeft() != null) {
+                    nodeToDeleteParent = nodeToDeleteParent.getLeft();
                 } else {
                     return null;
                 }
             } else { // идем вправо
-                if (deletedNodeParent.getRight() != null) {
-                    deletedNodeParent = deletedNodeParent.getRight();
+                if (nodeToDeleteParent.getRight() != null) {
+                    nodeToDeleteParent = nodeToDeleteParent.getRight();
                 } else {
                     return null;
                 }
             }
-        } // -- TODO конец находим deletedNode и deletedNodeParent
+        }
 
-        // System.out.println("Parent: " + deletedNodeParent.getData());
-        // System.out.println("Deleted: " + deletedNode.getData());
+        return nodeToDeleteParent;
+    }
+
+    private MyTreeNode<T> findNodeNodeToDelete(MyTreeNode<T> nodeToDeleteParent, T data) {
+        if (nodeToDeleteParent.getRight() != null && nodeToDeleteParent.getRight().getData().compareTo(
+                data) == 0) {
+            return nodeToDeleteParent.getRight();
+        } else {
+            return nodeToDeleteParent.getLeft();
+        }
+    }
+
+
+    public T deleteNode(T data) {
+        MyTreeNode<T> minLeftNodeParent = null;
+        MyTreeNode<T> minLeftNode = null;
+
+
+        if (root.getData().equals(data)) { // надо сравнивать через equals, а то сравнятся
+            //            deletedNode = root; //TODO удаляемый элемент -корень дерева
+            return null;
+
+        } // TODO - удвление корня = root;
+
+
+        MyTreeNode<T> deletedNodeParent = findNodeToDeleteParent(data); // находим deletedNodeParent
+        MyTreeNode<T> deletedNode = findNodeNodeToDelete(deletedNodeParent,
+                                                         data); // находим deletedNode
 
         if (deletedNode.getRight() != null) { // TODO находим родителя самого левого потомка из правого узла
             minLeftNodeParent = deletedNode.getRight();
 
-            if (minLeftNodeParent.getLeft()==null){
-                if (deletedNode.getLeft()!=null){
+            if (minLeftNodeParent.getLeft() == null) {
+                if (deletedNode.getLeft() != null) {
                     minLeftNodeParent.setLeft(deletedNode.getLeft());
                 }
 
                 deletedNodeParent.setRight(minLeftNodeParent); // обмен noteToDelete с minLeft Node
 
-                return  deletedNode.getData();
+                return deletedNode.getData();
             }
 
             while (minLeftNodeParent.getLeft().getLeft() != null) {
