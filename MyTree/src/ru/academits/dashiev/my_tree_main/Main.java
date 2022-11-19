@@ -43,7 +43,11 @@ public class Main {
         //tree.deepBypass();
         //tree.recursionDeepVisit();
 
+        //tree.printTree();
+
         System.out.println(tree.deleteNode(10));
+
+        tree.printTree();
 
         System.out.println("Конец !!!");
     }

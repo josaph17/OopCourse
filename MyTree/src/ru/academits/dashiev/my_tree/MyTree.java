@@ -280,24 +280,85 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         minLastNodeParent = findMinLastNodeParent(deletedNode, data);
         minLastNode = findMinLastNode(minLastNodeParent, data);
 
-        if (deletedNodeParent.getRight().getData().compareTo(
-                data) == 0) { // ролдительскую ссылку указна самые левый эл-т
+        if (deletedNodeParent.getRight().getData().compareTo(data) == 0) {
             deletedNodeParent.setRight(minLastNode);
         } else {
             deletedNodeParent.setLeft(minLastNode);
         }
 
-        if (deletedNode.getRight() != null) { // передаем детей удаляемого узла
-            minLastNode.setRight(deletedNode.getRight());
+        if (root.getData().compareTo(data) > 0) { // TODO отвязываем minLastNode
+            // идем влево от корня
+            if (minLastNode.getLeft() != null) {
+                minLastNodeParent.setRight(minLastNode.getLeft());
+            } else {
+                minLastNodeParent.setRight(null);
+            }
+        } else {
+            // идем вправо от корня
+            if (minLastNode.getRight() != null) {
+                minLastNodeParent.setLeft(minLastNode.getLeft());
+            } else {
+                minLastNodeParent.setLeft(null);
+            }
         }
 
-        if ((deletedNode.getLeft() != null)) { // передаем детей удаляемого узла
+        if (root.getData().compareTo(data) > 0) { // TODO привязываем deletedNodeParent к minLastNode
+            deletedNodeParent.setLeft(minLastNode);
+        } else {
+            deletedNodeParent.setRight(minLastNode);
+        }
+
+        if(deletedNode.getLeft()!=null){ // TODO привязываем детей deletedNode 1
             minLastNode.setLeft(deletedNode.getLeft());
+        }
+
+        if(deletedNode.getRight()!=null){ // TODO привязываем детей deletedNode 2
+            minLastNode.setRight(deletedNode.getRight());
         }
 
         treeSize--;
 
 
         return deletedNode.getData();
+    }
+
+    public void printTree() {
+        Deque<MyTreeNode<T>> globalStack = new LinkedList<>();
+
+        globalStack.addLast(root);
+        int gaps = 32; // начальное значение расстояния между элементами
+        boolean isRowEmpty = false;
+        String separator = "-----------------------------------------------------------------";
+        System.out.println(separator);// черта для указания начала нового дерева
+        while (isRowEmpty == false) {
+            Deque<MyTreeNode<T>> localStack = new LinkedList<>();
+            isRowEmpty = true;
+
+            for (int j = 0; j < gaps; j++)
+                System.out.print(' ');
+            while (globalStack.isEmpty() == false) { // покуда в общем стеке есть элементы
+                MyTreeNode<T> temp = (MyTreeNode<T>) globalStack.pop(); // берем следующий, при этом удаляя его из стека
+                if (temp != null) {
+                    System.out.print(temp.getData()); // выводим его значение в консоли
+                    localStack.addLast(
+                            temp.getLeft()); // соохраняем в локальный стек, наследники текущего элемента
+                    localStack.addLast(temp.getRight());
+                    if (temp.getLeft() != null || temp.getRight() != null)
+                        isRowEmpty = false;
+                } else {
+                    System.out.print("__");// - если элемент пустой
+                    localStack.addLast(null);
+                    localStack.addLast(null);
+                }
+                for (int j = 0; j < gaps * 2 - 2; j++)
+                    System.out.print(' ');
+            }
+            System.out.println();
+            gaps /= 2;// при переходе на следующий уровень расстояние между элементами каждый раз уменьшается
+            while (localStack.isEmpty() == false)
+                globalStack.push(
+                        localStack.removeLast()); // перемещаем все элементы из локального стека в глобальный
+        }
+        System.out.println(separator);// подводим черту
     }
 }
