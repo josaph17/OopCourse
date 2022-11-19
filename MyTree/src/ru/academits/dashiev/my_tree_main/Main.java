@@ -54,11 +54,15 @@ public class Main {
         //System.out.println("Конец !!!");
 
         MyTree<Integer> tree2 = new MyTree<>();
-        tree2.add(3);
-        tree2.add(4);
-        tree2.add(5);
+        tree2.add(2);
+        tree2.add(6);
+        tree2.add(7);
+        tree2.add(15);
+        tree2.add(14);
+        tree2.add(13);
+        tree2.add(11);
         tree2.printTree();
-        System.out.println("Delete " + tree2.deleteNode(4));
+        System.out.println("Delete " + tree2.deleteNode(15));
         tree2.printTree();
     }
 }
