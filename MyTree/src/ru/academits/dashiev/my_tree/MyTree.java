@@ -277,29 +277,26 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         MyTreeNode<T> deletedNodeParent = findNodeToDeleteParent(data); // находим deletedNodeParent
         MyTreeNode<T> deletedNode = findNodeToDelete(deletedNodeParent,
                                                      data); // находим deletedNode
-
         minLastNodeParent = findMinLastNodeParent(deletedNode, data);
-
         minLastNode = findMinLastNode(minLastNodeParent, data);
 
-        if (deletedNodeParent != null) { // странное условие
-            if (deletedNodeParent.getRight().getData().compareTo(
-                    data) == 0) { // ролдительскую ссылку указна самые левый эл-т
-                deletedNodeParent.setRight(minLastNode);
-            } else {
-                deletedNodeParent.setLeft(minLastNode);
-            }
+        if (deletedNodeParent.getRight().getData().compareTo(
+                data) == 0) { // ролдительскую ссылку указна самые левый эл-т
+            deletedNodeParent.setRight(minLastNode);
+        } else {
+            deletedNodeParent.setLeft(minLastNode);
         }
 
         if (deletedNode.getRight() != null) { // передаем детей удаляемого узла
             minLastNode.setRight(deletedNode.getRight());
-
-            treeSize--;
-        } else if ((deletedNode.getLeft() != null)) {
-            minLastNode.setLeft(deletedNode.getLeft());
-
-            treeSize--;
         }
+
+        if ((deletedNode.getLeft() != null)) { // передаем детей удаляемого узла
+            minLastNode.setLeft(deletedNode.getLeft());
+        }
+
+        treeSize--;
+
 
         return deletedNode.getData();
     }
