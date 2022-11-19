@@ -200,35 +200,29 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
     private MyTreeNode<T> findMinLastNodeParent(MyTreeNode<T> nodeToDelete, T data) {
         MyTreeNode<T> minLeftNodeParent = null;
         MyTreeNode<T> minRightNodeParent = null;
-
-        if (nodeToDelete.getLeft() == null && nodeToDelete.getRight() == null) {
-            return null;
-        }
+        MyTreeNode<T> stop = null;
 
         if (root.getData().compareTo(data) > 0) {
             // TODO идем влево от корня. У левого потомка самый правый ребенок
-            if (nodeToDelete.getLeft() == null) {
-                return null; // нету родитетя самого левого потомка
-            }
-
             minRightNodeParent = nodeToDelete.getLeft();
+
+            stop = minLeftNodeParent.getRight();
 
             while (minRightNodeParent.getRight() != null) {
                 minRightNodeParent = minRightNodeParent.getRight();
+                stop = minRightNodeParent.getRight();
             }
 
             return minRightNodeParent;
-
         } else {
             // TODO идем вправо от корня. У правого потомка самый левый ребенок
-            if (nodeToDelete.getRight() == null) {
-                return null; // нету родитетя самого левого потомка
-            }
-
             minLeftNodeParent = nodeToDelete.getRight(); // ВНимание! правый потомок
 
-            while (minLeftNodeParent.getLeft() != null) {
+            stop = minLeftNodeParent.getLeft();
+
+            while (stop.getLeft() != null) {
                 minLeftNodeParent = minLeftNodeParent.getLeft();
+                stop = minLeftNodeParent.getLeft();
             }
 
             return minLeftNodeParent;
@@ -236,16 +230,8 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
     }
 
     private MyTreeNode<T> findMinLastNode(MyTreeNode<T> minLastNodeParent, T data) {
-        if (minLastNodeParent == null) {
-            return null;
-        }
-
         MyTreeNode<T> minLeftNode = null;
         MyTreeNode<T> minRightNode = null;
-
-        if (minLastNodeParent.getRight() == null && minLastNodeParent.getLeft() == null) {
-            return minLastNodeParent;
-        }
 
         if (root.getData().compareTo(data) > 0) {
             // TODO идем влево от корня .
@@ -273,15 +259,6 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
     private void unlinkMinLastNode(MyTreeNode<T> minLastNodeParent, MyTreeNode<T> minLastNode,
                                    T data) {
-        if (minLastNodeParent == null && minLastNode == null) {
-            return;
-        }
-
-        if (minLastNodeParent.getData().compareTo(
-                minLastNode.getData()) == 0) { // не надо ничего отвязывать
-            return;
-        }
-
         if (root.getData().compareTo(data) > 0) { // отвязываем minLastNode
             // идем влево от корня
             if (minLastNode.getLeft() != null) {
@@ -292,7 +269,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         } else {
             // идем вправо от корня
             if (minLastNode.getRight() != null) {
-                minLastNodeParent.setLeft(minLastNode.getLeft());
+                minLastNodeParent.setLeft(minLastNode.getRight());
             } else {
                 minLastNodeParent.setLeft(null);
             }
@@ -301,14 +278,6 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
     private void linkNodeToDeleteChild(MyTreeNode<T> nodeToDelete, MyTreeNode<T> minLastNodeParent,
                                        MyTreeNode<T> minLastNode) {
-        if (minLastNodeParent == null && minLastNode == null) {
-            return;
-        }
-
-        if (minLastNodeParent.getData().compareTo(minLastNode.getData()) == 0) {
-            return;
-        }
-
         if (nodeToDelete.getLeft() != null) { // привязываем детей deletedNode 1 к minLastNode
             minLastNode.setLeft(nodeToDelete.getLeft());
         }
@@ -356,8 +325,8 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         // TODO 2. Удаление узла - c одним ребенком
         if (noteToDelete.getLeft() == null || noteToDelete.getRight() == null) { // 2. Удаление узла - c одним ребенком
             if ((noteToDeleteParent.getRight() != null && noteToDeleteParent.getRight().getData().compareTo(
-                    noteToDelete.getData()) == 0)){ // удаляемый элемент не null и он точно справа
-                if(noteToDelete.getRight()!=null){
+                    noteToDelete.getData()) == 0)) { // удаляемый элемент не null и он точно справа
+                if (noteToDelete.getRight() != null) {
                     noteToDeleteParent.setRight(noteToDelete.getRight());
 
                     treeSize--;
@@ -371,7 +340,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
                     return noteToDelete.getData();
                 }
             } else { // удаляемый элемент не null и он точно слева
-                if(noteToDelete.getRight()!=null){
+                if (noteToDelete.getRight() != null) {
                     noteToDeleteParent.setLeft(noteToDelete.getRight());
 
                     treeSize--;
