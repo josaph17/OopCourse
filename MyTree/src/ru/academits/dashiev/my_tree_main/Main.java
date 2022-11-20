@@ -44,5 +44,29 @@ public class Main {
         //        tree2.printTree();
         //        System.out.println("Delete " + tree2.deleteNode(15));
         //        tree2.printTree();
+        System.out.println("Tree 3");
+
+        //fixme не все случаи удаления корня рассмотрены
+        deleteAndPrint(new MyTree<>(2, 6, 1, 4 ,3), 2);
+        deleteAndPrint(new MyTree<>(5, 10, 0, 9 ,8, 7, 6), 5);
+        deleteAndPrint(new MyTree<>(5, 10, 0, 9 ,8, 6, 7), 5);
+        deleteAndPrint(new MyTree<>(5, 10, 0, 8 ,7, 6), 5);
+        deleteAndPrint(new MyTree<>(5, 10, 0, 50 ,100), 5);
+        deleteAndPrint(new MyTree<>(10, 5, 3, 8, 1, 4), 5);
+
+//        deleteAndPrint(new MyTree<>(10.0), 5.0);
+
+
+    }
+
+    private static <C extends Comparable<C>> void deleteAndPrint(MyTree<C> tree, C deletable) {
+        System.out.println("New tree");
+        tree.printTree();
+        try {
+            System.out.println("Delete " + tree.deleteNode(deletable));
+            tree.printTree();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

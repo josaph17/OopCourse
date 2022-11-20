@@ -2,6 +2,7 @@ package ru.academits.dashiev.my_tree;
 
 import ru.academits.dashiev.my_tree_node.MyTreeNode;
 
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -19,6 +20,13 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
     public MyTree(MyTreeNode<T> root) {
         this.root = root;
+    }
+
+    public MyTree(T... elements) {
+        this();
+        for (T element : elements) {
+            this.add(element);
+        }
     }
 
     public void add(T data) {
@@ -228,7 +236,8 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
             stop = minLeftNodeParent.getRight();
 
-            while (minRightNodeParent.getRight() != null) {
+            //todo посмотреть stop
+            while (stop.getRight() != null) {
                 minRightNodeParent = minRightNodeParent.getRight();
                 stop = minRightNodeParent.getRight();
             }
