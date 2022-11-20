@@ -6,18 +6,28 @@ public class Main {
     public static void main(String[] args) {
         MyTree<Integer> tree = new MyTree<>();
 
-        tree.add(100);
+        //        tree.add(100);
+        //        tree.add(200);
+        //        tree.add(50);
+        //        tree.add(150);
+        //        tree.add(250);
+        //        tree.add(225);
+        //        tree.add(275);
+        //        tree.add(215);
+        //        tree.add(220); //9
+
         tree.add(200);
-        tree.add(50);
-        tree.add(150);
+        tree.add(100);
         tree.add(250);
         tree.add(225);
-        tree.add(275);
-        tree.add(215);
-        tree.add(220); //9
+        tree.add(210);
+        tree.add(205);
+        tree.add(206);
+        tree.add(270);
+
         tree.printTree();
 
-        System.out.println("Delete " + tree.deleteNode(200));
+        System.out.println("Delete " + tree.deleteNode(250));
         //          TODO NPE
         tree.printTree();
 

@@ -278,11 +278,11 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
     private void linkNodeToDeleteChild(MyTreeNode<T> nodeToDelete, MyTreeNode<T> minLastNodeParent,
                                        MyTreeNode<T> minLastNode) {
-        if (nodeToDelete.getLeft() != null) { // привязываем детей deletedNode 1 к minLastNode
+        if (nodeToDelete.getLeft() != null) { // привязываем  левого ребенка deletedNode к minLastNode
             minLastNode.setLeft(nodeToDelete.getLeft());
         }
 
-        if (nodeToDelete.getRight() != null) { // привязываем детей deletedNode 2 к minLastNode
+        if (nodeToDelete.getRight() != null) { // привязываем правого ребенка deletedNode к minLastNode
             minLastNode.setRight(nodeToDelete.getRight());
         }
     }
@@ -290,27 +290,89 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
     public T deleteNode(T data) {
         MyTreeNode<T> minLastNodeParent = null;
         MyTreeNode<T> minLastNode = null;
+        MyTreeNode<T> noteToDeleteParent = null;
+        MyTreeNode<T> nodeToDelete = null;
 
-        if (root.getData().equals(data)) { // надо сравнивать через equals, а то сравнятся сылки
-            //            deletedNode = root; //удаляемый элемент -корень дерева
-            return null;
+        if (root.getData().equals(data)) {
+            /* удаляемый элемент -корень дерева надо сравнивать через equals, а то сравнятся сылки */
+            nodeToDelete = root;
+
+            if (root.getLeft() == null && root.getRight() == null) { // у корня нет детей
+                root = null;
+
+                treeSize--;
+
+                return nodeToDelete.getData();
+            }
+
+            if (root.getLeft() == null) { // у корня есть 1 правый ребенок
+                root = root.getRight();
+
+                treeSize--;
+
+                return nodeToDelete.getData();
+            }
+
+            if (root.getRight() == null) { // у корня есть 1 левый ребенок
+                root = root.getLeft();
+
+                treeSize--;
+
+                return nodeToDelete.getData();
+            }
+
+            minLastNodeParent = nodeToDelete.getRight(); // находим minLastNodeParent
+
+            if (minLastNodeParent.getLeft() == null) { // когда minLastNode == minLastNodeParent;
+                minLastNode = minLastNodeParent;
+
+                minLastNode.setLeft(nodeToDelete.getLeft());
+
+                root = minLastNode;
+
+                treeSize--;
+
+                return nodeToDelete.getData();
+            }
+
+            MyTreeNode<T> stop = minLastNodeParent.getLeft();
+
+            while (stop.getLeft() != null) {
+                minLastNodeParent = stop.getLeft();
+                stop = minLastNodeParent.getLeft();
+            } // -- нашли minLastNodeParent
+
+            minLastNode = minLastNodeParent.getLeft();
+
+            if (minLastNode.getRight() != null) { // отвязываем Last Node, если у LastNode нет ребенка
+                minLastNodeParent.setLeft(minLastNode.getRight());
+            } else {
+                minLastNodeParent.setLeft(null);
+            }
+
+            root = minLastNode; // корень и есть minLAstNode
+
+            root.setLeft(nodeToDelete.getLeft()); // привязываем левого ребенка к root
+            root.setRight(nodeToDelete.getRight()); // привязываем левого ребенка к root
+
+            treeSize--;
+
+            return nodeToDelete.getData();
 
         } // TODO - удвление корня = root;
 
-
-        MyTreeNode<T> noteToDeleteParent = findNodeToDeleteParent(data);
+        noteToDeleteParent = findNodeToDeleteParent(data);
         if (noteToDeleteParent == null) {
             return null; // 0. Нет элемента в дереве
         }
         // находим deletedNodeParent
 
-        MyTreeNode<T> noteToDelete = findNodeToDelete(noteToDeleteParent,
-                                                      data); // находим deletedNode
+        nodeToDelete = findNodeToDelete(noteToDeleteParent, data); // находим deletedNode
 
         //  TODO 1. Удаляемый узел - лист
-        if (noteToDelete.getLeft() == null && noteToDelete.getRight() == null) {
+        if (nodeToDelete.getLeft() == null && nodeToDelete.getRight() == null) {
             if (noteToDeleteParent.getRight() != null && noteToDeleteParent.getRight().getData().compareTo(
-                    noteToDelete.getData()) == 0) {
+                    nodeToDelete.getData()) == 0) {
                 noteToDeleteParent.setRight(null);
             } else {
                 noteToDeleteParent.setLeft(null);
@@ -319,45 +381,45 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
             treeSize--;
 
-            return noteToDelete.getData(); // 1. Удаляемый узел - лист
+            return nodeToDelete.getData(); // 1. Удаляемый узел - лист
         }
 
         // TODO 2. Удаление узла - c одним ребенком
-        if (noteToDelete.getLeft() == null || noteToDelete.getRight() == null) { // 2. Удаление узла - c одним ребенком
+        if (nodeToDelete.getLeft() == null || nodeToDelete.getRight() == null) { // 2. Удаление узла - c одним ребенком
             if ((noteToDeleteParent.getRight() != null && noteToDeleteParent.getRight().getData().compareTo(
-                    noteToDelete.getData()) == 0)) { // удаляемый элемент не null и он точно справа
-                if (noteToDelete.getRight() != null) {
-                    noteToDeleteParent.setRight(noteToDelete.getRight());
+                    nodeToDelete.getData()) == 0)) { // удаляемый элемент не null и он точно справа
+                if (nodeToDelete.getRight() != null) {
+                    noteToDeleteParent.setRight(nodeToDelete.getRight());
 
                     treeSize--;
 
-                    return noteToDelete.getData();
+                    return nodeToDelete.getData();
                 } else {
-                    noteToDeleteParent.setRight(noteToDelete.getLeft());
+                    noteToDeleteParent.setRight(nodeToDelete.getLeft());
 
                     treeSize--;
 
-                    return noteToDelete.getData();
+                    return nodeToDelete.getData();
                 }
             } else { // удаляемый элемент не null и он точно слева
-                if (noteToDelete.getRight() != null) {
-                    noteToDeleteParent.setLeft(noteToDelete.getRight());
+                if (nodeToDelete.getRight() != null) {
+                    noteToDeleteParent.setLeft(nodeToDelete.getRight());
 
                     treeSize--;
 
-                    return noteToDelete.getData();
+                    return nodeToDelete.getData();
                 } else {
-                    noteToDeleteParent.setLeft(noteToDelete.getLeft());
+                    noteToDeleteParent.setLeft(nodeToDelete.getLeft());
 
                     treeSize--;
 
-                    return noteToDelete.getData();
+                    return nodeToDelete.getData();
                 }
             }
         }
 
         // TODO 3. Удаление узла - c двумя детьми
-        minLastNodeParent = findMinLastNodeParent(noteToDelete, data);
+        minLastNodeParent = findMinLastNodeParent(nodeToDelete, data);
 
         minLastNode = findMinLastNode(minLastNodeParent, data);
 
@@ -370,12 +432,12 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
             noteToDeleteParent.setRight(minLastNode);
         }
 
-        linkNodeToDeleteChild(noteToDelete, minLastNodeParent, minLastNode);
+        linkNodeToDeleteChild(nodeToDelete, minLastNodeParent, minLastNode);
 
         treeSize--;
 
 
-        return noteToDelete.getData();
+        return nodeToDelete.getData();
     }
 
     public void printTree() {
