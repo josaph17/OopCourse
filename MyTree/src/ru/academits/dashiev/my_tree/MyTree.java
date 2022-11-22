@@ -381,14 +381,12 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
                 return nodeToDelete.getData();
             }
 
-            MyTreeNode<T> stop = minLastNodeParent.getLeft();
-
-            while (stop.getLeft() != null) {
-                minLastNodeParent = stop.getLeft();
-                stop = minLastNodeParent.getLeft();
-            } // -- нашли minLastNodeParent
-
             minLastNode = minLastNodeParent.getLeft();
+
+            while(minLastNode.getLeft()!=null){ // TODO перенести на частные случаи !!!
+                minLastNodeParent = minLastNodeParent.getLeft(); // -- нашли minLastNodeParent
+                minLastNode = minLastNodeParent.getLeft(); // -- нашли minLastNode
+            }
 
             if (minLastNode.getRight() != null) { // отвязываем Last Node, если у LastNode нет ребенка
                 minLastNodeParent.setLeft(minLastNode.getRight());
