@@ -2,7 +2,6 @@ package ru.academits.dashiev.my_tree;
 
 import ru.academits.dashiev.my_tree_node.MyTreeNode;
 
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -205,14 +204,6 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         }
     }
 
-    private MyTreeNode<T> findRootToDeleteSubTree(MyTreeNode<T> nodeToDelete, T data) {
-        if (root.getData().compareTo(data) > 0) { // идем влево
-            return nodeToDelete.getLeft();
-        } else { // идем вправо
-            return nodeToDelete.getRight();
-        }
-    }
-
     private MyTreeNode<T> findMinLastNodeParent(MyTreeNode<T> nodeToDelete,
                                                 MyTreeNode<T> rootToDeleteSubTree, T data) {
         if (root.getData().compareTo(data) > 0) {
@@ -220,7 +211,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
             if (rootToDeleteSubTree.getRight() == null) {
                 return rootToDeleteSubTree;
             }
-        }else {
+        } else {
             if (rootToDeleteSubTree.getLeft() == null) {
                 return rootToDeleteSubTree;
             }
@@ -264,7 +255,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
         if (root.getData().compareTo(data) > 0) {
             // TODO идем влево от корня .
-            if (minLastNodeParent.getRight() == null){
+            if (minLastNodeParent.getRight() == null) {
                 return minLastNodeParent;
             }
 
@@ -279,7 +270,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
         } else {
             // TODO идем вправо от корня.
-            if (minLastNodeParent.getLeft() == null){
+            if (minLastNodeParent.getLeft() == null) {
                 return minLastNodeParent;
             }
 
@@ -291,44 +282,6 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
             }
 
             return minLeftNode;
-        }
-    }
-
-    private void unlinkMinLastNode(MyTreeNode<T> minLastNodeParent, MyTreeNode<T> minLastNode, MyTreeNode<T> nodeToDelete,
-                                   T data) {
-        if (root.getData().compareTo(data) > 0) { // отвязываем minLastNode
-            // идем влево от корня
-            if (minLastNodeParent.getData().compareTo(minLastNode.getData())==0){
-                nodeToDelete.setLeft(null);
-            }
-
-            if (minLastNode.getLeft() != null) {
-                minLastNodeParent.setRight(minLastNode.getLeft());
-            } else {
-                minLastNodeParent.setRight(null);
-            }
-        } else {
-            // идем вправо от корня
-            if (minLastNodeParent.getData().compareTo(minLastNode.getData())==0){
-                nodeToDelete.setRight(null);
-            }
-
-            if (minLastNode.getRight() != null) {
-                minLastNodeParent.setLeft(minLastNode.getRight());
-            } else {
-                minLastNodeParent.setLeft(null);
-            }
-        }
-    }
-
-    private void linkNodeToDeleteChild(MyTreeNode<T> nodeToDelete, MyTreeNode<T> minLastNodeParent,
-                                       MyTreeNode<T> minLastNode) {
-        if (nodeToDelete.getLeft() != null) { // привязываем  левого ребенка deletedNode к minLastNode
-            minLastNode.setLeft(nodeToDelete.getLeft());
-        }
-
-        if (nodeToDelete.getRight() != null) { // привязываем правого ребенка deletedNode к minLastNode
-            minLastNode.setRight(nodeToDelete.getRight());
         }
     }
 
@@ -383,7 +336,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
             minLastNode = minLastNodeParent.getLeft();
 
-            while(minLastNode.getLeft()!=null){ // TODO перенести на частные случаи !!!
+            while (minLastNode.getLeft() != null) { // TODO перенести на частные случаи !!!
                 minLastNodeParent = minLastNodeParent.getLeft(); // -- нашли minLastNodeParent
                 minLastNode = minLastNodeParent.getLeft(); // -- нашли minLastNode
             }
@@ -463,43 +416,69 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         }
 
         // TODO 3. Удаление узла - c двумя детьми
-        rootToDeleteSubTree = findRootToDeleteSubTree(nodeToDelete, data);
+        rootToDeleteSubTree = nodeToDelete.getRight();
 
-        minLastNodeParent = findMinLastNodeParent(nodeToDelete, rootToDeleteSubTree, data);
+        if (rootToDeleteSubTree.getLeft() == null) { // когда minLastNode == rootToDeleteSubTree;
+            minLastNode = rootToDeleteSubTree;
 
-        minLastNode = findMinLastNode(minLastNodeParent, data);
+            minLastNodeParent = rootToDeleteSubTree;
 
-        unlinkMinLastNode(minLastNodeParent, minLastNode,nodeToDelete, data);
+            if (nodeToDeleteParent.getRight() != null && nodeToDeleteParent.getRight().getData().compareTo(
+                    data) == 0) { // nodeToDeletePare.getRight = nodeToDelete
+                if (minLastNode.getLeft()!=null) {
+                    nodeToDelete.setLeft((minLastNode.getLeft()));
+                }
 
-        if (minLastNode.getData().compareTo(minLastNodeParent.getData())==0){ // если у правого или левого потомка удал эл-а нет детей
-            if(root.getData().compareTo(data) > 0){
-                nodeToDeleteParent.setLeft(minLastNode);
-
-                minLastNode.setRight(nodeToDelete.getRight());
-
-            } else{
                 nodeToDeleteParent.setRight(minLastNode);
 
-                minLastNode.setLeft(nodeToDelete.getLeft());
+                minLastNode.setRight(nodeToDelete.getRight());
+            } else {
+                if (minLastNode.getRight()!=null) {
+                    nodeToDelete.setRight((minLastNode.getRight()));
+                }
 
+                nodeToDeleteParent.setLeft(minLastNode);
+
+                minLastNode.setLeft(nodeToDelete.getLeft());
             }
 
             treeSize--;
+
             return nodeToDelete.getData();
         }
 
-        if (root.getData().compareTo( // todo double
-                                      data) > 0) { // привязываем deletedNodeParent к minLastNode
-            nodeToDeleteParent.setLeft(minLastNode);
-        } else {
-            nodeToDeleteParent.setRight(minLastNode);
+        minLastNodeParent = rootToDeleteSubTree;
+        minLastNode = minLastNodeParent.getLeft();
+
+        while (minLastNode.getLeft() != null) { // TODO перенести на частные случаи !!!
+            minLastNodeParent = minLastNodeParent.getLeft(); // -- нашли minLastNodeParent
+            minLastNode = minLastNodeParent.getLeft(); // -- нашли minLastNode
         }
 
-        linkNodeToDeleteChild(nodeToDelete, minLastNodeParent, minLastNode);
+        // отвязываем minLastNode от minLastNodeParent
+        minLastNodeParent.setLeft(null);
+
+        if (minLastNode.getRight() != null) { // если у minLastNode есть ребенок
+            minLastNodeParent.setLeft(minLastNode.getRight());
+            minLastNode.setRight(null);
+        }
+
+        if (minLastNodeParent.getRight() != null && minLastNodeParent.getRight().getData().compareTo(
+                nodeToDelete.getData()) == 0) {
+            nodeToDeleteParent.setRight(minLastNode);
+        } else {
+            nodeToDeleteParent.setLeft(minLastNode);
+        }
+
+        if (nodeToDelete.getRight() != null) {
+            minLastNode.setRight(nodeToDelete.getRight());
+        }
+
+        if (nodeToDelete.getLeft() != null) {
+            minLastNode.setLeft(nodeToDelete.getLeft());
+        }
 
         treeSize--;
-
-
         return nodeToDelete.getData();
     }
 
