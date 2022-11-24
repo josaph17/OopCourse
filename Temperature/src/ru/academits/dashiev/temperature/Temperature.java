@@ -1,2 +1,3 @@
-package ru.academits.dashiev.temperature;public class Temperature {
-}
+package ru.academits.dashiev.temperature;
+
+public class Temperature {}
