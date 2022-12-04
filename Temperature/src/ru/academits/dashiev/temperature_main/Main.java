@@ -1,13 +1,16 @@
 package ru.academits.dashiev.temperature_main;
 
+import ru.academits.dashiev.controller.Controller;
+import ru.academits.dashiev.model.Model;
+import ru.academits.dashiev.view.View;
+
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Main {
     public static void main(String[] args) {
-        // чтобы весь код выполнился в потоке диспетчера событий
+        /*TODO  SwingUtilities.invokeLater(() чтобы весь код выполнился в потоке диспетчера. Но в
+           архитектуре MVC куда вставлять эту функцию? Так как кажется, что много куда надо
+           вставлять,точнее, абсолютно везде, где создаются UI элементы или вызываются ф-ии от них*/
         SwingUtilities.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -15,27 +18,10 @@ public class Main {
 
             }
 
-            JFrame frame = new JFrame("My temperature application");
-            frame.setSize(600, 400);
-            frame.setLocationRelativeTo(null);
-            frame.setDefaultCloseOperation(
-                    WindowConstants.EXIT_ON_CLOSE); // коно закрывется при закрытии
-
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
-
-            Image img = Toolkit.getDefaultToolkit().getImage("appImg.jpg");
-            frame.setIconImage(img);
-
-            JPanel panel = new JPanel();
-            frame.add(panel);
-
-            JButton button = new JButton("Панель инструментов");
-            frame.add(button, BorderLayout.PAGE_START);
-            button.addActionListener((e) -> button.setText("Ищу инструументы")); // button использовали замыкание
-
-            frame.setVisible(true);
+            Model m = new Model();
+            View v = new View();
+            Controller c = new Controller(m, v);
+            c.initController();
         });
     }
 }
