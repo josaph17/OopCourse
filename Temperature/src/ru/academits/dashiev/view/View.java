@@ -1,5 +1,7 @@
 package ru.academits.dashiev.view;
 
+import ru.academits.dashiev.unit.Unit;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -16,19 +18,19 @@ public class View {
     private JLabel outputTemperatureAndChooseUnitLabel;
     private JButton convertButton;
     private JRadioButton inputCelsiusButton;
-    private JRadioButton inputFarenheitButton;
-    private JRadioButton inputKelvinsButton;
+    private JRadioButton inputFahrenheitButton;
+    private JRadioButton inputKelvinButton;
     private ButtonGroup inputTemperatureButtonsGroup;
     private JRadioButton outputCelsiusButton;
-    private JRadioButton outputFarenheitButton;
-    private JRadioButton outputKelvinsButton;
+    private JRadioButton outputFahrenheitButton;
+    private JRadioButton outputKelvinButton;
     private ButtonGroup outputTemperatureButtonsGroup;
     private ImageIcon convertButtonIcon;
     private Image appIcon;
     private ImageIcon warningIcon;
 
     public View() {
-        String appName = "Me temperature app";
+        String appName = "My temperature app";
 
         frame = new JFrame(appName);
         frame.setSize(500, 300);
@@ -94,19 +96,19 @@ public class View {
         convertButton.setIcon(convertButtonIcon);
 
         inputCelsiusButton = new JRadioButton("Celsius");
-        inputFarenheitButton = new JRadioButton("Farenheit");
-        inputKelvinsButton = new JRadioButton("Kelvins");
+        inputFahrenheitButton = new JRadioButton("Fahrenheit");
+        inputKelvinButton = new JRadioButton("Kelvin");
         inputTemperatureButtonsGroup = new ButtonGroup();
         inputTemperatureButtonsGroup.add(inputCelsiusButton);
-        inputTemperatureButtonsGroup.add(inputFarenheitButton);
-        inputTemperatureButtonsGroup.add(inputKelvinsButton);
+        inputTemperatureButtonsGroup.add(inputFahrenheitButton);
+        inputTemperatureButtonsGroup.add(inputKelvinButton);
         outputCelsiusButton = new JRadioButton("Celsius");
-        outputFarenheitButton = new JRadioButton("Farenheit");
-        outputKelvinsButton = new JRadioButton("Kelvins");
+        outputFahrenheitButton = new JRadioButton("Fahrenheit");
+        outputKelvinButton = new JRadioButton("Kelvin");
         outputTemperatureButtonsGroup = new ButtonGroup();
         outputTemperatureButtonsGroup.add(outputCelsiusButton);
-        outputTemperatureButtonsGroup.add(outputFarenheitButton);
-        outputTemperatureButtonsGroup.add(outputKelvinsButton);
+        outputTemperatureButtonsGroup.add(outputFahrenheitButton);
+        outputTemperatureButtonsGroup.add(outputKelvinButton);
 
         // add UI elements to Frame
         frame.setIconImage(appIcon);
@@ -121,14 +123,14 @@ public class View {
         panel1.add(inputTemperatureAndChooseUnitLabel);
         panel2.add(inputField);
         panel2.add(inputCelsiusButton);
-        panel2.add(inputFarenheitButton);
-        panel2.add(inputKelvinsButton);
+        panel2.add(inputFahrenheitButton);
+        panel2.add(inputKelvinButton);
         panel3.add(convertButton);
         panel4.add(outputTemperatureAndChooseUnitLabel);
         panel5.add(outputField);
         panel5.add(outputCelsiusButton);
-        panel5.add(outputFarenheitButton);
-        panel5.add(outputKelvinsButton);
+        panel5.add(outputFahrenheitButton);
+        panel5.add(outputKelvinButton);
     }
 
     public JTextField getInputField() {
@@ -143,28 +145,28 @@ public class View {
         return convertButton;
     }
 
-    public String getSelectedInputTemperatureText() {
-        if (inputKelvinsButton.isSelected()) {
-            return inputKelvinsButton.getText();
+    public Enum getSelectedInputTemperature() {
+        if (inputKelvinButton.isSelected()) {
+            return Unit.KELVIN;
         }
 
-        if (inputFarenheitButton.isSelected()) {
-            return inputFarenheitButton.getText();
+        if (inputFahrenheitButton.isSelected()) {
+            return Unit.FAHRENHEIT;
         }
 
-        return inputCelsiusButton.getText();
+        return Unit.CELSIUS;
     }
 
-    public String getSelectedOutputTemperatureText() {
-        if (outputKelvinsButton.isSelected()) {
-            return outputKelvinsButton.getText();
+    public Enum getSelectedOutputTemperature() {
+        if (outputKelvinButton.isSelected()) {
+            return Unit.KELVIN;
         }
 
-        if (outputFarenheitButton.isSelected()) {
-            return outputFarenheitButton.getText();
+        if (outputFahrenheitButton.isSelected()) {
+            return Unit.FAHRENHEIT;
         }
 
-        return outputCelsiusButton.getText();
+        return Unit.CELSIUS;
     }
 
     public void showInputErrorMessage() {
@@ -178,11 +180,11 @@ public class View {
                                        0);
     }
 
-    public JRadioButton getInputCelsiusButton(){
-        return inputCelsiusButton;
+    public void defaultDoCLickInputCelsiusButton(){
+         inputCelsiusButton.doClick();
     }
 
-    public JRadioButton getOutputCelsiusButton(){
-        return outputCelsiusButton;
+    public void defaultDOClickOutputCelsiusButton(){
+        outputCelsiusButton.doClick();
     }
 }

@@ -1,10 +1,12 @@
 package ru.academits.dashiev.model;
 
+import ru.academits.dashiev.unit.Unit;
+
 public class Model {
     private Double inputTemperature;
     private Double outputTemperature;
-    private String inputUnit;
-    private String outputUnit;
+    private Enum inputUnit;
+    private Enum outputUnit;
 
     public Model() {
         inputTemperature = null;
@@ -25,56 +27,56 @@ public class Model {
         this.outputTemperature = outputTemperature;
     }
 
-    public void setInputUnit(String inputUnit) {
+    public void setInputUnit(Enum inputUnit) {
         this.inputUnit = inputUnit;
     }
 
-    public void setOutputUnit(String outputUnit) {
+    public void setOutputUnit(Enum outputUnit) {
         this.outputUnit = outputUnit;
     }
 
     public Double calculateOutputTemperature() {
-        if ((outputUnit.compareTo("Farenheit") == 0)) {
-            return calculateOutputTemperatureToFarenheit();
+        if ((outputUnit.compareTo(Unit.FAHRENHEIT) == 0)) {
+            return calculateOutputTemperatureToFahrenheit();
         }
 
-        if (outputUnit.compareTo("Kelvins") == 0) {
-            return calculateOutputTemperatureToKelvins();
+        if (outputUnit.compareTo(Unit.KELVIN) == 0) {
+            return calculateOutputTemperatureToKelvin();
         }
 
         return calculateOutputTemperatureToCelsius(); // default
     }
 
     private Double calculateOutputTemperatureToCelsius() {
-        if (inputUnit.compareTo("Farenheit") == 0) {
+        if (inputUnit.compareTo(Unit.FAHRENHEIT) == 0) {
             return (inputTemperature - 32) * (5.0 / 9.0);
         }
 
-        if (inputUnit.compareTo("Kelvins") == 0) {
+        if (inputUnit.compareTo(Unit.KELVIN) == 0) {
             return inputTemperature - 273.15;
         }
 
         return inputTemperature;
     }
 
-    private Double calculateOutputTemperatureToFarenheit() {
-        if (inputUnit.compareTo("Celsius") == 0) {
+    private Double calculateOutputTemperatureToFahrenheit() {
+        if (inputUnit.compareTo(Unit.CELSIUS) == 0) {
             return (inputTemperature - 32) * (5.0 / 9.0);
         }
 
-        if (inputUnit.compareTo("Kelvins") == 0) {
+        if (inputUnit.compareTo(Unit.KELVIN) == 0) {
             return (inputTemperature * (9.0 / 5.0)) + 32;
         }
 
         return inputTemperature;
     }
 
-    private Double calculateOutputTemperatureToKelvins() {
-        if (inputUnit.compareTo("Celsius") == 0) {
+    private Double calculateOutputTemperatureToKelvin() {
+        if (inputUnit.compareTo(Unit.CELSIUS) == 0) {
             return inputTemperature + 273.15;
         }
 
-        if (inputUnit.compareTo("Farenheit") == 0) {
+        if (inputUnit.compareTo(Unit.FAHRENHEIT) == 0) {
             return (inputTemperature - 32) * (5.0 / 9.0) + 273.15;
         }
 

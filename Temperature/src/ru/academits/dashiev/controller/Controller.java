@@ -14,8 +14,8 @@ public class Controller {
     }
 
     private void initView() {
-        view.getInputCelsiusButton().doClick();
-        view.getOutputCelsiusButton().doClick();
+        view.defaultDoCLickInputCelsiusButton();
+        view.defaultDOClickOutputCelsiusButton();
     }
 
     public void initController() {
@@ -30,9 +30,9 @@ public class Controller {
             return; // остановить функцию, чтобы дальше не пошла исполняться
         }
 
-        model.setInputUnit(view.getSelectedInputTemperatureText());
+        model.setInputUnit(view.getSelectedInputTemperature());
 
-        model.setOutputUnit(view.getSelectedOutputTemperatureText());
+        model.setOutputUnit(view.getSelectedOutputTemperature());
 
         model.setOutputTemperature(model.calculateOutputTemperature());
 
