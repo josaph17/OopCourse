@@ -133,12 +133,12 @@ public class View {
         panel5.add(outputKelvinButton);
     }
 
-    public JTextField getInputField() {
-        return inputField;
+    public String getInputFieldText() {
+        return inputField.getText();
     }
 
-    public JTextField getOutputField() {
-        return outputField;
+    public void setValueInOutputField(String value) {
+         outputField.setText(value);
     }
 
     public JButton getConvertButton() {

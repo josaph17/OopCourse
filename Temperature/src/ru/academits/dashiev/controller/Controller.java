@@ -24,7 +24,7 @@ public class Controller {
 
     public void convertTemperature() {
         try {
-            model.setInputTemperature(Double.parseDouble((view.getInputField().getText())));
+            model.setInputTemperature(Double.parseDouble((view.getInputFieldText())));
         } catch (NumberFormatException e) {
             view.showInputErrorMessage();
             return; // остановить функцию, чтобы дальше не пошла исполняться
@@ -36,6 +36,6 @@ public class Controller {
 
         model.setOutputTemperature(model.calculateOutputTemperature());
 
-        view.getOutputField().setText("" + model.getOutputTemperature());
+        view.setValueInOutputField(("" + model.getOutputTemperature()));
     }
 }
