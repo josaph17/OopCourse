@@ -1,11 +1,12 @@
 package ru.academits.dashiev.view;
 
+import ru.academits.dashiev.interface_view.interfaceView;
 import ru.academits.dashiev.unit.Unit;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class View {
+public class View implements interfaceView {
     private JFrame frame;
     private JPanel panel1;
     private JPanel panel2;
@@ -133,18 +134,22 @@ public class View {
         panel5.add(outputKelvinButton);
     }
 
-    public JTextField getInputField() {
-        return inputField;
+    @Override
+    public String getInputFieldText() {
+        return inputField.getText();
     }
 
-    public JTextField getOutputField() {
-        return outputField;
+    @Override
+    public void setValueInOutputField(String value) {
+         outputField.setText(value);
     }
 
+    @Override
     public JButton getConvertButton() {
         return convertButton;
     }
 
+    @Override
     public Enum getSelectedInputTemperature() {
         if (inputKelvinButton.isSelected()) {
             return Unit.KELVIN;
@@ -157,6 +162,7 @@ public class View {
         return Unit.CELSIUS;
     }
 
+    @Override
     public Enum getSelectedOutputTemperature() {
         if (outputKelvinButton.isSelected()) {
             return Unit.KELVIN;
@@ -169,6 +175,7 @@ public class View {
         return Unit.CELSIUS;
     }
 
+    @Override
     public void showInputErrorMessage() {
          JOptionPane.showOptionDialog(null,
                                        "Input wrong value! Input number",
@@ -180,10 +187,12 @@ public class View {
                                        0);
     }
 
+    @Override
     public void defaultDoCLickInputCelsiusButton(){
          inputCelsiusButton.doClick();
     }
 
+    @Override
     public void defaultDOClickOutputCelsiusButton(){
         outputCelsiusButton.doClick();
     }
