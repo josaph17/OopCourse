@@ -30,7 +30,9 @@ public class Main {
 
         size = 3;
         Vector test4 = new Vector(size, array);
-        System.out.println("Vector(int size, double... array), size = " + size + ", array[] = " + Arrays.toString(array));
+        System.out.println(
+                "Vector(int size, double... array), size = " + size + ", array[] = " + Arrays.toString(
+                        array));
         System.out.println(test4);
         System.out.println();
     }
@@ -99,19 +101,22 @@ public class Main {
     public static void checkStaticOperations(Vector vector1, Vector vector2) {
         System.out.println("--Check vector static operations--");
 
+        System.out.println("vector1 = " + vector1);
+        System.out.println("vector2 = " + vector2);
+
         System.out.println();
 
         System.out.print("Vectors Sum: ");
-        Vector vectorsSum = Vector.add(vector2, vector1);
+        Vector vectorsSum = Vector.getAddSum(vector2, vector1);
         System.out.println(vectorsSum);
 
         System.out.print("Vectors Subtraction: ");
-        Vector vectorsSubtraction = Vector.subtract(vector1, vector2);
+        Vector vectorsSubtraction = Vector.getSubtract(vector1, vector2);
         System.out.println(vectorsSubtraction);
 
         System.out.print("Vectors MultiplyByScalar: ");
-        Vector vectorMultiplyByScalar = Vector.multiplyByScalar(vector2, vector1);
-        System.out.println(vectorMultiplyByScalar);
+        double vectorsScalarMultiply = Vector.getVectorsScalarMultiply(vector2, vector1);
+        System.out.println(vectorsScalarMultiply);
 
         System.out.println();
     }

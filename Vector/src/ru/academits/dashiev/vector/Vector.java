@@ -5,10 +5,9 @@ import java.util.Arrays;
 public class Vector {
     private double[] components; // массив
 
-    public Vector(int size) { //Конструктор, размерность n, количество компонентов
+    public Vector(int size) { // Конструктор, размерность n, количество компонентов
         if (size <= 0) {
-            throw new IllegalArgumentException(
-                    "Capacity must be > 0. Current value: " + size); // бросил исключение
+            throw new IllegalArgumentException("Capacity must be > 0. Current value: " + size);
         }
 
         components = new double[size]; // инициализировали vector, все компоненты равны 0
@@ -16,137 +15,119 @@ public class Vector {
 
     public Vector(Vector vector) { //конструктор копирования
         if (vector == null) {
-            throw new IllegalArgumentException("vector is null!");
+            throw new NullPointerException("Vector is null!");
         }
 
-        components = Arrays.copyOf(vector.components, vector.components.length); // если не делать копию,
-        // то 2 разных вектора ссылаются на один массив, именения в одном привед к изменения к другому
+        /* если не делать копию, то 2 разных вектора ссылаются на один массив, именения в одном
+        приведут к изменения в другом */
+        components = Arrays.copyOf(vector.components, vector.components.length);
     }
 
     public Vector(double... array) {
         if (array.length <= 0) {
-            throw new IllegalArgumentException(
-                    "array length must be > 0. Current value: " + array.length); // бросил исключение
+            throw new IllegalArgumentException("Array length must be > 0. Current value: " + array.length);
         }
 
         components = Arrays.copyOf(array, array.length);
     }
 
     public Vector(int size, double... array) {
-        if (array.length <= 0) {
-            throw new IllegalArgumentException(
-                    "array length must be > 0. Current value: " + array.length); // бросил исключение
+        if (size <= 0) {
+            throw new IllegalArgumentException("Size must be > 0. Current value: " + size);
         }
 
-        if (size < 0) {
+        if (array.length <= 0) {
             throw new IllegalArgumentException(
-                    "size must be => 0. Current value: " + size); // бросил исключение
+                    "Array length must be > 0. Current value: " + array.length); // бросил исключение
         }
 
         components = Arrays.copyOf(array, size);
     }
 
-    public static Vector add(Vector vector1, Vector vector2) {
+    public static Vector getAddSum(Vector vector1, Vector vector2) {
         if (vector1 == null) {
-            throw new IllegalArgumentException("1st vector is null!");
+            throw new NullPointerException("1st vector is null!");
         }
 
         if (vector2 == null) {
-            throw new IllegalArgumentException("2nd vector is null!");
+            throw new NullPointerException("2nd vector is null!");
         }
 
         Vector result = new Vector(vector1);
+
         result.add(vector2);
 
         return result;
     }
 
-    public static Vector subtract(Vector vector1, Vector vector2) {
+    public static Vector getSubtract(Vector vector1, Vector vector2) {
         if (vector1 == null) {
-            throw new IllegalArgumentException("1st vector is null!");
+            throw new NullPointerException("1st vector is null!");
         }
 
         if (vector2 == null) {
-            throw new IllegalArgumentException("2nd vector is null!");
+            throw new NullPointerException("2nd vector is null!");
         }
 
         Vector result = new Vector(vector1);
+
         result.subtract(vector2);
 
         return result;
     }
 
-    public static Vector multiplyByScalar(Vector vector1, Vector vector2) {
+    public static double getVectorsScalarMultiply(Vector vector1, Vector vector2) {
         if (vector1 == null) {
-            throw new IllegalArgumentException("1st vector is null!");
+            throw new NullPointerException("1st vector is null!");
         }
 
         if (vector2 == null) {
-            throw new IllegalArgumentException("2nd vector is null!");
+            throw new NullPointerException("2nd vector is null!");
         }
 
-        Vector result; // так можно делать !!!
-        int multiplyByScalarIndex;
-
-        if (vector1.components.length <= vector2.components.length) {
-            result = new Vector(vector2.components.length);
-
-            multiplyByScalarIndex = vector1.components.length;
-        } else {
-            result = new Vector(vector1.components.length);
-
-            multiplyByScalarIndex = vector2.components.length;
-        }
-
-        for (int i = 0; i < multiplyByScalarIndex; i++) {
-            result.setComponent(i, vector1.components[i] * vector2.components[i]);
-        }
-
-        return result;
+        return vector1.getLength() * vector2.getLength();
     }
 
-    public int size() {
+    public int getSize() {
         return components.length;
     }
 
     @Override
-    public String toString() { // переопределили toString для нашего собственного класса
+    public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(Arrays.toString(components)).setCharAt(0,'{');
-        sb.setCharAt(sb.length()-1, '}');
+        sb.append(Arrays.toString(components)).setCharAt(0, '{');
+        sb.setCharAt(sb.length() - 1, '}');
 
         return sb.toString();
     }
 
     public void add(Vector vector) {
         if (vector == null) {
-            throw new IllegalArgumentException("vector is null!");
+            throw new NullPointerException("Vector is null!");
         }
 
-        if (this.components.length <= vector.components.length) {
-            this.components = Arrays.copyOf(this.components,
-                                            vector.components.length); // создаем новый массив
+        if (components.length < vector.components.length) {
+            // создаем новый массив
+            this.components = Arrays.copyOf(components, vector.components.length);
         }
 
         for (int i = 0; i < vector.components.length; i++) {
-            this.components[i] += vector.components[i];
+            components[i] += vector.components[i];
         }
     }
 
     public void subtract(Vector vector) {
         if (vector == null) {
-            throw new IllegalArgumentException("vector is null!");
+            throw new NullPointerException("Vector is null!");
         }
 
-        double[] vectorComponentsCopy = null;
-
-        if (this.components.length <= vector.components.length) {
-            this.components = Arrays.copyOf(this.components, vector.components.length);
+        if (components.length < vector.components.length) {
+            components = Arrays.copyOf(components, vector.components.length);
         }
 
         for (int i = 0; i < vector.components.length; i++) {
-            this.components[i] -= vector.components[i]; // здесь this осдавили, чтобы указать, что это поле
+            components[i] -= vector.components[i]; // здесь this осдавили, чтобы указать, что это поле
         }
     }
 
@@ -163,7 +144,7 @@ public class Vector {
     public double getLength() { // e.Получение длины вектора
         double vectorComponentsSum = 0;
 
-        for (double e : this.components) {
+        for (double e : components) {
             vectorComponentsSum += e * e; // умножение т.к. это быстрее Math.pow
         }
 
@@ -182,8 +163,7 @@ public class Vector {
 
     public double getComponent(int index) {
         if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException(
-                    "index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         return components[index];
@@ -191,8 +171,7 @@ public class Vector {
 
     public void setComponent(int index, double value) {
         if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException(
-                    "index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         components[index] = value;
