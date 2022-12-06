@@ -11,5 +11,5 @@ public interface IView {
 
     public Enum getOutputTemperatureType();
 
-    public void showWrongInputError();
+    public void showInputErrorMessage();
 }

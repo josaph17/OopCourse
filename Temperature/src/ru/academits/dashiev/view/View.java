@@ -34,10 +34,8 @@ public class View implements IView {
 
         frame = new JFrame(appName);
         frame.setSize(500, 300);
-        frame.setLayout(new BoxLayout(frame.getContentPane(),
-                                      BoxLayout.Y_AXIS)); // Layout manager
-        frame.setDefaultCloseOperation(
-                WindowConstants.EXIT_ON_CLOSE); // frame close on exit
+        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS)); // Layout manager
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // frame close on exit
         frame.setResizable(false); // not change frame size
         frame.setVisible(true);
 
@@ -73,7 +71,7 @@ public class View implements IView {
 
         appIcon = Toolkit.getDefaultToolkit().getImage("appImg.png"); // create app icon
         convertButtonIcon = new ImageIcon("change.png"); // convertButtonIcon
-        warningIcon =  new ImageIcon("attention.png");
+        warningIcon = new ImageIcon("attention.png");
 
         inputField = new JTextField(20); // textField 20 symbols
         inputField.setBounds(2, 3, 200, 30);
@@ -134,9 +132,14 @@ public class View implements IView {
     }
 
     @Override
-    public void initView(){
+    public void initView(Runnable convertAction) {
         outputCelsiusButton.doClick();
         inputCelsiusButton.doClick();
+
+        // объект e - это событие (event), addActionListener добавляет слушателя для кнопки
+        // как только кнопка нажимается слушател о этом узнает и потом происходит какое-то действие,
+        // actionPerformed, вызывается метод run() из convertAction
+        convertButton.addActionListener(e -> convertAction.run());
     }
 
     @Override
@@ -146,16 +149,11 @@ public class View implements IView {
 
     @Override
     public void setValueInOutputField(String value) {
-         outputField.setText(value);
+        outputField.setText(value);
     }
 
     @Override
-    public JButton getConvertButton() {
-        return convertButton;
-    }
-
-    @Override
-    public Enum getSelectedInputTemperature() {
+    public Enum getInputTemperatureType() {
         if (inputKelvinButton.isSelected()) {
             return Unit.KELVIN;
         }
@@ -168,7 +166,7 @@ public class View implements IView {
     }
 
     @Override
-    public Enum getSelectedOutputTemperature() {
+    public Enum getOutputTemperatureType() {
         if (outputKelvinButton.isSelected()) {
             return Unit.KELVIN;
         }
@@ -181,14 +179,9 @@ public class View implements IView {
     }
 
     @Override
-    public void showInputErrorMessage() {
-         JOptionPane.showOptionDialog(null,
-                                       "Input wrong value! Input number",
-                                       "Input error",
-                                       JOptionPane.DEFAULT_OPTION ,
-                                       JOptionPane.PLAIN_MESSAGE,
-                                       warningIcon,
-                                       null,
-                                       0);
+    public void showWrongInputError() {
+        JOptionPane.showOptionDialog(null, "Input wrong value! Input number", "Input error",
+                                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                     warningIcon, null, 0);
     }
 }
