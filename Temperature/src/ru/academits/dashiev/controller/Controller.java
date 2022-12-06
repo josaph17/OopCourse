@@ -14,8 +14,7 @@ public class Controller {
     }
 
     private void initView() {
-        view.defaultDoCLickInputCelsiusButton();
-        view.defaultDOClickOutputCelsiusButton();
+        view.initView();
     }
 
     public void initController() {

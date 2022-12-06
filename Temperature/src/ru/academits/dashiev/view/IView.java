@@ -1,8 +1,10 @@
-package ru.academits.dashiev.interface_view;
+package ru.academits.dashiev.view;
 
 import javax.swing.*;
 
-public interface interfaceView {
+public interface IView {
+    public void initView();
+
     public String getInputFieldText();
 
     public void setValueInOutputField(String value);
@@ -14,8 +16,4 @@ public interface interfaceView {
     public Enum getSelectedOutputTemperature();
 
     public void showInputErrorMessage();
-
-    public void defaultDoCLickInputCelsiusButton();
-
-    public void defaultDOClickOutputCelsiusButton();
 }

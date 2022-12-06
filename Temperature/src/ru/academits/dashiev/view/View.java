@@ -1,12 +1,11 @@
 package ru.academits.dashiev.view;
 
-import ru.academits.dashiev.interface_view.interfaceView;
 import ru.academits.dashiev.unit.Unit;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class View implements interfaceView {
+public class View implements IView {
     private JFrame frame;
     private JPanel panel1;
     private JPanel panel2;
@@ -135,6 +134,12 @@ public class View implements interfaceView {
     }
 
     @Override
+    public void initView(){
+        outputCelsiusButton.doClick();
+        inputCelsiusButton.doClick();
+    }
+
+    @Override
     public String getInputFieldText() {
         return inputField.getText();
     }
@@ -185,15 +190,5 @@ public class View implements interfaceView {
                                        warningIcon,
                                        null,
                                        0);
-    }
-
-    @Override
-    public void defaultDoCLickInputCelsiusButton(){
-         inputCelsiusButton.doClick();
-    }
-
-    @Override
-    public void defaultDOClickOutputCelsiusButton(){
-        outputCelsiusButton.doClick();
     }
 }
