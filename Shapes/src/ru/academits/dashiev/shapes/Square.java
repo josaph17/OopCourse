@@ -1,39 +1,39 @@
-package ru.academits.dashiev.shapes.rectangle;
+package ru.academits.dashiev.shapes;
 
-import ru.academits.dashiev.shapes.shape.Shape;
+public class Square implements Shape {
+    private final double sideLength;
 
-public class Rectangle implements Shape {
-    private final double width;
-    private final double height;
+    public Square(double sideLength) {
+        this.sideLength = sideLength;
+    }
 
-    public Rectangle(double width, double height) {
-        this.width = width;
-        this.height = height;
+    public double getSideLength() {
+        return sideLength;
     }
 
     @Override
     public double getWidth() {
-        return width;
+        return sideLength;
     }
 
     @Override
     public double getHeight() {
-        return height;
+        return sideLength;
     }
 
     @Override
     public double getArea() {
-        return width * height;
+        return sideLength * sideLength;
     }
 
     @Override
     public double getPerimeter() {
-        return (width + height) * 2;
+        return 4 * sideLength;
     }
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        return "Rectangle. Width = " + width + ", height = " + height;
+        return "Square. side = " + sideLength + System.lineSeparator() + "Area = " + getArea() + ", perimeter = " + getPerimeter();
     }
 
     @Override
@@ -46,9 +46,9 @@ public class Rectangle implements Shape {
             return false;
         }
 
-        Rectangle rectangle = (Rectangle) o;
+        Square square = (Square) o;
 
-        return width == rectangle.width && height == rectangle.height;
+        return sideLength == square.sideLength;
     }
 
     @Override
@@ -56,8 +56,7 @@ public class Rectangle implements Shape {
         final int prime = 17; // с помощью этого числа (константное число) вычисляют хэш-код
         int hash = 1;  // начальное значение хэш-кода
 
-        hash = prime * hash + Double.hashCode(width);
-        hash = prime * hash + Double.hashCode(height);
+        hash = prime * hash + Double.hashCode(sideLength);
 
         return hash;
     }

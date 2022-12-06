@@ -1,4 +1,4 @@
-package ru.academits.dashiev.shapes.shape;
+package ru.academits.dashiev.shapes;
 
 public interface Shape {
     double getWidth();

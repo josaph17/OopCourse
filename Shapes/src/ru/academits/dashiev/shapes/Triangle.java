@@ -1,6 +1,4 @@
-package ru.academits.dashiev.shapes.triangle;
-
-import ru.academits.dashiev.shapes.shape.Shape;
+package ru.academits.dashiev.shapes;
 
 public class Triangle implements Shape {
     private final double x1;
@@ -19,17 +17,41 @@ public class Triangle implements Shape {
         this.y3 = y3;
     }
 
-    private static double getMax(double a, double b,
-                                 double c) { // private, т.к. я использую ф-ю внутри этого класса, она вспомогательная
-        return Math.max(Math.max(a, b), c);
+    // private, т.к. я использую ф-ю внутри этого класса, она в спомогательная
+    private static double getMax(double value1, double value2, double value3) {
+        return Math.max(Math.max(value1, value2), value3);
     }
 
-    private static double getMin(double a, double b, double c) {
-        return Math.min(Math.min(a, b), c);
+    private static double getMin(double value1, double value2, double value3) {
+        return Math.min(Math.min(value1, value2), value3);
     }
 
-    private static double getLength(double a1, double b1, double a2, double b2) {
-        return Math.sqrt((a2 - a1) * (a2 - a1) + (b2 - b1) * (b2 - b1));
+    private static double getLength(double x1, double y1, double x2, double y2) {
+        return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    }
+
+    public double getX1() {
+        return x1;
+    }
+
+    public double getY1() {
+        return y1;
+    }
+
+    public double getX2() {
+        return x2;
+    }
+
+    public double getY2() {
+        return y2;
+    }
+
+    public double getX3() {
+        return x3;
+    }
+
+    public double getY3() {
+        return y3;
     }
 
     @Override
@@ -54,7 +76,7 @@ public class Triangle implements Shape {
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        return "Triangle. With coordinates (" + x1 + ";" + y1 + "), (" + x2 + ";" + y2 + "), (" + y3 + ";" + y3 + ")" + System.lineSeparator() + "Area = " + getArea() + ", perimeter = " + getPerimeter();
+        return "Triangle. With coordinates (" + x1 + "; " + y1 + "), (" + x2 + "; " + y2 + "), (" + y3 + "; " + y3 + ")" + System.lineSeparator() + "Area = " + getArea() + ", perimeter = " + getPerimeter();
     }
 
     @Override
@@ -69,8 +91,7 @@ public class Triangle implements Shape {
 
         Triangle triangle = (Triangle) o;
 
-        return x1 == triangle.x1 && x2 == triangle.x2 && x3 == triangle.x3 //
-                && y1 == triangle.y1 && y2 == triangle.y2 && y3 == triangle.y3;
+        return x1 == triangle.x1 && x2 == triangle.x2 && x3 == triangle.x3 && y1 == triangle.y1 && y2 == triangle.y2 && y3 == triangle.y3;
     }
 
     @Override
