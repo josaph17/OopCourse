@@ -143,12 +143,12 @@ public class View implements IView {
     }
 
     @Override
-    public String getInputFieldText() {
+    public String getInputTemperatureText() {
         return inputField.getText();
     }
 
     @Override
-    public void setValueInOutputField(String value) {
+    public void setOutputTemperature(String value) {
         outputField.setText(value);
     }
 

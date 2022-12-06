@@ -3,9 +3,9 @@ package ru.academits.dashiev.view;
 public interface IView {
     public void initView(Runnable convertAction);
 
-    public String getInputFieldText();
+    public String getInputTemperatureText();
 
-    public void setValueInOutputField(String value);
+    public void setOutputTemperature(String value);
 
     public Enum getInputTemperatureType();
 
