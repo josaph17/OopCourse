@@ -1,12 +1,12 @@
 package ru.academits.dashiev.view;
 
-import ru.academits.dashiev.abstract_view.AbstractView;
+import ru.academits.dashiev.interface_view.interfaceView;
 import ru.academits.dashiev.unit.Unit;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class View extends AbstractView {
+public class View implements interfaceView {
     private JFrame frame;
     private JPanel panel1;
     private JPanel panel2;
