@@ -60,7 +60,7 @@ public class Main {
 
         int addIndex = 3, addValue = 1007;
 
-        System.out.println("addIndexElement(int index, T data) - вставка элемента по индексу");
+        System.out.println("addByIndex(int index, T data) - вставка элемента по индексу");
         System.out.println("Индекс = " + addIndex + ", значение = " + addValue);
         list.addByIndex(addIndex, addValue);
         System.out.println(list);

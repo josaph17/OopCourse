@@ -8,18 +8,31 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
     public MyList() {
         // size = 0; head = null; будет по умолчанию
+        size = 0;
+        head = null;
     }
 
-    public MyList(Node<T> head) {
-        this.head = head;
-    }
+    //п.7 7. List(Node<T> head) - конструктор убрал поскольку он нигде не используется
 
     public MyList(MyList<T> list) {
-        for (Node<T> p = list.head; p != null; p = p.getNext()) {
-            this.addFirst(p.getData());
-        }
+        this(); // вызвал конструктор по умолчанию
 
-        this.reverse();
+        Node<T> current = head;
+
+        int i = 0;
+
+        for (Node<T> p = list.head; p != null; p = p.getNext()) {
+            if (current == null) {
+                current = new Node<>(p.getData(), null);
+
+                head = current; // чтобы не терять указатель head
+            } else {
+                current.setNext(new Node<>(p.getData(),null));
+                current = current.getNext();
+            }
+
+            size++;
+        }
     }
 
     public int getSize() { // получение размера списка
@@ -176,6 +189,10 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
+        if (head == null){
+            return "";
+        }
+
         StringBuilder sb = new StringBuilder();
 
         sb.append("[ ");
