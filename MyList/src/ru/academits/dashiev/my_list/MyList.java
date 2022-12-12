@@ -19,15 +19,13 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
         Node<T> current = head;
 
-        int i = 0;
-
         for (Node<T> p = list.head; p != null; p = p.getNext()) {
-            if (current == null) {
+            if (head == null) {
                 current = new Node<>(p.getData(), null);
 
                 head = current; // чтобы не терять указатель head
             } else {
-                current.setNext(new Node<>(p.getData(),null));
+                current.setNext(new Node<>(p.getData(), null));
                 current = current.getNext();
             }
 
@@ -47,31 +45,33 @@ public class MyList<T> { // класс List  должен быть generic, чт
         return head.getData();
     }
 
-    public T get(int index) {
-        if (index < 0 || index >= getSize()) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (getSize() - 1) + ".Current index = " + index);
-        }
-
+    private Node<T> getIndexNode(int index){
         Node<T> current = head;
 
         for (int i = 0; i != index; i++) {
             current = current.getNext();
         }
 
-        return current.getData();
+        return current;
     }
 
-    public T set(int index, T data) {
+    private void checkIndex(int index){
         if (index < 0 || index >= getSize()) {
             throw new IndexOutOfBoundsException(
                     "List min index = 0, max index = " + (getSize() - 1) + ".Current index = " + index);
         }
+    }
 
-        Node<T> current = head;
+    public T get(int index) {
+        checkIndex(index);
 
-        for (int i = 0; i != index; i++, current = current.getNext()) {
-        }
+        return getIndexNode(index).getData();
+    }
+
+    public T set(int index, T data) {
+        checkIndex(index);
+
+        Node<T> current = getIndexNode(index);
 
         T oldData = current.getData();
 
@@ -81,10 +81,7 @@ public class MyList<T> { // класс List  должен быть generic, чт
     }
 
     public T removeByIndex(int index) {
-        if (index < 0 || index >= getSize()) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, index = " + (getSize() - 1) + ".Current index = " + index);
-        }
+        checkIndex(index);
 
         if (index == 0) {
             return removeFirst();
@@ -112,10 +109,7 @@ public class MyList<T> { // класс List  должен быть generic, чт
     }
 
     public void addByIndex(int index, T data) { // вставка элемента по индексу
-        if (index < 0 || index >= getSize()) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (getSize() - 1) + ".Current index = " + index);
-        }
+        checkIndex(index);
 
         if (index == 0) { // если нужно вставить в самое начало
             addFirst(data);
@@ -138,15 +132,25 @@ public class MyList<T> { // класс List  должен быть generic, чт
     }
 
     public boolean remove(T data) {
-        if (head == null) {
+        if (head == null) { // если список пустой
             return false;
+        }
+
+        if (head.getData().equals(data)) { // Если элемент в начале списка
+            head.setNext(head.getNext());
+
+            return true;
         }
 
         int i = 0;
 
         for (Node<T> previous = head; previous != null; previous = previous.getNext()) {
-            if (previous.getData().equals(data)) {
-                removeByIndex(i);
+            if ( i == size - 1){ // Нет элемента в списке
+                return false;
+            }
+
+            if (previous.getNext().getData().equals(data)) {
+                previous.setNext(previous.getNext().getNext());
 
                 return true;
             }
@@ -189,8 +193,8 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        if (head == null){
-            return "";
+        if (head == null) {
+            return "[]";
         }
 
         StringBuilder sb = new StringBuilder();

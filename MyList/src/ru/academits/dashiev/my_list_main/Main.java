@@ -66,9 +66,9 @@ public class Main {
         System.out.println(list);
         System.out.println();
 
-        int removeData = 1;
+        int removeData = 3523;
 
-        System.out.println("removeValue(T data) - удаление узла по значению, пусть выдает true, если элемент был удален");
+        System.out.println("remove(T data) - удаление узла по значению, пусть выдает true, если элемент был удален");
         System.out.println("Список до использования данной функции: " + list);
         System.out.println("Проверяем удален ли  узел со значением = " + removeData);
         System.out.println("Ответ: " + list.remove(removeData));
