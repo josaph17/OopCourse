@@ -21,7 +21,6 @@ public class Main {
             Model m = new Model();
             View v = new View();
             Controller c = new Controller(m, v);
-            c.initController();
         });
     }
 }

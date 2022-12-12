@@ -10,32 +10,26 @@ public class Controller {
     public Controller(Model m, View v) {
         model = m;
         view = v;
-        initView();
-    }
 
-    private void initView() {
-        view.defaultDoCLickInputCelsiusButton();
-        view.defaultDOClickOutputCelsiusButton();
-    }
-
-    public void initController() {
-        view.getConvertButton().addActionListener(e -> convertTemperature());
+        // код в скобках и есть Runnable, параметров передаю выражение вызывающую ф-ю convertTemperature
+        view.initView(() -> convertTemperature());
     }
 
     public void convertTemperature() {
         try {
-            model.setInputTemperature(Double.parseDouble((view.getInputFieldText())));
+            model.setInputTemperature(Double.parseDouble((view.getInputTemperatureText())));
         } catch (NumberFormatException e) {
-            view.showInputErrorMessage();
+            view.showWrongInputError();
+
             return; // остановить функцию, чтобы дальше не пошла исполняться
         }
 
-        model.setInputUnit(view.getSelectedInputTemperature());
+        model.setInputUnit(view.getInputTemperatureType());
 
-        model.setOutputUnit(view.getSelectedOutputTemperature());
+        model.setOutputUnit(view.getOutputTemperatureType());
 
         model.setOutputTemperature(model.calculateOutputTemperature());
 
-        view.setValueInOutputField(("" + model.getOutputTemperature()));
+        view.setOutputTemperature(("" + model.getOutputTemperature()));
     }
 }
