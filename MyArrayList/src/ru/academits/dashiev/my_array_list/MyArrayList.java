@@ -136,8 +136,8 @@ public class MyArrayList<T> implements List<T> {
 
         int i = index;
 
-        for (T t : c) {
-            items[i] = t;
+        for (T item : c) {
+            items[i] = item;
             i = i + 1;
             size = size + 1;
             modCount = modCount +1;
@@ -207,8 +207,7 @@ public class MyArrayList<T> implements List<T> {
 
         System.arraycopy(items, index + 1, items, index, size - 1 - index);
 
-        items[size - 1] = null;
-        --size;
+        items[--size] = null; // сначала size уменьшится, а потом будет использовано
 
         modCount++; // увеличиваем счетчик изменений
 
@@ -218,7 +217,8 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public int indexOf(Object o) {
         // TODO прошу проверить правильно ли работает на null
-        if (o == null){ // если o = null
+        if (o == null) {
+            // если o = null
             for (int i = 0; i < size; i++) {
                 if (items[i] == null) { // equals принмиает Object, Не нужно приведение
                     return i;
@@ -228,10 +228,10 @@ public class MyArrayList<T> implements List<T> {
             return -1;
         }
 
-        for (int i = 0; i < size; i++) {
-            if (items[i].equals(o)) { // equals принмиает Object, Не нужно приведение
-                return i;
-            }
+        for (int i = 0; i < size; i++) { // чтобы не вызывать от null
+            if (items[i] != null && items[i].equals(o)){
+                return i; // equals принмиает Object, Не нужно приведение
+            } // если  items[i] == null, то пропускаем
         }
 
         return -1;
@@ -251,7 +251,7 @@ public class MyArrayList<T> implements List<T> {
         }
 
         for (int i = size - 1; i >= 0; i--) {
-            if (items[i].equals(o)) {
+            if (items[i] != null && items[i].equals(o)) {
                 return i;
             }
         }
@@ -274,7 +274,7 @@ public class MyArrayList<T> implements List<T> {
         return null;
     }
 
-    //TODO прошу проверить функцию retainAll(Collection c), были затруднения
+    // TODO прошу проверить функцию retainAll(Collection c), были затруднения
     @Override
     public boolean retainAll(Collection c) {
         if (c == null) {
@@ -285,9 +285,9 @@ public class MyArrayList<T> implements List<T> {
 
         int i = 0;
 
-        for (T t : this) {
-            if (c.contains(t)) {
-                items[i] = t;
+        for (T item : this) {
+            if (c.contains(item)) {
+                items[i] = item;
                 i++; // передвигаемся по массиву
             }
         }
@@ -298,28 +298,34 @@ public class MyArrayList<T> implements List<T> {
             items[i] = null;
         }
 
-        modCount += (oldSize - size); // правильно ли я увеличил счетчик изменений ?
+        if(size != oldSize){
+            modCount = modCount + 1; // достаточно увеличить счетчик на 1 если список изменился
+        }
 
         return size != oldSize;
     }
 
     @Override
-    public boolean removeAll(Collection c) { // удаляет все вхожде
+    public boolean removeAll(Collection c) { // удаляет все вхождения
         if (c == null) {
             throw new NullPointerException("Collection is null!!!");
         }
 
         int oldSize = size;
 
-        for (Object t : c) {
-            for (int i = size - 1; i >= 0; i--) {
-                if (items[i].equals(t)) {
-                    remove(i);
-                }
+        System.out.println(items);
+
+        for (Object item : c) {
+            if(item == null){
+                remove(item);
             }
+
+            remove(item);
         }
 
-        modCount += (oldSize - size); // правильно ли я увеличил счетчик изменений
+        if(size != oldSize){
+            modCount = modCount + 1; // достаточно увеличить счетчик на 1 если список изменился
+        }
 
         return size != oldSize;
     }
@@ -330,8 +336,8 @@ public class MyArrayList<T> implements List<T> {
             System.out.println("this is null");
         }
 
-        for (Object t : c) {
-            boolean result = this.contains(t);
+        for (Object item : c) {
+            boolean result = this.contains(item);
 
             if (result == false) {
                 return false;
@@ -389,12 +395,12 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) { // TODO надо делать проверку на null ?
         if (this == obj) {
             return true;
         }
 
-        if (getClass() != obj.getClass()) { // если я прохожу, то что это О. этого класса
+        if (obj == null || getClass() != obj.getClass()) { // если я прохожу, то что это О. этого класса
             return false;
         }
 
@@ -405,7 +411,7 @@ public class MyArrayList<T> implements List<T> {
         }
 
         for (int i = 0; i < size; i++) {
-            if (!items[i].equals(o.items[i])) { // TODO сравниваем только по equals!
+            if (items[i] != null && !items[i].equals(o.items[i])) { // TODO сравниваем только по equals!
                 return false;
             }
         }
@@ -438,11 +444,18 @@ public class MyArrayList<T> implements List<T> {
     public static void main(String[] args) {
         MyArrayList<String> stringList = new MyArrayList<>();
         stringList.add("Hello");
-        stringList.add("Mister");
         stringList.add(null);
+        stringList.add("Mister");
         stringList.add("!");
+        stringList.add("Second");
+        stringList.add("part");
 
-        int hollINd = stringList.indexOf(null);
-        System.out.println(hollINd);
+        MyArrayList<String> stringList2 = new MyArrayList<>();
+        stringList2.add("Mister");
+
+        System.out.println(stringList);
+
+        stringList.removeAll(stringList2);
+        System.out.println(stringList);
     }
 }
