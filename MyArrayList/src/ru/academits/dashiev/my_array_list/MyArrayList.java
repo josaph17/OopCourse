@@ -10,6 +10,40 @@ public class MyArrayList<T> implements List<T> {
     и длина массива могут отличаться*/
     private int modCount; // п.7 счетчик изменений
 
+    private class MyIterator implements Iterator<T>{
+        private int currentIndex = -1; // обязательно должен быть модификатор доступа
+        final int iteratorModCount = modCount;
+
+        @Override
+        public boolean hasNext() {
+            if (iteratorModCount != modCount){
+                throw new ConcurrentModificationException("Collection changed!");
+            }
+
+            return currentIndex < size - 1; /* && items[currentIndex] != null - на null нельзя
+                ориентироваться т.к. это нормально значение данных, size-1 чтобы не убежали! */
+        }
+
+        @Override
+        public T next() { // возвр. текущий элемент и переходит к следующему
+            if (iteratorModCount != modCount){
+                throw new ConcurrentModificationException("Collection changed!");
+            }
+
+            if (currentIndex >= items.length) {
+                throw new NoSuchElementException("Нет больше элементов в ArrayList");
+            }
+
+            ++currentIndex; // сначало увеличиваем индекс
+
+            return items[currentIndex];
+        }
+    }
+
+    public Iterator<T> iterator() {
+        return new MyIterator();
+    }
+
     public MyArrayList() {
         // noinspection unchecked, заглушил
         // Чтобы не было ошибки компиляции, массив типа T приводится к Object
@@ -59,32 +93,6 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public boolean contains(Object o) {
         return indexOf(o) != -1; // вернуть резутат
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        Iterator<T> instance = new Iterator<T>() {
-            private int currentIndex = -1; // обязательно должен быть модификатор доступа
-
-            @Override
-            public boolean hasNext() {
-                return currentIndex < size - 1; /* && items[currentIndex] != null - на null нельзя
-                ориентироваться т.к. это нормально значение данных, size-1 чтобы не убежали! */
-            }
-
-            @Override
-            public T next() { // возвр. текущий элемент и переходит к следующему
-                if (currentIndex >= items.length) {
-                    throw new NoSuchElementException("Не больше элементов в ArrayList");
-                }
-
-                ++currentIndex; // сначало увеличиваем индекс
-
-                return items[currentIndex];
-            }
-        };
-
-        return instance;
     }
 
     @Override
@@ -217,7 +225,7 @@ public class MyArrayList<T> implements List<T> {
         if (o == null) {
             // если o = null
             for (int i = 0; i < size; i++) {
-                if (items[i] == null) { // equals принмиает Object, Не нужно приведение
+                if (items[i] == null) {
                     return i;
                 }
             }
@@ -239,7 +247,7 @@ public class MyArrayList<T> implements List<T> {
         // TODO прошу проверить правильно ли работает на null
         if (o == null){ // если o = null
             for (int i = 0; i < size; i++) {
-                if (items[i] == null) { // equals принмиает Object, Не нужно приведение
+                if (items[i] == null) {
                     return i;
                 }
             }
@@ -442,25 +450,5 @@ public class MyArrayList<T> implements List<T> {
         sb.append("]");
 
         return sb.toString();
-    }
-
-    public static void main(String[] args) {
-        MyArrayList<String> stringList = new MyArrayList<>();
-        stringList.add("Hello");
-        stringList.add(null);
-        stringList.add("Mister");
-        stringList.add("!");
-//        stringList.add("Second");
-//        stringList.add("part");
-
-        MyArrayList<String> stringList2 = new MyArrayList<>();
-        stringList2.add("Mister");
-        stringList2.add(null);
-
-        System.out.println(stringList);
-        System.out.println(stringList2);
-
-        stringList.addAll(stringList2);
-        System.out.println(stringList);
     }
 }
