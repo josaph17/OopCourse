@@ -2,19 +2,7 @@ package ru.academits.dashiev.my_array_list_main;
 
 import ru.academits.dashiev.my_array_list.MyArrayList;
 
-import java.util.Iterator;
-
 public class Main {
-    public static void showWithIterator(MyArrayList arrayList) {
-        Iterator newListIterator = arrayList.iterator();
-
-        while (newListIterator.hasNext()) {
-            System.out.print(newListIterator.next() + " ");
-        }
-
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         MyArrayList<Double> list1 = new MyArrayList<>();
         System.out.println("list size = " + list1.size());
@@ -69,7 +57,6 @@ public class Main {
         int getIndex = 1;
         System.out.println("list4.get(index) = " + list4.get(getIndex));
 
-        int hash = list1.hashCode();
         System.out.println("list1.hashCode() = " + list1.hashCode());
 
         double findIndex = 3.09;
@@ -78,11 +65,6 @@ public class Main {
 
         MyArrayList<Double> emptyList = new MyArrayList<>();
         System.out.println("emptyList.isEmpty(): " + emptyList.isEmpty());
-
-        System.out.println();
-        System.out.println("public Iterator<T> iterator().");
-        System.out.print("showWithIterator(MyArrayList arrayList): ");
-        showWithIterator(list1);
 
         double lastIndexElement = 3777.9;
         list1.add(lastIndexElement);
