@@ -2,8 +2,6 @@ package ru.academits.dashiev.my_array_list_main;
 
 import ru.academits.dashiev.my_array_list.MyArrayList;
 
-import java.util.Iterator;
-
 public class Main {
     public static void main(String[] args) {
         MyArrayList<Double> list1 = new MyArrayList<>();
@@ -59,7 +57,6 @@ public class Main {
         int getIndex = 1;
         System.out.println("list4.get(index) = " + list4.get(getIndex));
 
-        int hash = list1.hashCode();
         System.out.println("list1.hashCode() = " + list1.hashCode());
 
         double findIndex = 3.09;

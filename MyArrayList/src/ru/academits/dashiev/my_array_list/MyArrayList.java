@@ -20,17 +20,13 @@ public class MyArrayList<T> implements List<T> {
                 throw new ConcurrentModificationException("Collection changed!");
             }
 
-            return currentIndex < size - 1; /* && items[currentIndex] != null - на null нельзя
+            return currentIndex + 1 < size; /* && items[currentIndex] != null - на null нельзя
                 ориентироваться т.к. это нормально значение данных, size-1 чтобы не убежали! */
         }
 
         @Override
         public T next() { // возвр. текущий элемент и переходит к следующему
-            if (iteratorModCount != modCount){
-                throw new ConcurrentModificationException("Collection changed!");
-            }
-
-            if (currentIndex >= items.length) {
+            if (currentIndex >= size) {
                 throw new NoSuchElementException("Нет больше элементов в ArrayList");
             }
 
