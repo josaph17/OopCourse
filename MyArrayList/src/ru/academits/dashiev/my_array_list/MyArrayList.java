@@ -1,13 +1,10 @@
 package ru.academits.dashiev.my_array_list;
 // Коммент на будущее ! null - это нормальные данные для любой коллекции, для них все должно работать
 
-import java.sql.Array;
 import java.util.*;
 
-import static java.util.Arrays.asList;
-
 public class MyArrayList<T> implements List<T> {
-    final int defaultCapacity = 4; // константа-поле класса для вместимости по умолчанию
+    final int capacity = 4; // константа-поле класса для вместимости по умолчанию, т.е. items.length
     private T[] items; // внутренний массив
     private int size; /* длина списка(кол-во эл-в в списке) = 0, вместимость списка , длина списка
     и длина массива могут отличаться*/
@@ -16,7 +13,7 @@ public class MyArrayList<T> implements List<T> {
     public MyArrayList() {
         // noinspection unchecked, заглушил
         // Чтобы не было ошибки компиляции, массив типа T приводится к Object
-        items = (T[]) new Object[defaultCapacity];
+        items = (T[]) new Object[capacity];
     }
 
     public MyArrayList(int capacity) {
@@ -259,18 +256,24 @@ public class MyArrayList<T> implements List<T> {
         return -1;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public ListIterator listIterator() {
+        //noinspection ConstantConditions // заглушил
         return null;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public ListIterator listIterator(int index) { // реализация не нужна
+        //noinspection ConstantConditions // заглушил
         return null;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public List subList(int fromIndex, int toIndex) { // реализация не нужна
+        //noinspection ConstantConditions // заглушил
         return null;
     }
 
@@ -313,14 +316,19 @@ public class MyArrayList<T> implements List<T> {
 
         int oldSize = size;
 
-        System.out.println(items);
+        int i = 0;
 
-        for (Object item : c) {
-            if(item == null){
-                remove(item);
+        for (T item : this) {
+            if (!c.contains(item)) {
+                items[i] = item;
+                i++; // передвигаемся по массиву
             }
+        }
 
-            remove(item);
+        size = i;
+
+        for (int j = size; j < oldSize; j++) {
+            items[i] = null;
         }
 
         if(size != oldSize){
@@ -332,14 +340,12 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean containsAll(Collection c) {
-        if (this == null) {
-            System.out.println("this is null");
+        if (c == null) {
+            throw new NullPointerException("Collection is null!!!");
         }
 
         for (Object item : c) {
-            boolean result = this.contains(item);
-
-            if (result == false) {
+            if (!contains(item)) {
                 return false;
             }
         }
@@ -376,20 +382,18 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public void increaseCapacity() {
-        if (items.length == 0) {
-            items = Arrays.copyOf(items, defaultCapacity);
-
-            return;
-        }
-
-        items = Arrays.copyOf(items, items.length * 2);
+        items = Arrays.copyOf(items, capacity * 2);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31; // просто число
+        final int prime = 31; // простое число
 
-        int hash = prime + Arrays.hashCode(items);
+        int hash = 1;
+
+        for (Object item : this) {
+            hash = prime * hash + ((item == null) ? 0 : item.hashCode());
+        }
 
         return hash;
     }
@@ -433,8 +437,7 @@ public class MyArrayList<T> implements List<T> {
             sb.append(items[i]).append(", ");
         }
 
-        sb.deleteCharAt(sb.length() - 1);
-        sb.deleteCharAt(sb.length() - 1);
+        sb.delete(sb.length() - 2, sb.length());
 
         sb.append("]");
 
@@ -447,15 +450,17 @@ public class MyArrayList<T> implements List<T> {
         stringList.add(null);
         stringList.add("Mister");
         stringList.add("!");
-        stringList.add("Second");
-        stringList.add("part");
+//        stringList.add("Second");
+//        stringList.add("part");
 
         MyArrayList<String> stringList2 = new MyArrayList<>();
         stringList2.add("Mister");
+        stringList2.add(null);
 
         System.out.println(stringList);
+        System.out.println(stringList2);
 
-        stringList.removeAll(stringList2);
+        stringList.addAll(stringList2);
         System.out.println(stringList);
     }
 }
