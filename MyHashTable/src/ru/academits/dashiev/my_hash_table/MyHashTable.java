@@ -1,31 +1,29 @@
 package ru.academits.dashiev.my_hash_table;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
-public class MyHashTable<V> implements Collection<V> {
-    private LinkedList<V>[] items; // это точно правильно
+public class MyHashTable<E> implements Collection<E> {
+    private int capacity;
+    private LinkedList<E>[] lists; // это точно правильно, Массив односвязных списков
+    private int hashTableSize; // кол-во эл-в
+    private int modCount; // кол-во изменений
 
     public MyHashTable() {
-        items = (LinkedList<V>[]) new Object[20];
+        capacity = 5;
+
+        lists = new LinkedList[capacity];
     }
 
-    public MyHashTable(int arrayCapacity) {
-        items = new LinkedList[arrayCapacity];
+    public MyHashTable(int capacity) {
+        this.capacity = capacity;
+
+        //noinspection unchecked
+        lists = new LinkedList[capacity];
     }
 
     @Override
     public int size() {
-        int size = 0;
-
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] != null) {
-                size += items[i].size();
-            }
-        }
-        return size;
+        return hashTableSize;
     }
 
     @Override
@@ -39,53 +37,20 @@ public class MyHashTable<V> implements Collection<V> {
             throw new NullPointerException("o is null.");
         }
 
-        V element = (V) o;
+        E value = (E) o;
 
-        int oIndex = Math.abs(element.hashCode() % items.length);
+        int index = Math.abs(value.hashCode() % lists.length);
 
-        if (items[oIndex] == null) {
+        if (lists[index] == null) {
             return false;
         }
 
-        return items[oIndex].contains(o);
+        return lists[index].contains(o);
     }
 
     @Override
-    public Iterator<V> iterator() {
-        // объект кот-й позволяет обойти эл-ы коллекции в определннном порядке
-        Iterator<V> instance = new Iterator<V>() { //тело анонимного класса
-            // Это анонимный класс, та часть, кот-я идет в правой части от присваивания.
-            //Созд новый класс кот-й реал интерфейс Iterator<V>, созд О. этого класса и присв перем instance.
-            int currentIndex = findFirstElIndex();
-
-            int lastNotNullElementIndex = findLastElIndex();
-
-            boolean isHashTableEmpty = (size() == 0); // будет созд при созд итератора только раз
-
-            @Override
-            public boolean hasNext() {
-                if (!isHashTableEmpty && currentIndex <= lastNotNullElementIndex) {
-                    while (items[currentIndex] == null) {
-                        currentIndex++;
-                    }
-                    return true;
-                }
-
-                return false;
-            }
-
-            @Override
-            public V next() {
-                if (currentIndex >= items.length) {
-                    throw new IndexOutOfBoundsException(
-                            "Коллекция закончилась!"); // лекция 13 стр.15
-                }
-
-                return items[currentIndex++].getFirst(); //т.к. Колллизии не рассматриваем
-            }
-        };
-
-        return instance;
+    public Iterator<E> iterator() {
+        return new MyIterator();
     }
 
     @Override
@@ -94,9 +59,9 @@ public class MyHashTable<V> implements Collection<V> {
 
         int resultIndex = 0;
 
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] != null) {
-                for (V v : items[i]) {
+        for (int i = 0; i < lists.length; i++) {
+            if (lists[i] != null) {
+                for (E v : lists[i]) {
                     result[resultIndex++] = v;
                 }
             }
@@ -112,6 +77,7 @@ public class MyHashTable<V> implements Collection<V> {
         }
 
         int hashTableSize = size();
+
         T[] hashTableArray = (T[]) toArray();
 
         if (hashTableSize > a.length) {
@@ -136,32 +102,40 @@ public class MyHashTable<V> implements Collection<V> {
     }
 
     @Override
-    public boolean add(V value) {
-        if (value == null) {
-            throw new NullPointerException("value is null!");
+    public boolean add(E value) {
+        int index = (value == null) ? 0 : Math.abs(value.hashCode() % capacity);
+
+        // System.out.println("index = " + index);
+
+        if (lists[index] == null) {
+            lists[index] = new LinkedList<>();
         }
 
-        int index = Math.abs(value.hashCode() % items.length);
+        hashTableSize = hashTableSize + 1;
 
-        if (items[index] == null) {
-            items[index] = new LinkedList<>();
-        }
+        modCount = modCount + 1;
 
-        return items[index].add(
-                value); // true т.к. у односвязного списка нет случаев когда он может не добавить
+        // true т.к. у односвязного списка нет случаев когда он может не добавить
+        return lists[index].add(value);
     }
 
     @Override
     public boolean remove(Object o) {
-        if (o == null) {
-            throw new NullPointerException("o is null!");
+        if (hashTableSize == 0) {
+            return false; // когда список пуст
         }
 
-        V element = (V) o;
+        int index = Math.abs(o.hashCode() % lists.length);
 
-        int oIndex = Math.abs(element.hashCode() % items.length);
+        boolean result = lists[index].remove(o);
 
-        return items[oIndex].remove(o); // чтобы не делать двойного приведения
+        if (result) {
+            hashTableSize = hashTableSize - 1;
+
+            modCount = modCount + modCount;
+        }
+
+        return result; // чтобы не делать двойного приведения
     }
 
     @Override
@@ -180,14 +154,14 @@ public class MyHashTable<V> implements Collection<V> {
     }
 
     @Override
-    public boolean addAll(Collection<? extends V> c) {
+    public boolean addAll(Collection<? extends E> c) {
         if (c == null) {
             throw new NullPointerException("c is null!");
         }
 
         boolean isHashTableChanged = false;
 
-        for (V v : c) {
+        for (E v : c) {
             add(v);
             isHashTableChanged = true;
         }
@@ -198,13 +172,13 @@ public class MyHashTable<V> implements Collection<V> {
     @Override
     public boolean removeAll(Collection<?> c) {
         if (c == null) {
-            throw new NullPointerException("c is null!");
+            throw new NullPointerException("Collection is null!!!");
         }
 
         boolean isHashTableChanged = false;
 
         for (Object o : c) {
-            if (remove(o) == true) { // remove(o) выполнится и сразу даст ответ
+            if (remove(o)) { // remove(o) выполнится и сразу даст ответ
                 isHashTableChanged = true;
             }
         }
@@ -220,9 +194,9 @@ public class MyHashTable<V> implements Collection<V> {
 
         boolean isHashTableChanged = false;
 
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] != null) {
-                if (items[i].retainAll(c)) { // если retainAll вернет true
+        for (int i = 0; i < lists.length; i++) {
+            if (lists[i] != null) {
+                if (lists[i].retainAll(c)) { // если retainAll вернет true
                     isHashTableChanged = true;
                 }
             }
@@ -233,40 +207,81 @@ public class MyHashTable<V> implements Collection<V> {
 
     @Override
     public void clear() {
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] != null) {
-                items[i] = null;
+        if (hashTableSize == 0) {
+            return; // ничего не делать если таблица уже пустая
+        }
+
+        for (int i = 0; i < lists.length; i++) {
+            lists[i] = null;
+        }
+
+        hashTableSize = 0;
+    }
+
+    @Override
+    public String toString() {
+        if (hashTableSize == 0) {
+            return "[]";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        Iterator<E> iterator = new MyIterator();
+
+        while (iterator.hasNext()) {
+            sb.append(iterator.next()).append(" ");
+        }
+
+        return sb.toString();
+    }
+
+    private class MyIterator implements Iterator<E> {
+        final int iteratorModCount = modCount;
+
+        int indexOfElementInTable = -1; // индекс элемента во всей таблице
+        int indexOfListInArray = 0; // индекс списка в массиве
+        int indexOfElementInList = 0; // индекс элемента в списке
+
+        @Override
+        public boolean hasNext() {
+            if (iteratorModCount != modCount) {
+                throw new ConcurrentModificationException("Collection changed!");
             }
+
+            return indexOfElementInTable + 1 < hashTableSize;
+        }
+
+        @Override
+        public E next() {
+            if (indexOfElementInTable >= hashTableSize) {
+                // лекция 13 стр.15
+                throw new NoSuchElementException("Нет больше элементов в HashTable");
+            }
+
+            for (int i = indexOfListInArray; indexOfListInArray < capacity;) {
+                if (!lists[indexOfListInArray].isEmpty() && indexOfElementInList < lists[indexOfListInArray].size()) {
+                    indexOfElementInTable++;
+
+                    return lists[indexOfListInArray].get(indexOfElementInList++);
+                } else {
+                    indexOfElementInList = 0;
+                    indexOfListInArray++;
+                }
+            }
+
+            return null;
         }
     }
 
-    private int findLastElIndex() {
-        /*TODO т.к. коллизию обрабатывать не нужно, то логика нахождения пслденего эл-а упрощается не
-         *TODO не нужно будет пробегать по эл-м linkedList */
-        int findIndex = 0;
+    public static void main(String[] args) {
+        MyHashTable<Integer> hashTable1 = new MyHashTable<>(3);
 
-        for (int i = items.length - 1; size() != 0; ) {
-            if (items[i] == null) { // точно есть элемент, Нно надо откатиться назад
-                i--; // индекс последнего элемента
-            }
+        hashTable1.add(88);
+        hashTable1.add(111);
+        hashTable1.add(432);
+        hashTable1.add(null);
+        hashTable1.add(32);
 
-            if (items[i] != null) {
-                return i;
-            }
-        }
-
-        return -1; // нет эл-в в hashTable
-    }
-
-    private int findFirstElIndex() {
-        for (int i = 0; size() != 0; ) {
-            if (items[i] != null) {
-                return i;
-            }
-
-            i++;
-        }
-
-        return -1; // нет эл-в в hashTable
+        System.out.println(hashTable1);
     }
 }
