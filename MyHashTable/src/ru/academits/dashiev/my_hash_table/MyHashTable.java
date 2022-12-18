@@ -219,18 +219,11 @@ public class MyHashTable<E> implements Collection<E> {
             return false;
         }
 
-        boolean isHashTableChanged = false;
-        
         Iterator<E> iterator = iterator();
-
-        boolean isDelete = true;
 
         for (Object item : this) {
             while (iterator.hasNext()) {
                 E value = iterator.next();
-
-                // System.out.println(value);
-                System.out.println(c.contains(value));
 
                 if (!c.contains(value)) {
                     iterator.remove();
@@ -238,7 +231,6 @@ public class MyHashTable<E> implements Collection<E> {
             }
         }
 
-        // System.out.println(this);
 
         return oldHashTableSize != hashTableSize;
     }
