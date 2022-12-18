@@ -2,26 +2,9 @@ package ru.academits.dashiev.my_hash_table_main;
 
 import ru.academits.dashiev.my_hash_table.MyHashTable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Main {
-    public static void showHashTable(MyHashTable<Integer> hashTable) {
-        if (hashTable.size() == 0) {
-            System.out.println("[]");
-            return;
-        }
-
-        Iterator newListIterator = hashTable.iterator();
-
-        while (newListIterator.hasNext()) {
-            System.out.print(newListIterator.next() + " ");
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         MyHashTable<Integer> hashTable1 = new MyHashTable<>(15);
 
@@ -31,26 +14,21 @@ public class Main {
         hashTable1.add(111);
         System.out.println("hashTable1.add(" + addElement + "): " + hashTable1.add(addElement));
 
-        showHashTable(hashTable1);
 
         System.out.println("hashTable1 size = " + hashTable1.size());
 
-        ArrayList arrayList1 = new ArrayList<>(Arrays.asList(789, 233));
+        List<Integer> arrayList1 = new ArrayList<>(Arrays.asList(789, 233));
 
         hashTable1.addAll(arrayList1);
         System.out.print("hashTable1.addAll(arrayList1), hashTable1: ");
-        showHashTable(hashTable1);
 
         hashTable1.clear();
         System.out.print("hashTable1 after hashTable1.clear(): ");
-        showHashTable(hashTable1);
 
         hashTable1.add(7);
         hashTable1.add(190);
         hashTable1.add(778);
         System.out.print("hashTable1: ");
-        showHashTable(hashTable1);
-
 
         Integer containsObject = 778;
         System.out.println("hashTable1.contains(" + containsObject + "): " + hashTable1.contains(
@@ -67,17 +45,21 @@ public class Main {
 
         System.out.print("Object[] array = hashTable1.toArray(), array: ");
         Object[] array = hashTable1.toArray();
+
         for (Object o : array) { // выводим массив
             System.out.print(o + " ");
         }
+
         System.out.println();
 
         System.out.print("testToArray = hashTable1.toArray(testToArray),tesToArray: ");
-        Integer[] testToArray = new Integer[]{1};
+        Integer[] testToArray = {1};
         testToArray = hashTable1.toArray(testToArray);
+
         for (Integer integer : testToArray) {
             System.out.print(integer + " ");
         }
+
         System.out.println();
 
         System.out.println("-------Не знаю как проверять ф-ии remove, removeAll, retainAll-------");
@@ -102,6 +84,6 @@ public class Main {
         hashTable3.add(1);
         hashTable3.add(890);
         LinkedList<Integer> retainLinkedList = new LinkedList<>(Arrays.asList(78, 44, 1));
-        hashTable3.retainAll(retainLinkedList);
+                hashTable3.retainAll(retainLinkedList);
     }
 }

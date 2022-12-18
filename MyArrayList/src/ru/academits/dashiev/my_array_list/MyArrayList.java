@@ -10,36 +10,6 @@ public class MyArrayList<T> implements List<T> {
     и длина массива могут отличаться*/
     private int modCount; // п.7 счетчик изменений
 
-    private class MyIterator implements Iterator<T>{
-        private int currentIndex = -1; // обязательно должен быть модификатор доступа
-        final int iteratorModCount = modCount;
-
-        @Override
-        public boolean hasNext() {
-            if (iteratorModCount != modCount){
-                throw new ConcurrentModificationException("Collection changed!");
-            }
-
-            return currentIndex + 1 < size; /* && items[currentIndex] != null - на null нельзя
-                ориентироваться т.к. это нормально значение данных, size-1 чтобы не убежали! */
-        }
-
-        @Override
-        public T next() { // возвр. текущий элемент и переходит к следующему
-            if (currentIndex >= size) {
-                throw new NoSuchElementException("Нет больше элементов в ArrayList");
-            }
-
-            ++currentIndex; // сначало увеличиваем индекс
-
-            return items[currentIndex];
-        }
-    }
-
-    public Iterator<T> iterator() {
-        return new MyIterator();
-    }
-
     public MyArrayList() {
         // noinspection unchecked, заглушил
         // Чтобы не было ошибки компиляции, массив типа T приводится к Object
@@ -49,6 +19,10 @@ public class MyArrayList<T> implements List<T> {
     public MyArrayList(int capacity) {
         // noinspection unchecked
         items = (T[]) new Object[capacity]; // заглушил
+    }
+
+    public Iterator<T> iterator() {
+        return new MyIterator();
     }
 
     public void ensureCapacity(int capacity) {
@@ -67,7 +41,8 @@ public class MyArrayList<T> implements List<T> {
     private void checkIndexToAdd(int index) {
         // Верхняя граница не должна зависеть от длины массива(items.length), а должна зависеть от длины списка
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("List min index = 0, max index = " + size + ". Current index = " + index);
+            throw new IndexOutOfBoundsException(
+                    "List min index = 0, max index = " + size + ". Current index = " + index);
         }
     }
 
@@ -141,7 +116,7 @@ public class MyArrayList<T> implements List<T> {
             items[i] = item;
             i = i + 1;
             size = size + 1;
-            modCount = modCount +1;
+            modCount = modCount + 1;
         }
 
         return oldSize != size;
@@ -230,7 +205,7 @@ public class MyArrayList<T> implements List<T> {
         }
 
         for (int i = 0; i < size; i++) { // чтобы не вызывать от null
-            if (items[i] != null && items[i].equals(o)){
+            if (items[i] != null && items[i].equals(o)) {
                 return i; // equals принмиает Object, Не нужно приведение
             } // если  items[i] == null, то пропускаем
         }
@@ -241,7 +216,7 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public int lastIndexOf(Object o) {
         // TODO прошу проверить правильно ли работает на null
-        if (o == null){ // если o = null
+        if (o == null) { // если o = null
             for (int i = 0; i < size; i++) {
                 if (items[i] == null) {
                     return i;
@@ -305,7 +280,7 @@ public class MyArrayList<T> implements List<T> {
             items[i] = null;
         }
 
-        if(size != oldSize){
+        if (size != oldSize) {
             modCount = modCount + 1; // достаточно увеличить счетчик на 1 если список изменился
         }
 
@@ -335,7 +310,7 @@ public class MyArrayList<T> implements List<T> {
             items[i] = null;
         }
 
-        if(size != oldSize){
+        if (size != oldSize) {
             modCount = modCount + 1; // достаточно увеличить счетчик на 1 если список изменился
         }
 
@@ -419,7 +394,8 @@ public class MyArrayList<T> implements List<T> {
         }
 
         for (int i = 0; i < size; i++) {
-            if (items[i] != null && !items[i].equals(o.items[i])) { // TODO сравниваем только по equals!
+            if (items[i] != null && !items[i].equals(
+                    o.items[i])) { // TODO сравниваем только по equals!
                 return false;
             }
         }
@@ -435,16 +411,44 @@ public class MyArrayList<T> implements List<T> {
 
         StringBuilder sb = new StringBuilder();
 
+        Iterator<T> iterator =  new MyIterator();
+
         sb.append("[");
 
-        for (int i = 0; i < size; i++) {
-            sb.append(items[i]).append(", ");
+        while (iterator.hasNext()){
+            sb.append(iterator.next()).append(" ");
         }
 
-        sb.delete(sb.length() - 2, sb.length());
+        sb.deleteCharAt(sb.length() - 2);
 
         sb.append("]");
 
         return sb.toString();
+    }
+
+    private class MyIterator implements Iterator<T> {
+        final int iteratorModCount = modCount;
+        private int currentIndex = -1; // обязательно должен быть модификатор доступа
+
+        @Override
+        public boolean hasNext() {
+            if (iteratorModCount != modCount) {
+                throw new ConcurrentModificationException("Collection changed!");
+            }
+
+            return currentIndex + 1 < size; /* && items[currentIndex] != null - на null нельзя
+                ориентироваться т.к. это нормально значение данных, size-1 чтобы не убежали! */
+        }
+
+        @Override
+        public T next() { // возвр. текущий элемент и переходит к следующему
+            if (currentIndex >= size) {
+                throw new NoSuchElementException("Нет больше элементов в ArrayList");
+            }
+
+            ++currentIndex; // сначало увеличиваем индекс
+
+            return items[currentIndex];
+        }
     }
 }
