@@ -22,26 +22,6 @@ public class MyHashTable<E> implements Collection<E> {
         lists = new LinkedList[capacity];
     }
 
-    public static void main(String[] args) {
-        MyHashTable<Integer> hashTable1 = new MyHashTable<>(3);
-
-        hashTable1.add(88);
-        hashTable1.add(432);
-        hashTable1.add(32);
-        hashTable1.add(null);
-        hashTable1.add(32);
-        hashTable1.add(54);
-        hashTable1.add(null);
-
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        arrayList.add(432);
-        arrayList.add(null);
-
-        System.out.println(hashTable1.retainAll(arrayList));
-
-        System.out.println(hashTable1);
-    }
-
     @Override
     public int size() {
         return hashTableSize;
@@ -221,13 +201,11 @@ public class MyHashTable<E> implements Collection<E> {
 
         Iterator<E> iterator = iterator();
 
-        for (Object item : this) {
-            while (iterator.hasNext()) {
-                E value = iterator.next();
+        while (iterator.hasNext()) {
+            E value = iterator.next();
 
-                if (!c.contains(value)) {
-                    iterator.remove();
-                }
+            if (!c.contains(value)) {
+                iterator.remove();
             }
         }
 
@@ -270,6 +248,8 @@ public class MyHashTable<E> implements Collection<E> {
         int indexOfListInArray = 0; // индекс списка в массиве
         int indexOfElementInList = -1; // индекс элемента в списке
 
+        boolean isNextCalled; // false по умолчанию
+
         @Override
         public boolean hasNext() {
             if (iteratorModCount != modCount) {
@@ -281,6 +261,8 @@ public class MyHashTable<E> implements Collection<E> {
 
         @Override
         public E next() {
+            isNextCalled = true;
+
             if (indexOfElementInTable >= hashTableSize) {
                 // лекция 13 стр.15
                 throw new NoSuchElementException("Нет больше элементов в HashTable");
@@ -304,21 +286,61 @@ public class MyHashTable<E> implements Collection<E> {
 
         @Override
         public void remove() {
-            int listSize = lists[indexOfListInArray].size();
+            if (isNextCalled)  {
+                int listSize = lists[indexOfListInArray].size();
 
-            System.out.println(
-                    "indexOfElementInTable = " + indexOfElementInTable + " , deleted in list[" + indexOfListInArray + "] item index = " + indexOfElementInList //
-                            + " value = " + lists[indexOfListInArray].get(indexOfElementInList));
+                System.out.println(
+                        "indexOfElementInTable = " + indexOfElementInTable + " , deleted in list[" + indexOfListInArray + "] item index = " + indexOfElementInList //
+                                + " value = " + lists[indexOfListInArray].get(indexOfElementInList));
 
 
-            lists[indexOfListInArray].remove(lists[indexOfListInArray].get(indexOfElementInList));
+                lists[indexOfListInArray].remove(indexOfElementInList);
 
-            indexOfElementInTable = indexOfElementInTable -1;
-            indexOfElementInList = indexOfElementInList - 1;
+                indexOfElementInTable = indexOfElementInTable -1;
+                indexOfElementInList = indexOfElementInList - 1;
 
-            hashTableSize = hashTableSize - 1;
+                hashTableSize = hashTableSize - 1;
 
-            return;
+                isNextCalled = false;
+            } else {
+                // Чтобы remove не вызвался 2 раза
+                throw new IllegalStateException ("Operation removeAll() call second time!");
+            }
         }
     }
+
+    //    public static void main(String[] args) {
+    //        MyHashTable<Integer> hashTable1 = new MyHashTable<>(3);
+    //
+    //        hashTable1.add(88);
+    //        hashTable1.add(432);
+    ////        hashTable1.add(32);
+    //        hashTable1.add(null);
+    //        hashTable1.add(32);
+    //        hashTable1.add(54);
+    //        hashTable1.add(null);
+    //
+    //        ArrayList<Integer> arrayList = new ArrayList<>();
+    //        arrayList.add(432);
+    //        arrayList.add(null);
+    //
+    //        System.out.println(hashTable1.retainAll(arrayList));
+    //
+    //        System.out.println(hashTable1);
+    //
+    //        MyHashTable<Integer> hashTable2 = new MyHashTable<>(3);
+    //        hashTable2.add(1);
+    //        hashTable2.add(2);
+    //        hashTable2.add(3);
+    //        hashTable2.add(4);
+    //        hashTable2.add(5);
+    //        System.out.println(hashTable2);
+    //        Iterator<Integer> iterator = hashTable2.iterator();
+    //        iterator.next();
+    //        iterator.next();
+    //        iterator.remove();
+    //        iterator.next();
+    //        iterator.remove();
+    //        System.out.println(hashTable2);
+    //    }
 }
