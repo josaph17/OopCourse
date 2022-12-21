@@ -24,7 +24,10 @@ public class Csv {
 
             while ((readLine = reader.readLine()) != null) {
                 StringBuilder sb = new StringBuilder();
-                if (isCharIncludeInCell == false) {
+
+                if (readLine.isEmpty()) {
+                    continue;
+                } else if (isCharIncludeInCell == false) {
                     sb.append("<tr>");
                     sb.append("<td>");
                 } else {
@@ -34,13 +37,8 @@ public class Csv {
                 for (int i = 0; i < readLine.length(); i++) {
                     char currentChar = readLine.charAt(i);
 
-                    System.out.println("currentChar[" + i + "] = " + currentChar);
-
-                    if (i == 10) {
-                        System.out.println("hello");
-                    }
-
-                    if ((Character.compare(currentChar, '"') == 0)) { // todo символ "
+                    //System.out.println("currentChar[" + i + "] = " + currentChar);
+                    if ((Character.compare(currentChar, '"') == 0)) {
                         if (isTwoDotsCallFirst == false) {
                             isTwoDotsCallFirst = true;
                             isCharIncludeInCell = true; // start involve in cell  before "
@@ -55,28 +53,26 @@ public class Csv {
                             isCharIncludeInCell = false;
                             isTwoDotsCallFirst = false;
 
-                            System.out.println("--Close content!--");
+                            // System.out.println("--Close content!--");
                         }
-                    } else if (Character.compare(currentChar, ',') == 0) { // todo символ ,
-                        // символ ,
+                    } else if (Character.compare(currentChar, ',') == 0) {
                         if (isCharIncludeInCell == true) {
                             sb.append(currentChar);
                         } else {
                             sb.append("</td>");
                             sb.append("<td>");
                         }
-                    } else if (Character.compare(currentChar, '<') == 0){
+                    } else if (Character.compare(currentChar, '<') == 0) {
                         sb.append("&lt");
-                    } else if (Character.compare(currentChar, '>') == 0){
+                    } else if (Character.compare(currentChar, '>') == 0) {
                         sb.append("&gt");
-                    }else if (Character.compare(currentChar, '&') == 0){
+                    } else if (Character.compare(currentChar, '&') == 0) {
                         sb.append("&amp");
-                    }
-                    else {
+                    } else {
                         sb.append(currentChar);
                     }
 
-                    System.out.println(sb);
+                    // System.out.println(sb);
                 }
 
                 if (isCharIncludeInCell == false) {
@@ -86,7 +82,7 @@ public class Csv {
 
                 String resultLine = sb.toString();
 
-                System.out.println(sb);
+                // System.out.println(sb);
 
                 writer.write(resultLine); // запоняем каждую строчку
             }
