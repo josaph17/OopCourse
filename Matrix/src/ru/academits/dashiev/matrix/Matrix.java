@@ -94,22 +94,60 @@ public class Matrix {
         }
     }
 
-    public int rows() {
-        return rows;
-    }
-
-    public int cols() {
-        return cols;
-    }
-
-    private void checkIndex(int index) {
+    private void checkRowIndex(int index) {
         if (index < 0 || index >= rows) {
             throw new IndexOutOfBoundsException(
                     "Matrix min rowIndex = 0, max index = " + (rows - 1) + ". Current rowIndex = " + index);
         }
     }
 
+    private void checkColIndex(int index) {
+        if (index < 0 || index >= cols) {
+            throw new IndexOutOfBoundsException(
+                    "Matrix min colIndex = 0, max index = " + (cols - 1) + ". Current colIndex = " + index);
+        }
+    }
+
+    // a.Получение размеров матрицы
+    public int rows() {
+        return rows;
+    }
+
+    // a.Получение размеров матрицы
+    public int cols() {
+        return cols;
+    }
+
+    // b.Получение и задание вектора-строки по индексу
+    public Vector getVectorRow(int index) {
+        checkRowIndex(index);
+
+        return new Vector(vectors[index]);
+    }
+
+    // b.Получение и задание вектора-строки по индексу
+    public void setVectorRow(int index, double... array) {
+        checkRowIndex(index);
+
+        if (array.length < cols || array.length > cols) {
+            throw new IllegalArgumentException("Array length = " + array.length + "  is wrong, because cols = " + cols + ".");
+        }
+
+        vectors[index] = new Vector(array);
+    }
+
     // c.Получение вектора - столбца по индексу
+    public Vector getCol(int index) {
+        checkColIndex(index);
+
+        double[] copy = new double[rows];
+        for (int i = 0; i < rows; i++) {
+            copy[i] = vectors[i].getComponent(index);
+        }
+
+        return new Vector(copy);
+    }
+
     // d.Транспонирование матрицы
     // e.Умножение на скаляр
     // f.Вычисление определителя матрицы
@@ -120,14 +158,4 @@ public class Matrix {
     // Статические методы. a.Сложение матриц
     // Статические методы. b.Вычитание матриц
     // Статические методы. c.Умножение матриц
-
-    // a.Получение размеров матрицы
-    public int size() {
-        return rows * cols;
-    }
-
-    // b.Получение и задание вектора-строки по индексу
-    public Vector getRow(int index) {
-        return null;
-    }
 }
