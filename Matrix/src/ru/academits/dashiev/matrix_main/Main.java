@@ -27,9 +27,9 @@ public class Main {
 
     public static void checkMethods() {
         double[] array1 = {21.3, 43.4, 3.2, 6};
-        double[] array2 = {9, 9.17, 1.62, 10};
+        double[] array2 = {9, 0, 1.62, 10};
         double[] array3 = {5.9, 7.05, 8};
-        double[] array4 = {0, 1.9, 4.4, 2.28};
+        double[] array4 = {0, 1.9, 0, 2.28};
 
         Vector vector1 = new Vector(array1);
         Vector vector2 = new Vector(array2);
@@ -52,7 +52,7 @@ public class Main {
         //System.out.println("After transpose");
         //System.out.println(vectorsMatrix);
 
-        double det = vectorsMatrix.determinant(vectorsMatrix.cols());
+        double det = vectorsMatrix.calculateDet();
 
         System.out.println(det);
     }
