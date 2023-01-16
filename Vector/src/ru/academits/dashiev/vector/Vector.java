@@ -127,7 +127,7 @@ public class Vector {
         }
 
         for (int i = 0; i < vector.components.length; i++) {
-            components[i] -= vector.components[i]; // здесь this осдавили, чтобы указать, что это поле
+            components[i] -= vector.components[i]; // здесь this оставили, чтобы указать, что это поле
         }
     }
 
