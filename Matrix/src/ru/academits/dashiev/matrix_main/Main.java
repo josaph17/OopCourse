@@ -101,18 +101,18 @@ public class Main {
 
         double[] array4 = {21.3, 43.4, 3.2};
         double[] array5 = {9, 0, 1.62, 10};
-        double[] array6 = {5.9, 7.05, 8};
+        double[] array6 = {5.9, 7.05, 92};
 
-        Vector vector4 = new Vector(array1);
-        Vector vector5 = new Vector(array2);
-        Vector vector6 = new Vector(array3);
+        Vector vector4 = new Vector(array4);
+        Vector vector5 = new Vector(array5);
+        Vector vector6 = new Vector(array6);
 
         Vector[] vectorsArray2 = {vector4, vector5, vector6};
 
         Matrix vectorsMatrix2 = new Matrix(vectorsArray2);
 
-        vectorsMatrix.subtract(vectorsMatrix2);
+        Matrix result = Matrix.getSubtract(vectorsMatrix,vectorsMatrix2);
 
-        vectorsMatrix.printMatrix();
+        result.printMatrix();
     }
 }
