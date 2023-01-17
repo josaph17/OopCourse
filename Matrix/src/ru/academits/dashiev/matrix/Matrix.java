@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class Matrix {
     private int rows_count;
-    private int cols_cunt;
+    private int cols_count;
 
     private Vector[] data;
 
@@ -20,7 +20,7 @@ public class Matrix {
         }
 
         rows_count = n;
-        cols_cunt = m;
+        cols_count = m;
 
         data = new Vector[n]; // обязательно проинициализируем vectors
 
@@ -35,7 +35,7 @@ public class Matrix {
         }
 
         rows_count = matrix.rows_count;
-        cols_cunt = matrix.cols_cunt;
+        cols_count = matrix.cols_count;
 
         data = new Vector[rows_count]; // создаем массив векторов
 
@@ -57,13 +57,13 @@ public class Matrix {
         for (int i = 0; i < rows_count; i++) {
             int currentCapacity = array[i].length;
 
-            if (currentCapacity > cols_cunt) {
-                cols_cunt = currentCapacity;
+            if (currentCapacity > cols_count) {
+                cols_count = currentCapacity;
             }
         }
 
         for (int i = 0; i < rows_count; i++) {
-            data[i] = new Vector(Arrays.copyOf(array[i], cols_cunt));
+            data[i] = new Vector(Arrays.copyOf(array[i], cols_count));
         }
     }
 
@@ -80,13 +80,13 @@ public class Matrix {
         for (int i = 0; i < rows_count; i++) {
             int currentCapacity = vector[i].getSize();
 
-            if (currentCapacity > cols_cunt) {
-                cols_cunt = currentCapacity;
+            if (currentCapacity > cols_count) {
+                cols_count = currentCapacity;
             }
         }
 
         for (int i = 0; i < rows_count; i++) {
-            data[i] = new Vector(cols_cunt);
+            data[i] = new Vector(cols_count);
 
             for (int j = 0; j < vector[i].getSize(); j++) {
                 data[i].setComponent(j, vector[i].getComponent(j));
@@ -102,9 +102,9 @@ public class Matrix {
     }
 
     private void checkColIndex(int index) {
-        if (index < 0 || index >= cols_cunt) {
+        if (index < 0 || index >= cols_count) {
             throw new IndexOutOfBoundsException(
-                    "Matrix min colIndex = 0, max index = " + (cols_cunt - 1) + ". Current colIndex = " + index);
+                    "Matrix min colIndex = 0, max index = " + (cols_count - 1) + ". Current colIndex = " + index);
         }
     }
 
@@ -115,7 +115,7 @@ public class Matrix {
 
     // a.Получение размеров матрицы
     public int cols() {
-        return cols_cunt;
+        return cols_count;
     }
 
     // b.Получение и задание вектора-строки по индексу
@@ -129,9 +129,9 @@ public class Matrix {
     public void setVectorRow(int index, double... array) {
         checkRowIndex(index);
 
-        if (array.length < cols_cunt || array.length > cols_cunt) {
+        if (array.length < cols_count || array.length > cols_count) {
             throw new IllegalArgumentException(
-                    "Array length = " + array.length + "  is wrong, because cols = " + cols_cunt + ".");
+                    "Array length = " + array.length + "  is wrong, because cols = " + cols_count + ".");
         }
 
         data[index] = new Vector(array);
@@ -151,7 +151,7 @@ public class Matrix {
 
     // d.Транспонирование матрицы
     public void transpose() {
-        int transposeRows = cols_cunt;
+        int transposeRows = cols_count;
         int transposeCols = rows_count;
 
         Matrix copyMatrix = new Matrix(transposeRows, transposeCols);
@@ -161,7 +161,7 @@ public class Matrix {
         }
 
         rows_count = transposeRows;
-        cols_cunt = transposeCols;
+        cols_count = transposeCols;
 
         data = new Vector[rows_count];
 
@@ -178,13 +178,36 @@ public class Matrix {
     }
 
     // f.Вычисление определителя матрицы
-    public double calculateDet(){
-        return determinant(cols_cunt);
+    public double calculateDet() {
+        return determinant(cols_count);
+    }
+
+    private Matrix getMinor(int removes_i) {
+        Vector[] minor = new Vector[rows_count - 1];
+        int m = 0; // Итератор для минора
+
+        for (int i = 1; i < rows_count; i++) { // j - номер строки, всегда берем с 1 строки, т.к. 0 не участвует
+            // Создаем подмассив для инициализации минора
+            double[] subArray = new double[rows_count - 1]; // После прохода каждой строчки создаю подмассив
+
+            // k - итератор для подмассива
+            for (int j = 0, k = 0; j < rows_count; j++) { // l - Номер столбца
+                if (j != removes_i) {
+                    subArray[k] = data[i].getComponent(j);
+                    k = k + 1;
+                }
+            }
+
+            minor[m] = new Vector(subArray);
+            m = m + 1;
+        }
+
+        return new Matrix(minor);
     }
 
     private double determinant(int n) {
         // Делаем разложение определителя по первой строке
-        if (cols_cunt != rows_count) {
+        if (cols_count != rows_count) {
             throw new IllegalArgumentException("Matrix is not square!");
         }
 
@@ -200,27 +223,7 @@ public class Matrix {
         double det = 0; // Определитель, детерминант
 
         for (int i = 0; i < n; i++) { // Пробегаемся по всем эл-м первой строки, n-столбцов в i-й строке
-            Vector[] minor = new Vector[n - 1];
-            int m = 0; // Итератор для минора
-
-            for (int j = 1; j < n; j++) { // j - номер строки, всегда берем с 1 строки, т.к. 0 не участвует
-                // Создаем подмассив для инициализации подматрицы
-                double[] subArray = new double[n - 1]; // После прохода каждой строчки создаю подмассив
-
-                int l = 0; // Итератор для подмассива
-
-                for (int k = 0; k < n; k++) { // l - Номер столбца
-                    if (k != i) {
-                        subArray[l] = data[j].getComponent(k);
-                        l = l + 1;
-                    }
-                }
-
-                minor[m] = new Vector(subArray);
-                m = m + 1;
-            }
-
-            Matrix subMatrix = new Matrix(minor);// подмассив, "состоящий из n-1 миноров"
+            Matrix subMatrix = getMinor(i); // Подмассив, "состоящий из n-1 миноров"
 
             det += data[0].getComponent(i) * Math.pow(-1, i) * subMatrix.determinant(n - 1);
         }
@@ -257,7 +260,7 @@ public class Matrix {
 
     public void printMatrix() {
         for (int i = 0; i < rows_count; i++) {
-            for (int j = 0; j < cols_cunt; j++) {
+            for (int j = 0; j < cols_count; j++) {
                 System.out.printf("%9.2f", data[i].getComponent(j));
             }
             System.out.println("\n");
