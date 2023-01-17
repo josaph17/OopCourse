@@ -138,7 +138,7 @@ public class Matrix {
     }
 
     // c.Получение вектора - столбца по индексу
-    public Vector getVectorCol(int index) {
+    public Vector getVectorColumn(int index) {
         checkColIndex(index);
 
         double[] copy = new double[rows_count];
@@ -157,7 +157,7 @@ public class Matrix {
         Matrix copyMatrix = new Matrix(transposeRows, transposeCols);
 
         for (int i = 0; i < transposeRows; i++) {
-            copyMatrix.data[i] = new Vector(getVectorCol(i));
+            copyMatrix.data[i] = new Vector(getVectorColumn(i));
         }
 
         rows_count = transposeRows;
@@ -182,7 +182,7 @@ public class Matrix {
         return determinant(cols_count);
     }
 
-    private Matrix getMinor(int removes_i) {
+    private Matrix getMinor(int removes_j) {
         Vector[] minor = new Vector[rows_count - 1];
         int m = 0; // Итератор для минора
 
@@ -190,9 +190,9 @@ public class Matrix {
             // Создаем подмассив для инициализации минора
             double[] subArray = new double[rows_count - 1]; // После прохода каждой строчки создаю подмассив
 
-            // k - итератор для подмассива
-            for (int j = 0, k = 0; j < rows_count; j++) { // l - Номер столбца
-                if (j != removes_i) {
+            // j - номер столбца, k - итератор для подмассива
+            for (int j = 0, k = 0; j < rows_count; j++) {
+                if (j != removes_j) {
                     subArray[k] = data[i].getComponent(j);
                     k = k + 1;
                 }
@@ -205,27 +205,28 @@ public class Matrix {
         return new Matrix(minor);
     }
 
-    private double determinant(int n) {
+    private double determinant(int dimension) {
         // Делаем разложение определителя по первой строке
         if (cols_count != rows_count) {
             throw new IllegalArgumentException("Matrix is not square!");
         }
 
-        if (n == 1) {
+        // Когда размерность матрицы = 1
+        if (dimension == 1) {
             return data[0].getComponent(0);
         }
 
-        if (n == 2) { // метод вычислнения определителей второго порядка
+        if (dimension == 2) { // метод вычислнения определителей второго порядка
             return data[0].getComponent(0) * data[1].getComponent(1) - //
                     data[0].getComponent(1) * data[1].getComponent(0);
         }
 
         double det = 0; // Определитель, детерминант
 
-        for (int i = 0; i < n; i++) { // Пробегаемся по всем эл-м первой строки, n-столбцов в i-й строке
-            Matrix subMatrix = getMinor(i); // Подмассив, "состоящий из n-1 миноров"
+        for (int i = 0; i < dimension; i++) { // Пробегаемся по всем эл-м первой строки, dimension-столбцов в i-й строке
+            Matrix subMatrix = getMinor(i);
 
-            det += data[0].getComponent(i) * Math.pow(-1, i) * subMatrix.determinant(n - 1);
+            det += data[0].getComponent(i) * Math.pow(-1, i) * subMatrix.determinant(dimension - 1);
         }
 
         return det;

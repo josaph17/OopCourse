@@ -26,17 +26,19 @@ public class Main {
     }
 
     public static void checkMethods() {
-        double[] array1 = {21.3, 43.4, 3.2, 6};
+        double[] array1 = {21.3, 43.4, 3.2, 6, 1};
         double[] array2 = {9, 0, 1.62, 10};
         double[] array3 = {5.9, 7.05, 8};
         double[] array4 = {0, 1.9, 0, 2.28};
+        double[] array5 = {0, 3.72, 4.9, 21, 38};
 
         Vector vector1 = new Vector(array1);
         Vector vector2 = new Vector(array2);
         Vector vector3 = new Vector(array3);
         Vector vector4 = new Vector(array4);
+        Vector vector5 = new Vector(array5);
 
-        Vector[] vectorsArray = {vector1, vector2, vector3, vector4};
+        Vector[] vectorsArray = {vector1, vector2, vector3, vector4, vector5};
 
         Matrix vectorsMatrix = new Matrix(vectorsArray);
 
