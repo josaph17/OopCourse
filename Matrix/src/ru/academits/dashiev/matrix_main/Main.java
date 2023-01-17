@@ -59,7 +59,60 @@ public class Main {
         System.out.println(det);
     }
 
+    public  static  void check(){
+        double[] array1 = {1};
+        double[] array2 = {2};
+        double[] array3 = {3};
+        double[] array4 = {4};
+        double[] array5 = {5};
+
+        Vector vector1 = new Vector(array1);
+        Vector vector2 = new Vector(array2);
+        Vector vector3 = new Vector(array3);
+        Vector vector4 = new Vector(array4);
+        Vector vector5 = new Vector(array5);
+
+        Vector[] vectorsArray = {vector1, vector2, vector3, vector4, vector5};
+
+        Matrix vectorsMatrix = new Matrix(vectorsArray);
+
+        double[] halo = {2, 1.1, 3, 2.07, 1.5};
+
+        Vector multiplyVector = new Vector(halo);
+
+        vectorsMatrix.multiplyByVector(multiplyVector);
+
+        vectorsMatrix.printMatrix();
+    }
+
     public static void main(String[] args) {
-        checkMethods();
+        double[] array1 = {21.3, 43.4, 3.2};
+        double[] array2 = {9, 0, 1.62, 10};
+        double[] array3 = {5.9, 7.05, 8};
+
+        Vector vector1 = new Vector(array1);
+        Vector vector2 = new Vector(array2);
+        Vector vector3 = new Vector(array3);
+
+
+        Vector[] vectorsArray = {vector1, vector2, vector3};
+
+        Matrix vectorsMatrix = new Matrix(vectorsArray);
+
+        double[] array4 = {21.3, 43.4, 3.2};
+        double[] array5 = {9, 0, 1.62, 10};
+        double[] array6 = {5.9, 7.05, 8};
+
+        Vector vector4 = new Vector(array1);
+        Vector vector5 = new Vector(array2);
+        Vector vector6 = new Vector(array3);
+
+        Vector[] vectorsArray2 = {vector4, vector5, vector6};
+
+        Matrix vectorsMatrix2 = new Matrix(vectorsArray2);
+
+        vectorsMatrix.subtract(vectorsMatrix2);
+
+        vectorsMatrix.printMatrix();
     }
 }

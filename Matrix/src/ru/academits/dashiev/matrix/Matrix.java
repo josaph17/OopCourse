@@ -252,9 +252,59 @@ public class Matrix {
 
         return sb.toString();
     }
+
     // h.Умножение матрицы на вектор
+    public void multiplyByVector(Vector vector) {
+        if (vector == null) {
+            throw new NullPointerException("Vector is null!");
+        }
+
+        if (cols_count > 1) {
+            throw new IllegalArgumentException("Matrix columns count > 1!");
+        }
+
+        if (rows_count != vector.getSize()) {
+            throw new IllegalArgumentException("Matrix rows count not match to vector size!");
+        }
+
+        Vector multiplier = getVectorColumn(0);
+
+        for (int i = 0; i < rows_count; i++) {
+            data[i] = new Vector(vector);
+        }
+
+        cols_count = rows_count; // Важное изменение
+
+        for (int i = 0; i < rows_count; i++) {
+            data[i].multiplyByScalar(multiplier.getComponent(i));
+        }
+    }
+
     // i.Сложение матриц
+    private void checkMatricesSize(int rows1_count, int cols1_count, int rows2_count,
+                                   int cols2_count) {
+        if (rows1_count != rows2_count || cols1_count != cols2_count) {
+            throw new IllegalArgumentException("Matrices sizes not match!");
+        }
+    }
+
+    public void add(Matrix matrix) {
+        checkMatricesSize(rows_count, cols_count, matrix.rows_count, matrix.cols_count);
+
+        for (int i = 0; i < rows_count; i++) {
+            data[i].add(matrix.data[i]);
+        }
+    }
+
     // j.Вычитание матриц
+    public void subtract(Matrix matrix) {
+        checkMatricesSize(rows_count, cols_count, matrix.rows_count, matrix.cols_count);
+
+        for (int i = 0; i < rows_count; i++) {
+            data[i].subtract(matrix.data[i]);
+        }
+    }
+
     // Статические методы. a.Сложение матриц
     // Статические методы. b.Вычитание матриц
     // Статические методы. c.Умножение матриц
