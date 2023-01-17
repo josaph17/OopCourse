@@ -94,32 +94,6 @@ public class Matrix {
         }
     }
 
-    // Статические методы. a.Сложение матриц
-    public static Matrix getAddSum(Matrix matrix1, Matrix matrix2) {
-        if (matrix1.rows_count != matrix2.rows_count || matrix1.cols_count != matrix2.cols_count) {
-            throw new IllegalArgumentException("Matrices sizes not match!");
-        }
-
-        Matrix result = new Matrix(matrix1);
-
-        result.add(matrix2);
-
-        return result;
-    }
-
-    public static Matrix getSubtract(Matrix matrix1, Matrix matrix2) {
-        if (matrix1.rows_count != matrix2.rows_count || matrix1.cols_count != matrix2.cols_count) {
-            throw new IllegalArgumentException("Matrices sizes not match!");
-        }
-
-        Matrix result = new Matrix(matrix1);
-
-        result.subtract(matrix2);
-
-        return result;
-    }
-
-
     private void checkRowIndex(int index) {
         if (index < 0 || index >= rows_count) {
             throw new IndexOutOfBoundsException(
@@ -331,8 +305,36 @@ public class Matrix {
         }
     }
 
+    // Статические методы. a.Сложение матриц
+    public static Matrix getAddSum(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.rows_count != matrix2.rows_count || matrix1.cols_count != matrix2.cols_count) {
+            throw new IllegalArgumentException("Matrices sizes not match!");
+        }
+
+        Matrix result = new Matrix(matrix1);
+
+        result.add(matrix2);
+
+        return result;
+    }
+
     // Статические методы. b.Вычитание матриц
+    public static Matrix getSubtract(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.rows_count != matrix2.rows_count || matrix1.cols_count != matrix2.cols_count) {
+            throw new IllegalArgumentException("Matrices sizes not match!");
+        }
+
+        Matrix result = new Matrix(matrix1);
+
+        result.subtract(matrix2);
+
+        return result;
+    }
+
     // Статические методы. c.Умножение матриц
+    public static Matrix getMultiply(Matrix matrix1, Matrix matrix2) {
+        return null;
+    }
 
     public void printMatrix() {
         for (int i = 0; i < rows_count; i++) {
