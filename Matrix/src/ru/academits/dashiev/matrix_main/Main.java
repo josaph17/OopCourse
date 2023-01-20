@@ -54,12 +54,12 @@ public class Main {
         //System.out.println("After transpose");
         //System.out.println(vectorsMatrix);
 
-        double det = vectorsMatrix.calculateDet();
+        double det = vectorsMatrix.getDeterminant();
 
         System.out.println(det);
     }
 
-    public  static  void check(){
+    public static void check() {
         double[] array1 = {1};
         double[] array2 = {2};
         double[] array3 = {3};
@@ -86,33 +86,23 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        double[] array1 = {21.3, 43.4, 3.2};
-        double[] array2 = {9, 0, 1.62, 10};
-        double[] array3 = {5.9, 7.05, 8};
+        double[][] array = { //
+                {1.3, 5, 2.3}, //
+                {3, 4, 7.04}, //
+        };
 
-        Vector vector1 = new Vector(array1);
-        Vector vector2 = new Vector(array2);
-        Vector vector3 = new Vector(array3);
+        Matrix vectorsMatrix = new Matrix(array);
 
+        double[][] array2 = { //
+                {6, 5, 7.01, 22}, //
+                {32.1, 98, 5.5, 5.2}, //
+                {5.87, 3, 21.2, 90} //
+        };
 
-        Vector[] vectorsArray = {vector1, vector2, vector3};
+        Matrix vectorsMatrix2 = new Matrix(array2);
 
-        Matrix vectorsMatrix = new Matrix(vectorsArray);
+         Matrix result = Matrix.multiply(vectorsMatrix, vectorsMatrix2);
 
-        double[] array4 = {21.3, 43.4, 3.2};
-        double[] array5 = {9, 0, 1.62, 10};
-        double[] array6 = {5.9, 7.05, 92};
-
-        Vector vector4 = new Vector(array4);
-        Vector vector5 = new Vector(array5);
-        Vector vector6 = new Vector(array6);
-
-        Vector[] vectorsArray2 = {vector4, vector5, vector6};
-
-        Matrix vectorsMatrix2 = new Matrix(vectorsArray2);
-
-        Matrix result = Matrix.getSubtract(vectorsMatrix,vectorsMatrix2);
-
-        result.printMatrix();
+        System.out.println(result);
     }
 }

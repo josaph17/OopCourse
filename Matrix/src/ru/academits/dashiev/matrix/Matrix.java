@@ -94,6 +94,61 @@ public class Matrix {
         }
     }
 
+    // i.Сложение матриц
+    private static void assertEqualsSizes(Matrix m1, Matrix m2) {
+        if (m1.rows_count != m2.rows_count || m1.cols_count != m2.cols_count) {
+            throw new IllegalArgumentException("Matrices sizes not match!");
+        }
+    }
+
+    /**
+     * Статические методы. a.Сложение матриц
+     */
+    public static Matrix sum(Matrix matrix1, Matrix matrix2) {
+        assertEqualsSizes(matrix1, matrix2);
+
+        Matrix result = new Matrix(matrix1);
+        result.add(matrix2);
+        return result;
+    }
+
+    /**
+     * Статические методы. b.Вычитание матриц
+     */
+    public static Matrix subtract(Matrix matrix1, Matrix matrix2) {
+        assertEqualsSizes(matrix1, matrix2);
+
+        Matrix result = new Matrix(matrix1);
+        result.subtract(matrix2);
+        return result;
+    }
+
+    private static void assertMultiplySizes(Matrix m1, Matrix m2) {
+        if (m1.cols_count != m2.rows_count) {
+            throw new IllegalArgumentException(
+                    "Matrices sizes not match! Matrices can't multiply!");
+        }
+    }
+
+    // Статические методы. c.Умножение матриц
+    public static Matrix multiply(Matrix matrix1, Matrix matrix2) {
+        assertMultiplySizes(matrix1, matrix2);
+
+        Matrix result = new Matrix(matrix1.rows_count, matrix2.cols_count);
+
+        for (int i = 0; i < matrix1.rows_count; i++) {
+            Vector temp = new Vector(matrix2.cols_count);
+
+            for (int j = 0; j < matrix2.cols_count; j++) {
+                temp.setComponent(j, Vector.getScalarMultiply(matrix1.getVectorRow(i),
+                                                              matrix2.getVectorColumn(j)));
+            }
+            result.setVectorRow(i, temp);
+        }
+
+        return result;
+    }
+
     private void checkRowIndex(int index) {
         if (index < 0 || index >= rows_count) {
             throw new IndexOutOfBoundsException(
@@ -126,15 +181,15 @@ public class Matrix {
     }
 
     // b.Получение и задание вектора-строки по индексу
-    public void setVectorRow(int index, double... array) {
+    public void setVectorRow(int index, Vector vector) {
         checkRowIndex(index);
 
-        if (array.length < cols_count || array.length > cols_count) {
+        if (vector.getSize() < cols_count || vector.getSize() > cols_count) {
             throw new IllegalArgumentException(
-                    "Array length = " + array.length + "  is wrong, because cols = " + cols_count + ".");
+                    "Vector size = " + vector.getSize() + "  is wrong, because cols = " + cols_count + ".");
         }
 
-        data[index] = new Vector(array);
+        data[index] = new Vector(vector);
     }
 
     // c.Получение вектора - столбца по индексу
@@ -178,10 +233,6 @@ public class Matrix {
     }
 
     // f.Вычисление определителя матрицы
-    public double calculateDet() {
-        return determinant(cols_count);
-    }
-
     private Matrix getMinor(int removes_j) {
         Vector[] minor = new Vector[rows_count - 1];
         int m = 0; // Итератор для минора
@@ -205,8 +256,10 @@ public class Matrix {
         return new Matrix(minor);
     }
 
-    private double determinant(int dimension) {
+    public double getDeterminant() {
         // Делаем разложение определителя по первой строке
+        int dimension = cols_count;
+
         if (cols_count != rows_count) {
             throw new IllegalArgumentException("Matrix is not square!");
         }
@@ -223,10 +276,12 @@ public class Matrix {
 
         double det = 0; // Определитель, детерминант
 
-        for (int i = 0; i < dimension; i++) { // Пробегаемся по всем эл-м первой строки, dimension-столбцов в i-й строке
+        for (int i = 0, sign = 1; i < dimension; i++, sign = -sign) { // Пробегаемся по всем эл-м первой строки, dimension-столбцов в i-й строке
+            // TODO "Уменьшил" шаг для рекурсии, когда созд матр меньшего размера
             Matrix subMatrix = getMinor(i);
 
-            det += data[0].getComponent(i) * Math.pow(-1, i) * subMatrix.determinant(dimension - 1);
+            // здесь рекурсивный вызов
+            det += sign * data[0].getComponent(i) * subMatrix.getDeterminant();
         }
 
         return det;
@@ -280,16 +335,8 @@ public class Matrix {
         }
     }
 
-    // i.Сложение матриц
-    private void checkMatricesSize(int rows1_count, int cols1_count, int rows2_count,
-                                   int cols2_count) {
-        if (rows1_count != rows2_count || cols1_count != cols2_count) {
-            throw new IllegalArgumentException("Matrices sizes not match!");
-        }
-    }
-
     public void add(Matrix matrix) {
-        checkMatricesSize(rows_count, cols_count, matrix.rows_count, matrix.cols_count);
+        assertEqualsSizes(this, matrix);
 
         for (int i = 0; i < rows_count; i++) {
             data[i].add(matrix.data[i]);
@@ -298,42 +345,11 @@ public class Matrix {
 
     // j.Вычитание матриц
     public void subtract(Matrix matrix) {
-        checkMatricesSize(rows_count, cols_count, matrix.rows_count, matrix.cols_count);
+        assertEqualsSizes(this, matrix);
 
         for (int i = 0; i < rows_count; i++) {
             data[i].subtract(matrix.data[i]);
         }
-    }
-
-    // Статические методы. a.Сложение матриц
-    public static Matrix getAddSum(Matrix matrix1, Matrix matrix2) {
-        if (matrix1.rows_count != matrix2.rows_count || matrix1.cols_count != matrix2.cols_count) {
-            throw new IllegalArgumentException("Matrices sizes not match!");
-        }
-
-        Matrix result = new Matrix(matrix1);
-
-        result.add(matrix2);
-
-        return result;
-    }
-
-    // Статические методы. b.Вычитание матриц
-    public static Matrix getSubtract(Matrix matrix1, Matrix matrix2) {
-        if (matrix1.rows_count != matrix2.rows_count || matrix1.cols_count != matrix2.cols_count) {
-            throw new IllegalArgumentException("Matrices sizes not match!");
-        }
-
-        Matrix result = new Matrix(matrix1);
-
-        result.subtract(matrix2);
-
-        return result;
-    }
-
-    // Статические методы. c.Умножение матриц
-    public static Matrix getMultiply(Matrix matrix1, Matrix matrix2) {
-        return null;
     }
 
     public void printMatrix() {
