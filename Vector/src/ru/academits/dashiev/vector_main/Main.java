@@ -115,7 +115,7 @@ public class Main {
         System.out.println(vectorsSubtraction);
 
         System.out.print("Vectors MultiplyByScalar: ");
-        double vectorsScalarMultiply = Vector.getVectorsScalarMultiply(vector2, vector1);
+        double vectorsScalarMultiply = Vector.getScalarMultiply(vector2, vector1);
         System.out.println(vectorsScalarMultiply);
 
         System.out.println();
