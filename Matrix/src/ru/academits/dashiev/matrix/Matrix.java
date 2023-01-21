@@ -94,6 +94,62 @@ public class Matrix {
         }
     }
 
+    private static void assertEqualsSizes(Matrix m1, Matrix m2) {
+        if (m1.rows_count != m2.rows_count || m1.cols_count != m2.cols_count) {
+            throw new IllegalArgumentException("Matrices sizes not match!");
+        }
+    }
+
+    /**
+     * Статические методы. a.Сложение матриц
+     */
+    public static Matrix add(Matrix matrix1, Matrix matrix2) {
+        assertEqualsSizes(matrix1, matrix2);
+
+        Matrix result = new Matrix(matrix1);
+        result.add(matrix2);
+        return result;
+    }
+
+    /**
+     * Статические методы. b.Вычитание матриц
+     */
+    public static Matrix subtract(Matrix matrix1, Matrix matrix2) {
+        assertEqualsSizes(matrix1, matrix2);
+
+        Matrix result = new Matrix(matrix1);
+        result.subtract(matrix2);
+        return result;
+    }
+
+    private static void assertMultiplySizes(Matrix m1, Matrix m2) {
+        if (m1.cols_count != m2.rows_count) {
+            throw new IllegalArgumentException(
+                    "Matrices sizes not match! Matrices can't multiply!");
+        }
+    }
+
+    /**
+     * Статические методы. c.Умножение матриц
+     */
+    public static Matrix multiply(Matrix matrix1, Matrix matrix2) {
+        assertMultiplySizes(matrix1, matrix2);
+
+        Matrix result = new Matrix(matrix1.rows_count, matrix2.cols_count);
+
+        for (int i = 0; i < matrix1.rows_count; i++) {
+            Vector temp = new Vector(matrix2.cols_count);
+
+            for (int j = 0; j < matrix2.cols_count; j++) {
+                temp.setComponent(j, Vector.getScalarMultiply(matrix1.getVectorRow(i),
+                                                              matrix2.getVectorColumn(j)));
+            }
+            result.setVectorRow(i, temp);
+        }
+
+        return result;
+    }
+
     private void checkRowIndex(int index) {
         if (index < 0 || index >= rows_count) {
             throw new IndexOutOfBoundsException(
@@ -126,19 +182,19 @@ public class Matrix {
     }
 
     // b.Получение и задание вектора-строки по индексу
-    public void setVectorRow(int index, double... array) {
+    public void setVectorRow(int index, Vector vector) {
         checkRowIndex(index);
 
-        if (array.length < cols_count || array.length > cols_count) {
+        if (vector.getSize() < cols_count || vector.getSize() > cols_count) {
             throw new IllegalArgumentException(
-                    "Array length = " + array.length + "  is wrong, because cols = " + cols_count + ".");
+                    "Vector size = " + vector.getSize() + "  is wrong, because cols = " + cols_count + ".");
         }
 
-        data[index] = new Vector(array);
+        data[index] = new Vector(vector);
     }
 
     // c.Получение вектора - столбца по индексу
-    public Vector getVectorCol(int index) {
+    public Vector getVectorColumn(int index) {
         checkColIndex(index);
 
         double[] copy = new double[rows_count];
@@ -157,7 +213,7 @@ public class Matrix {
         Matrix copyMatrix = new Matrix(transposeRows, transposeCols);
 
         for (int i = 0; i < transposeRows; i++) {
-            copyMatrix.data[i] = new Vector(getVectorCol(i));
+            copyMatrix.data[i] = new Vector(getVectorColumn(i));
         }
 
         rows_count = transposeRows;
@@ -178,11 +234,7 @@ public class Matrix {
     }
 
     // f.Вычисление определителя матрицы
-    public double calculateDet() {
-        return determinant(cols_count);
-    }
-
-    private Matrix getMinor(int removes_i) {
+    private Matrix getMinor(int removes_j) {
         Vector[] minor = new Vector[rows_count - 1];
         int m = 0; // Итератор для минора
 
@@ -190,9 +242,9 @@ public class Matrix {
             // Создаем подмассив для инициализации минора
             double[] subArray = new double[rows_count - 1]; // После прохода каждой строчки создаю подмассив
 
-            // k - итератор для подмассива
-            for (int j = 0, k = 0; j < rows_count; j++) { // l - Номер столбца
-                if (j != removes_i) {
+            // j - номер столбца, k - итератор для подмассива
+            for (int j = 0, k = 0; j < rows_count; j++) {
+                if (j != removes_j) {
                     subArray[k] = data[i].getComponent(j);
                     k = k + 1;
                 }
@@ -205,27 +257,32 @@ public class Matrix {
         return new Matrix(minor);
     }
 
-    private double determinant(int n) {
+    public double getDeterminant() {
         // Делаем разложение определителя по первой строке
+        int dimension = cols_count;
+
         if (cols_count != rows_count) {
             throw new IllegalArgumentException("Matrix is not square!");
         }
 
-        if (n == 1) {
+        // Когда размерность матрицы = 1
+        if (dimension == 1) {
             return data[0].getComponent(0);
         }
 
-        if (n == 2) { // метод вычислнения определителей второго порядка
+        if (dimension == 2) { // метод вычислнения определителей второго порядка
             return data[0].getComponent(0) * data[1].getComponent(1) - //
                     data[0].getComponent(1) * data[1].getComponent(0);
         }
 
         double det = 0; // Определитель, детерминант
 
-        for (int i = 0; i < n; i++) { // Пробегаемся по всем эл-м первой строки, n-столбцов в i-й строке
-            Matrix subMatrix = getMinor(i); // Подмассив, "состоящий из n-1 миноров"
+        for (int i = 0, sign = 1; i < dimension; i++, sign = -sign) { // Пробегаемся по всем эл-м первой строки, dimension-столбцов в i-й строке
+            // TODO "Уменьшил" шаг для рекурсии, когда созд матр меньшего размера
+            Matrix subMatrix = getMinor(i);
 
-            det += data[0].getComponent(i) * Math.pow(-1, i) * subMatrix.determinant(n - 1);
+            // здесь рекурсивный вызов
+            det += sign * data[0].getComponent(i) * subMatrix.getDeterminant();
         }
 
         return det;
@@ -251,12 +308,51 @@ public class Matrix {
 
         return sb.toString();
     }
+
     // h.Умножение матрицы на вектор
+    public void multiplyByVector(Vector vector) {
+        if (vector == null) {
+            throw new NullPointerException("Vector is null!");
+        }
+
+        if (cols_count > 1) {
+            throw new IllegalArgumentException("Matrix columns count > 1!");
+        }
+
+        if (rows_count != vector.getSize()) {
+            throw new IllegalArgumentException("Matrix rows count not match to vector size!");
+        }
+
+        Vector multiplier = getVectorColumn(0);
+
+        for (int i = 0; i < rows_count; i++) {
+            data[i] = new Vector(vector);
+        }
+
+        cols_count = rows_count; // Важное изменение
+
+        for (int i = 0; i < rows_count; i++) {
+            data[i].multiplyByScalar(multiplier.getComponent(i));
+        }
+    }
+
     // i.Сложение матриц
+    public void add(Matrix matrix) {
+        assertEqualsSizes(this, matrix);
+
+        for (int i = 0; i < rows_count; i++) {
+            data[i].add(matrix.data[i]);
+        }
+    }
+
     // j.Вычитание матриц
-    // Статические методы. a.Сложение матриц
-    // Статические методы. b.Вычитание матриц
-    // Статические методы. c.Умножение матриц
+    public void subtract(Matrix matrix) {
+        assertEqualsSizes(this, matrix);
+
+        for (int i = 0; i < rows_count; i++) {
+            data[i].subtract(matrix.data[i]);
+        }
+    }
 
     public void printMatrix() {
         for (int i = 0; i < rows_count; i++) {

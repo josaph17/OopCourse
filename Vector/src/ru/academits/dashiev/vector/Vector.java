@@ -25,7 +25,8 @@ public class Vector {
 
     public Vector(double... array) {
         if (array.length <= 0) {
-            throw new IllegalArgumentException("Array length must be > 0. Current value: " + array.length);
+            throw new IllegalArgumentException(
+                    "Array length must be > 0. Current value: " + array.length);
         }
 
         components = Arrays.copyOf(array, array.length);
@@ -76,7 +77,8 @@ public class Vector {
         return result;
     }
 
-    public static double getVectorsScalarMultiply(Vector vector1, Vector vector2) {
+    // todo Прошу проверить
+    public static double getScalarMultiply(Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new NullPointerException("1st vector is null!");
         }
@@ -85,7 +87,19 @@ public class Vector {
             throw new NullPointerException("2nd vector is null!");
         }
 
-        return vector1.getLength() * vector2.getLength();
+        if (vector1.components.length < vector2.components.length) {
+            vector1.components = Arrays.copyOf(vector1.components, vector2.components.length);
+        } else if (vector1.components.length > vector2.components.length) {
+            vector2.components = Arrays.copyOf(vector2.components, vector1.components.length);
+        }
+
+        double result = 0;
+
+        for (int i = 0; i < vector1.components.length; i++) {
+            result += (vector1.components[i] * vector2.components[i]);
+        }
+
+        return result;
     }
 
     public int getSize() {
@@ -163,7 +177,8 @@ public class Vector {
 
     public double getComponent(int index) {
         if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+            throw new IndexOutOfBoundsException(
+                    "Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         return components[index];
@@ -171,7 +186,8 @@ public class Vector {
 
     public void setComponent(int index, double value) {
         if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+            throw new IndexOutOfBoundsException(
+                    "Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         components[index] = value;
