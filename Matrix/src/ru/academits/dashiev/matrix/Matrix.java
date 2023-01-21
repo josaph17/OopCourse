@@ -94,7 +94,6 @@ public class Matrix {
         }
     }
 
-    // i.Сложение матриц
     private static void assertEqualsSizes(Matrix m1, Matrix m2) {
         if (m1.rows_count != m2.rows_count || m1.cols_count != m2.cols_count) {
             throw new IllegalArgumentException("Matrices sizes not match!");
@@ -104,7 +103,7 @@ public class Matrix {
     /**
      * Статические методы. a.Сложение матриц
      */
-    public static Matrix sum(Matrix matrix1, Matrix matrix2) {
+    public static Matrix add(Matrix matrix1, Matrix matrix2) {
         assertEqualsSizes(matrix1, matrix2);
 
         Matrix result = new Matrix(matrix1);
@@ -130,7 +129,9 @@ public class Matrix {
         }
     }
 
-    // Статические методы. c.Умножение матриц
+    /**
+     * Статические методы. c.Умножение матриц
+     */
     public static Matrix multiply(Matrix matrix1, Matrix matrix2) {
         assertMultiplySizes(matrix1, matrix2);
 
@@ -335,6 +336,7 @@ public class Matrix {
         }
     }
 
+    // i.Сложение матриц
     public void add(Matrix matrix) {
         assertEqualsSizes(this, matrix);
 
