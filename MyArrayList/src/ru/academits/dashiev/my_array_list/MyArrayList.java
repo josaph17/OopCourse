@@ -4,7 +4,7 @@ package ru.academits.dashiev.my_array_list;
 import java.util.*;
 
 public class MyArrayList<T> implements List<T> {
-    int capacity = 4; // константа-поле класса для вместимости по умолчанию, т.е. items.length
+    private int capacity = 4; // константа-поле класса для вместимости по умолчанию, т.е. items.length
     private T[] items; // внутренний массив
     private int size; /* длина списка(кол-во эл-в в списке) = 0, вместимость списка , длина списка
     и длина массива могут отличаться*/
