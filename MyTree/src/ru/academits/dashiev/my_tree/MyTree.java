@@ -6,9 +6,10 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class MyTree<T extends Comparable<T>> { /* Comparable обязан быть с generic!!! чтобы указ с
+/* Comparable обязан быть с generic!!! чтобы указ с
     каким типом он сравнивается. Если Comparable указ без типа то будет выдаваться ошибка
     непроверяемого типа. Компилятор не может проверить тип */
+public class MyTree<T extends Comparable<T>> {
     private MyTreeNode<T> root;
     private int treeSize;
 
@@ -93,6 +94,8 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
                 queue.offer(element.getRight());
             }
         }
+
+        System.out.println();
     }
 
     public void deepBypass() {
@@ -114,6 +117,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
                 stack.addLast(element.getLeft());
             }
         }
+        System.out.println();
     }
 
     public void recursionDeepVisit() {
@@ -336,7 +340,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
 
             minLastNode = minLastNodeParent.getLeft();
 
-            while (minLastNode.getLeft() != null) { // TODO перенести на частные случаи !!!
+            while (minLastNode.getLeft() != null) { // перенес на частные случаи
                 minLastNodeParent = minLastNodeParent.getLeft(); // -- нашли minLastNodeParent
                 minLastNode = minLastNodeParent.getLeft(); // -- нашли minLastNode
             }
@@ -439,7 +443,7 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
         if (minLastNode.getRight() != null) { // если у minLastNode есть ребенок
             minLastNodeParent.setLeft(minLastNode.getRight());
             minLastNode.setRight(null);
-        } else  {
+        } else {
             minLastNodeParent.setLeft(null);
         }
 
@@ -450,7 +454,8 @@ public class MyTree<T extends Comparable<T>> { /* Comparable обязан быт
             nodeToDeleteParent.setLeft(minLastNode);
         }
 
-        minLastNode.setRight(nodeToDelete.getRight()); // привязываем детей nodeToDelete к minLastNode
+        minLastNode.setRight(
+                nodeToDelete.getRight()); // привязываем детей nodeToDelete к minLastNode
         minLastNode.setLeft(nodeToDelete.getLeft());
 
         treeSize--;
