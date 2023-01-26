@@ -4,7 +4,7 @@ package ru.academits.dashiev.my_array_list;
 import java.util.*;
 
 public class MyArrayList<T> implements List<T> {
-    final int capacity = 4; // константа-поле класса для вместимости по умолчанию, т.е. items.length
+    private int capacity = 4; // константа-поле класса для вместимости по умолчанию, т.е. items.length
     private T[] items; // внутренний массив
     private int size; /* длина списка(кол-во эл-в в списке) = 0, вместимость списка , длина списка
     и длина массива могут отличаться*/
@@ -160,6 +160,8 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public void add(int index, T item) {
+        System.out.println(size);
+
         checkIndexToAdd(index);
 
         if (size >= items.length) {
@@ -361,7 +363,9 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public void increaseCapacity() {
-        items = Arrays.copyOf(items, capacity * 2);
+        capacity = capacity * 2;
+
+        items = Arrays.copyOf(items, capacity);
     }
 
     @Override
