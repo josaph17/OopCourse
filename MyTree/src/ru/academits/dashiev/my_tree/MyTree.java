@@ -117,6 +117,7 @@ public class MyTree<T extends Comparable<T>> {
                 stack.addLast(element.getLeft());
             }
         }
+
         System.out.println();
     }
 
