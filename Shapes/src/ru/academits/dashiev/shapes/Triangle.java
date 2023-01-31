@@ -76,7 +76,7 @@ public class Triangle implements Shape {
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        return "Triangle. With coordinates (" + x1 + "; " + y1 + "), (" + x2 + "; " + y2 + "), (" + y3 + "; " + y3 + ")" + ". Area = " + getArea() + ", perimeter = " + getPerimeter();
+        return "Triangle. With coordinates (" + x1 + "; " + y1 + "), (" + x2 + "; " + y2 + "), (" + y3 + "; " + y3 + "). Area = " + getArea() + ", perimeter = " + getPerimeter();
     }
 
     @Override

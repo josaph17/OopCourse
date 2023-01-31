@@ -1,7 +1,7 @@
 package ru.academits.dashiev.shapes_main;
 
-import ru.academits.dashiev.comparators.AreaComparator;
-import ru.academits.dashiev.comparators.PerimeterComparator;
+import ru.academits.dashiev.shapes_comparators.AreaComparator;
+import ru.academits.dashiev.shapes_comparators.PerimeterComparator;
 import ru.academits.dashiev.shapes.Circle;
 import ru.academits.dashiev.shapes.Rectangle;
 import ru.academits.dashiev.shapes.Shape;
