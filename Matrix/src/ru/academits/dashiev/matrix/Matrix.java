@@ -141,8 +141,8 @@ public class Matrix {
             Vector temp = new Vector(matrix2.cols_count);
 
             for (int j = 0; j < matrix2.cols_count; j++) {
-                temp.setComponent(j, Vector.getScalarMultiply(matrix1.getVectorRow(i),
-                                                              matrix2.getVectorColumn(j)));
+                temp.setComponent(j, Vector.scalarMultiply(matrix1.getVectorRow(i),
+                                                           matrix2.getVectorColumn(j)));
             }
             result.setVectorRow(i, temp);
         }
