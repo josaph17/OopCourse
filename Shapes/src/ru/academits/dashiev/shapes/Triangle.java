@@ -17,7 +17,7 @@ public class Triangle implements Shape {
         this.y3 = y3;
     }
 
-    // private, т.к. я использую ф-ю внутри этого класса, она в спомогательная
+    // private, т.к. я использую ф-ю внутри этого класса, она вспомогательная
     private static double getMax(double value1, double value2, double value3) {
         return Math.max(Math.max(value1, value2), value3);
     }
@@ -76,7 +76,7 @@ public class Triangle implements Shape {
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        return "Triangle. With coordinates (" + x1 + "; " + y1 + "), (" + x2 + "; " + y2 + "), (" + y3 + "; " + y3 + ")" + System.lineSeparator() + "Area = " + getArea() + ", perimeter = " + getPerimeter();
+        return "Triangle. With coordinates (" + x1 + "; " + y1 + "), (" + x2 + "; " + y2 + "), (" + y3 + "; " + y3 + ")" + ". Area = " + getArea() + ", perimeter = " + getPerimeter();
     }
 
     @Override

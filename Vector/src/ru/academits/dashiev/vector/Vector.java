@@ -7,7 +7,7 @@ public class Vector {
 
     public Vector(int size) { // Конструктор, размерность n, количество компонентов
         if (size <= 0) {
-            throw new IllegalArgumentException("Capacity must be > 0. Current value: " + size);
+            throw new IllegalArgumentException("Size must be > 0. Current value: " + size);
         }
 
         components = new double[size]; // инициализировали vector, все компоненты равны 0
@@ -18,12 +18,16 @@ public class Vector {
             throw new NullPointerException("Vector is null!");
         }
 
-        /* если не делать копию, то 2 разных вектора ссылаются на один массив, именения в одном
-        приведут к изменения в другом */
+        /* если не делать копию, то 2 разных вектора ссылаются на один массив, изменения в одном,
+        приведут к изменениям в другом массиве*/
         components = Arrays.copyOf(vector.components, vector.components.length);
     }
 
     public Vector(double... array) {
+        if (array == null) {
+            throw new NullPointerException("Array is null!");
+        }
+
         if (array.length <= 0) {
             throw new IllegalArgumentException(
                     "Array length must be > 0. Current value: " + array.length);
@@ -45,7 +49,7 @@ public class Vector {
         components = Arrays.copyOf(array, size);
     }
 
-    public static Vector getAddSum(Vector vector1, Vector vector2) {
+    public static Vector sum(Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new NullPointerException("1st vector is null!");
         }
@@ -61,7 +65,7 @@ public class Vector {
         return result;
     }
 
-    public static Vector getSubtract(Vector vector1, Vector vector2) {
+    public static Vector subtract(Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new NullPointerException("1st vector is null!");
         }
@@ -77,8 +81,7 @@ public class Vector {
         return result;
     }
 
-    // todo Прошу проверить
-    public static double getScalarMultiply(Vector vector1, Vector vector2) {
+    public static double scalarMultiply(Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new NullPointerException("1st vector is null!");
         }
@@ -87,16 +90,12 @@ public class Vector {
             throw new NullPointerException("2nd vector is null!");
         }
 
-        if (vector1.components.length < vector2.components.length) {
-            vector1.components = Arrays.copyOf(vector1.components, vector2.components.length);
-        } else if (vector1.components.length > vector2.components.length) {
-            vector2.components = Arrays.copyOf(vector2.components, vector1.components.length);
-        }
+        int elements = Math.min(vector1.components.length, vector2.components.length);
 
         double result = 0;
 
-        for (int i = 0; i < vector1.components.length; i++) {
-            result += (vector1.components[i] * vector2.components[i]);
+        for (int i = 0; i < elements; i++) {
+            result += vector1.components[i] * vector2.components[i];
         }
 
         return result;
@@ -123,7 +122,7 @@ public class Vector {
 
         if (components.length < vector.components.length) {
             // создаем новый массив
-            this.components = Arrays.copyOf(components, vector.components.length);
+            components = Arrays.copyOf(components, vector.components.length);
         }
 
         for (int i = 0; i < vector.components.length; i++) {
@@ -156,13 +155,13 @@ public class Vector {
     }
 
     public double getLength() { // e.Получение длины вектора
-        double vectorComponentsSum = 0;
+        double length = 0;
 
         for (double e : components) {
-            vectorComponentsSum += e * e; // умножение т.к. это быстрее Math.pow
+            length += e * e; // умножение т.к. это быстрее Math.pow
         }
 
-        return Math.sqrt(vectorComponentsSum);
+        return Math.sqrt(length);
     }
 
     @Override

@@ -107,15 +107,15 @@ public class Main {
         System.out.println();
 
         System.out.print("Vectors Sum: ");
-        Vector vectorsSum = Vector.getAddSum(vector2, vector1);
+        Vector vectorsSum = Vector.sum(vector2, vector1);
         System.out.println(vectorsSum);
 
         System.out.print("Vectors Subtraction: ");
-        Vector vectorsSubtraction = Vector.getSubtract(vector1, vector2);
+        Vector vectorsSubtraction = Vector.subtract(vector1, vector2);
         System.out.println(vectorsSubtraction);
 
         System.out.print("Vectors MultiplyByScalar: ");
-        double vectorsScalarMultiply = Vector.getScalarMultiply(vector2, vector1);
+        double vectorsScalarMultiply = Vector.scalarMultiply(vector2, vector1);
         System.out.println(vectorsScalarMultiply);
 
         System.out.println();

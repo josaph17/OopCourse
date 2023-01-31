@@ -33,7 +33,7 @@ public class Square implements Shape {
 
     @Override
     public String toString() { // переопределили toString для нашего собственного класса
-        return "Square. side = " + sideLength + System.lineSeparator() + "Area = " + getArea() + ", perimeter = " + getPerimeter();
+        return "Square. side = " + sideLength + ". Area = " + getArea() + ", perimeter = " + getPerimeter();
     }
 
     @Override
