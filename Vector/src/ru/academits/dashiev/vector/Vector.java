@@ -41,11 +41,6 @@ public class Vector {
             throw new IllegalArgumentException("Size must be > 0. Current value: " + size);
         }
 
-        if (array.length <= 0) {
-            throw new IllegalArgumentException(
-                    "Array length must be > 0. Current value: " + array.length); // бросил исключение
-        }
-
         components = Arrays.copyOf(array, size);
     }
 
