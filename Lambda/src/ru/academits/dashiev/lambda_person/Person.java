@@ -1,15 +1,14 @@
-package ru.academits.dashiev.person;
+package ru.academits.dashiev.lambda_person;
 
 public class Person {
-    private String name;
-    private int age;
-
-    public Person() {
-        name = null;
-        age = 0;
-    }
+    private final String name;
+    private final int age;
 
     public Person(String name, int age) {
+        if (age <= 0 || age > 86) {
+            throw new IllegalArgumentException("Wrong age value. Now age = " + age);
+        }
+
         this.name = name;
         this.age = age;
     }
