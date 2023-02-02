@@ -20,16 +20,16 @@ public class MyList<T> { // класс List  должен быть generic, чт
     public static void main(String[] args) {
         MyList<Integer> list = new MyList<>();
 
-        list.addFirst(4);
+        list.addFirst(32);
         list.addFirst(3);
-        list.addFirst(2);
+        list.addFirst(78);
         list.addFirst(1);
-        list.addFirst(null);
+        list.addFirst(43);
 
         System.out.println(list);
 
         //System.out.println(list.remove(null));
-        list.remove(null);
+        list.remove(432);
 
         System.out.println(list);
     }
@@ -58,15 +58,13 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
     private void checkAddIndex(int index) {
         if (index < 0 || index > getSize()) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (getSize()) + ". Current index = " + index);
+            throw new IndexOutOfBoundsException("List min index = 0, max index = " + (getSize()) + ". Current index = " + index);
         }
     }
 
     private void checkIndex(int index) {
         if (index < 0 || index >= getSize()) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (getSize() - 1) + ". Current index = " + index);
+            throw new IndexOutOfBoundsException("List min index = 0, max index = " + (getSize() - 1) + ". Current index = " + index);
         }
     }
 
@@ -142,62 +140,65 @@ public class MyList<T> { // класс List  должен быть generic, чт
         }
 
         if (data == null) { // Если элемент null
-            Node<T> removedNode = null;
+            Node<T> removedNode;
 
             Node<T> previousNode = head;
 
-            if(previousNode.getData() == null){ // Если этот элемент первый
+            if (previousNode.getData() == null) { // Если этот элемент первый
                 head = previousNode.getNext();
-
-                size --;
-
-                return true;
-            }
-
-            for (int i = 0; previousNode.getNext().getData() != null && i < size; i++) {
-                System.out.println(previousNode.getNext().getData());
-
-                previousNode = previousNode.getNext();
-            }
-
-            if (previousNode.getNext().getData() == null) {
-                removedNode = previousNode.getNext();
-                previousNode.setNext(removedNode.getNext());
-
-                size = size - 1;
-
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
-        if (head.getData().equals(data)) { // Если элемент в начале списка
-            head.setNext(head.getNext());
-
-            size--;
-
-            return true;
-        }
-
-        int i = 0;
-
-        for (Node<T> previousNode = head; previousNode != null; previousNode = previousNode.getNext()) {
-            if (i == size - 1) { // Нет элемента в списке
-                return false;
-            }
-
-            if (previousNode.getNext().getData().equals(data)) {
-                previousNode.setNext(previousNode.getNext().getNext());
 
                 size--;
 
                 return true;
             }
 
-            i++;
+            // общий случай
+            for (int i = 1; previousNode.getNext().getData() != null; i++) {
+                previousNode = previousNode.getNext();
+
+                System.out.println("i = " + i);
+                System.out.println(previousNode.getData());
+
+                if (i == size - 1) { // Нет элемента в list
+                    return false;
+                }
+            }
+
+            removedNode = previousNode.getNext();
+            previousNode.setNext(removedNode.getNext());
+
+            size = size - 1;
+
+            return true;
         }
+
+        if (head.getData().equals(data)) { // Если элемент в начале списка
+            head = head.getNext();
+
+            size = size - 1;
+
+            return true;
+        }
+
+        Node<T> removedNode;
+        Node<T> previousNode = head;
+
+        for (int i = 1; i < size - 1; i++) {
+            if (!previousNode.getNext().getData().equals(data)) {
+                previousNode = previousNode.getNext();
+            } else {
+                break;
+            }
+        }
+
+        if (!previousNode.getNext().getData().equals(data)) {
+            return false;
+        }
+
+        size = size - 1;
+
+        removedNode = previousNode.getNext();
+        previousNode.setNext(removedNode.getNext());
 
         return false;
     }
