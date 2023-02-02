@@ -5,6 +5,7 @@ import ru.academits.dashiev.my_list.MyList;
 public class Main {
     public static void main(String[] args) {
         MyList<Integer> list = new MyList<>();
+
         list.addFirst(4);
         list.addFirst(3);
         list.addFirst(2);
@@ -45,7 +46,9 @@ public class Main {
         //TODO проверить
         System.out.println("Список: " + list);
         System.out.println("remove(int index) - удаление элемента по индексу");
+
         int deleteIndex = 1;
+
         System.out.println("Удаляем элемент по индексу = " + deleteIndex);
         System.out.println("Удален элемент со значением = " + list.removeByIndex(deleteIndex));
         System.out.println(list);
