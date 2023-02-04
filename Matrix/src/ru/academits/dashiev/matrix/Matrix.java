@@ -330,14 +330,4 @@ public class Matrix {
             matrixRow[i].subtract(matrix.matrixRow[i]);
         }
     }
-
-    public void printMatrix() {
-        for (int i = 0; i < matrixRow.length; i++) {
-            for (int j = 0; j < matrixRow[i].getSize(); j++) {
-                System.out.printf("%9.2f", matrixRow[i].getComponent(j));
-            }
-
-            System.out.println("\n");
-        }
-    }
 }
