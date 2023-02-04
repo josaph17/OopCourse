@@ -8,13 +8,14 @@ public class Main {
         System.out.println("-- Конструкторы --");
         System.out.println();
 
-        int sizeN = 3;
-        int sizeM = 5;
+        int rowsCount = 3;
+        int columnsCount = 5;
 
-        Matrix sizeMatrix = new Matrix(sizeN, sizeM);
+        Matrix sizeMatrix = new Matrix(rowsCount, columnsCount);
 
         System.out.println("a.Конструктор матрица нулей размера nxm:");
-        System.out.println("n = " + sizeN + " , m = " + sizeM);
+        System.out.println(
+                "Rows count = " + sizeMatrix.getRows() + " , columns count = " + sizeMatrix.getColumns());
 
         double[][] array = {{0.9, 2.1, 5.2, 4.2}, {3, 42.7, 6.5}, {321, 7.1, 43.9, 111.3}};
 
@@ -44,66 +45,50 @@ public class Main {
         System.out.println(vectorsMatrix);
     }
 
-    public static void checkNonStaticMethods1() {
+    public static void checkNonStaticMethods() {
         System.out.println();
         System.out.println("-- Нестатические методы --");
         System.out.println();
 
-        double[][] array = { //
+        int rowIndex = 1;
+
+        System.out.println("b.Получение вектора-строки по индексу = " + rowIndex + ":");
+
+        double[][] array1 = { //
                 {6, 5, 7.01, 22, 5.2}, //
                 {32.1, 98, 5.5}, //
                 {5.87, 3, 21.2, 90, 11.37}, //
                 {1.6, 81.33, 1.2, 278, 9.4} //
         };
 
-        Matrix matrix2 = new Matrix(array);
+        Matrix matrix1 = new Matrix(array1);
+        System.out.println(matrix1.getRow(rowIndex));
 
-        int vectorRow = 1;
+        System.out.println("b.Задание вектора-строки по индексу = " + rowIndex + ":");
 
-        System.out.println("b.Получение вектора-строки по индексу = " + vectorRow + ":");
-        System.out.println(matrix2.getVectorRow(vectorRow));
+        double[] array2 = {4, 74, 1.23, 8.09, 11};
 
-        double[] replaceArray = {4, 74, 1.23, 8.09, 11};
+        Vector replacedVector = new Vector(array2);
 
-        Vector replaceVector = new Vector(replaceArray);
+        matrix1.setRow(rowIndex, replacedVector);
+        System.out.println(matrix1);
 
-        matrix2.setVectorRow(vectorRow, replaceVector);
+        int columnIndex = 4;
 
-        System.out.println("b.Задание вектора-строки по индексу = " + vectorRow + ":");
-        System.out.println(matrix2);
-
-        int vectorCols = 4;
-
-        System.out.println("c.Получение вектора-столбца по индексу = " + vectorCols + ":");
-        System.out.println(matrix2.getVectorColumn(vectorCols));
-
-        matrix2.transpose();
+        System.out.println("c.Получение вектора-столбца по индексу = " + columnIndex + ":");
+        System.out.println(matrix1.getColumn(columnIndex));
 
         System.out.println("d.Транспонирование матрицы:");
-        System.out.println(matrix2);
+        matrix1.transpose();
+        System.out.println(matrix1);
 
         double scalar = 2.2;
 
-        matrix2.multiplyByScalar(scalar);
-
         System.out.println("e.Умножение на скаляр = " + scalar + ":");
-        System.out.println(matrix2);
-    }
+        matrix1.multiplyByScalar(scalar);
+        System.out.println(matrix1);
 
-    public static void checkNonStaticMethods2() {
-        double[][] array2 = { //
-                {6, 5, 7.01, 22}, //
-                {4, 74, 1.23, 8.09}, //
-                {5.87, 3, 21.2, 90}, //
-                {1.6, 81.33, 1.2, 278} //
-        };
-
-        Matrix matrix2 = new Matrix(array2);
-
-        double det = matrix2.getDeterminant();
-
-        System.out.println("h.умножение матрицы на вектор:");
-        System.out.println(det);
+        System.out.println("f.Вычисление определителя матрицы");
 
         double[][] array3 = { //
                 {6, 5, 7.01, 22}, //
@@ -112,16 +97,35 @@ public class Main {
                 {1.6, 81.33, 1.2, 278} //
         };
 
-        Matrix matrix3 = new Matrix(array3);
+        Matrix matrix2 = new Matrix(array3);
 
-        matrix2.add(matrix3);
+        System.out.println("Determinant = " + matrix2.getDeterminant());
+
+        System.out.println("h.умножение матрицы на вектор:");
+
+        double[] multiplyArray = {2, 2, 2, 2};
+
+        Vector multiplyVector = new Vector(multiplyArray);
+
+        Vector multiplyByVector = matrix1.multiplyByVector(multiplyVector);
+
+        System.out.println(multiplyByVector);
 
         System.out.println("i.Сложение матриц:");
+        double[][] array4 = { //
+                {6, 5, 7.01, 22}, //
+                {4, 74, 1.23, 8.09}, //
+                {5.87, 3, 21.2, 90}, //
+                {1.6, 81.33, 1.2, 278} //
+        };
+
+        Matrix matrix3 = new Matrix(array4);
+
+        matrix2.add(matrix3);
         System.out.println(matrix2);
 
-        matrix2.subtract(matrix3);
-
         System.out.println("j.Вычитание матриц:");
+        matrix2.subtract(matrix3);
         System.out.println(matrix2);
     }
 
@@ -130,23 +134,25 @@ public class Main {
         System.out.println("-- Статические методы --");
         System.out.println();
 
-        double[][] array3 = { //
+        double[][] array1 = { //
                 {1.3, 5, 2.3}, //
-                {3, 4, 7.04}, //
+                {3, 4, 7.04} //
         };
 
-        Matrix matrix3 = new Matrix(array3);
-        Matrix matrix4 = new Matrix(matrix3);
+        Matrix matrix1 = new Matrix(array1);
+        Matrix matrix2 = new Matrix(matrix1);
 
-        Matrix matrix5 = Matrix.add(matrix3, matrix4);
+        Matrix matrix3 = Matrix.getSum(matrix1, matrix2);
 
         System.out.println("a.Сложение матриц:");
-        System.out.println(matrix5);
+        System.out.println(matrix3);
 
-        Matrix matrix6 = Matrix.subtract(matrix5, matrix4);
+        Matrix matrix4 = Matrix.getSubtract(matrix3, matrix2);
 
         System.out.println("b.Вычитание матриц:");
-        System.out.println(matrix6);
+        System.out.println(matrix4);
+
+        System.out.println("c.Умножение матриц:");
 
         double[][] array2 = { //
                 {6, 5, 7.01, 22}, //
@@ -154,19 +160,38 @@ public class Main {
                 {5.87, 3, 21.2, 90} //
         };
 
-        Matrix matrix7 = new Matrix(array2);
+        Matrix matrix5 = new Matrix(array2);
 
-        Matrix multiplyMatrix = Matrix.multiply(matrix3, matrix7);
+        matrix1.printMatrix();
+        System.out.println("-------------------");
+        matrix5.printMatrix();
 
-        System.out.println("c.Умножение матриц:");
+        Matrix multiplyMatrix = Matrix.multiply(matrix1, matrix5);
 
         System.out.println(multiplyMatrix);
     }
 
     public static void main(String[] args) {
-        checkConstructors();
-        checkNonStaticMethods1();
-        checkNonStaticMethods2();
-        checkStaticMethods();
+        // checkConstructors();
+        // checkNonStaticMethods();
+         checkStaticMethods();
+
+//        double[][] array1 = { //
+//                {3, 5}, //
+//                {2,1} //
+//        };
+
+//        Matrix matrix1 = new Matrix(array1);
+//
+//        double[][] array2 = { //
+//                {8, 2, 3}, //
+//                {1,7, 2} //
+//        };
+//
+//        Matrix matrix2 = new Matrix(array2);
+//
+//        Matrix matrix3 = Matrix.multiply(matrix1, matrix2);
+//
+//        matrix3.printMatrix();
     }
 }
