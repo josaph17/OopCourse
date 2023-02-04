@@ -162,36 +162,14 @@ public class Main {
 
         Matrix matrix5 = new Matrix(array2);
 
-        matrix1.printMatrix();
-        System.out.println("-------------------");
-        matrix5.printMatrix();
-
         Matrix multiplyMatrix = Matrix.multiply(matrix1, matrix5);
 
         System.out.println(multiplyMatrix);
     }
 
     public static void main(String[] args) {
-        // checkConstructors();
-        // checkNonStaticMethods();
-         checkStaticMethods();
-
-//        double[][] array1 = { //
-//                {3, 5}, //
-//                {2,1} //
-//        };
-
-//        Matrix matrix1 = new Matrix(array1);
-//
-//        double[][] array2 = { //
-//                {8, 2, 3}, //
-//                {1,7, 2} //
-//        };
-//
-//        Matrix matrix2 = new Matrix(array2);
-//
-//        Matrix matrix3 = Matrix.multiply(matrix1, matrix2);
-//
-//        matrix3.printMatrix();
+        checkConstructors();
+        checkNonStaticMethods();
+        checkStaticMethods();
     }
 }

@@ -9,13 +9,11 @@ public class Matrix {
 
     public Matrix(int rowsCount, int colsCount) {
         if (rowsCount <= 0) {
-            throw new IllegalArgumentException(
-                    "Matrix rows must be > 0. Current rows = " + rowsCount);
+            throw new IllegalArgumentException("Matrix rows must be > 0. Current rows = " + rowsCount);
         }
 
         if (colsCount <= 0) {
-            throw new IllegalArgumentException(
-                    "Matrix cols must be > 0. Current cols = " + colsCount);
+            throw new IllegalArgumentException("Matrix cols must be > 0. Current cols = " + colsCount);
         }
 
         matrixRow = new Vector[rowsCount];
@@ -107,6 +105,7 @@ public class Matrix {
 
         Matrix result = new Matrix(matrix1);
         result.add(matrix2);
+
         return result;
     }
 
@@ -118,6 +117,7 @@ public class Matrix {
 
         Matrix result = new Matrix(matrix1);
         result.subtract(matrix2);
+
         return result;
     }
 
@@ -133,18 +133,12 @@ public class Matrix {
 
         Vector[] result = new Vector[matrix1.matrixRow.length];
 
-        for (int i = 0; i < matrix2.matrixRow.length; i++) {
-             result[i] = new Vector(matrix2.matrixRow[0].getSize());
+        for (int i = 0; i < matrix1.matrixRow.length; i++) {
+            result[i] = new Vector(matrix2.matrixRow[0].getSize());
 
             for (int j = 0; j < matrix2.matrixRow[i].getSize(); j++) {
-                System.out.println( "matrix2.getColumn(j): " + matrix2.getColumn(j));
-
                 result[i].setComponent(j, Vector.scalarMultiply(matrix1.matrixRow[i],
                                                                 matrix2.getColumn(j)));
-            }
-
-            if (i == 1){
-                System.out.println("i = " + i);
             }
         }
 
@@ -153,8 +147,7 @@ public class Matrix {
 
     private void checkRowIndex(int index) {
         if (index < 0 || index >= matrixRow.length) {
-            throw new IndexOutOfBoundsException(
-                    "Matrix min row index = 0, max index = " + (matrixRow.length - 1) + ". Current row index = " + index);
+            throw new IndexOutOfBoundsException("Matrix min row index = 0, max index = " + (matrixRow.length - 1) + ". Current row index = " + index);
         }
     }
 
@@ -187,8 +180,7 @@ public class Matrix {
         checkRowIndex(index);
 
         if (matrixRow[0].getSize() != vector.getSize()) {
-            throw new IllegalArgumentException(
-                    "Vector size = " + vector.getSize() + "  is wrong, because columns count = " + matrixRow[0].getSize());
+            throw new IllegalArgumentException("Vector size = " + vector.getSize() + "  is wrong, because columns count = " + matrixRow[0].getSize());
         }
 
         matrixRow[index] = new Vector(vector);
@@ -252,8 +244,7 @@ public class Matrix {
     public double getDeterminant() {
         // Делаем разложение определителя по первой строке
         if (matrixRow.length != matrixRow[0].getSize()) {
-            throw new UnsupportedOperationException(
-                    "Matrix is not square! Rows count = " + matrixRow.length + ", columns count =  " + matrixRow[0].getSize());
+            throw new UnsupportedOperationException("Matrix is not square! Rows count = " + matrixRow.length + ", columns count =  " + matrixRow[0].getSize());
         }
 
         int dimension = matrixRow[0].getSize();
@@ -309,12 +300,13 @@ public class Matrix {
         }
 
         if (matrixRow[0].getSize() != vector.getSize()) {
-            throw new IllegalArgumentException("Matrix columns count = "+ matrixRow[0].getSize() + " not match to vector elements count = " + vector.getSize());
+            throw new IllegalArgumentException(
+                    "Matrix columns count = " + matrixRow[0].getSize() + " not match to vector elements count = " + vector.getSize());
         }
 
         double[] result = new double[matrixRow.length];
 
-        for(int i = 0; i< matrixRow.length; i ++){
+        for (int i = 0; i < matrixRow.length; i++) {
             result[i] = Vector.scalarMultiply(matrixRow[i], vector);
         }
 
@@ -336,15 +328,6 @@ public class Matrix {
 
         for (int i = 0; i < matrixRow.length; i++) {
             matrixRow[i].subtract(matrix.matrixRow[i]);
-        }
-    }
-
-    public void printMatrix() {
-        for (int i = 0; i < matrixRow.length; i++) {
-            for (int j = 0; j < matrixRow[i].getSize(); j++) {
-                System.out.printf("%9.2f", matrixRow[i].getComponent(j));
-            }
-            System.out.println("\n");
         }
     }
 }
