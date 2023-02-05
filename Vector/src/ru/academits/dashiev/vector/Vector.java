@@ -29,8 +29,7 @@ public class Vector {
         }
 
         if (array.length <= 0) {
-            throw new IllegalArgumentException(
-                    "Array length must be > 0. Current value: " + array.length);
+            throw new IllegalArgumentException("Array length must be > 0. Current value: " + array.length);
         }
 
         components = Arrays.copyOf(array, array.length);
@@ -44,7 +43,7 @@ public class Vector {
         components = Arrays.copyOf(array, size);
     }
 
-    public static Vector sum(Vector vector1, Vector vector2) {
+    public static Vector getSum(Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new NullPointerException("1st vector is null!");
         }
@@ -60,7 +59,7 @@ public class Vector {
         return result;
     }
 
-    public static Vector subtract(Vector vector1, Vector vector2) {
+    public static Vector getSubtract(Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new NullPointerException("1st vector is null!");
         }
@@ -76,7 +75,7 @@ public class Vector {
         return result;
     }
 
-    public static double scalarMultiply(Vector vector1, Vector vector2) {
+    public static double getScalarMultiply(Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new NullPointerException("1st vector is null!");
         }
@@ -85,11 +84,11 @@ public class Vector {
             throw new NullPointerException("2nd vector is null!");
         }
 
-        int elements = Math.min(vector1.components.length, vector2.components.length);
+        int minLength = Math.min(vector1.components.length, vector2.components.length);
 
         double result = 0;
 
-        for (int i = 0; i < elements; i++) {
+        for (int i = 0; i < minLength; i++) {
             result += vector1.components[i] * vector2.components[i];
         }
 
@@ -150,41 +149,13 @@ public class Vector {
     }
 
     public double getLength() { // e.Получение длины вектора
-        double length = 0;
+        double elementsSquareSum = 0;
 
         for (double e : components) {
-            length += e * e; // умножение т.к. это быстрее Math.pow
+            elementsSquareSum += e * e; // умножение т.к. это быстрее Math.pow
         }
 
-        return Math.sqrt(length);
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 7; // с помощью этого числа (константное число) вычисляют хэш-код
-        int hash = 1;  // начальное значение хэш-кода
-
-        hash = prime * hash + Arrays.hashCode(components);
-
-        return hash;
-    }
-
-    public double getComponent(int index) {
-        if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException(
-                    "Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
-        }
-
-        return components[index];
-    }
-
-    public void setComponent(int index, double value) {
-        if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException(
-                    "Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
-        }
-
-        components[index] = value;
+        return Math.sqrt(elementsSquareSum);
     }
 
     @Override
@@ -200,5 +171,31 @@ public class Vector {
         Vector vector = (Vector) o;
 
         return Arrays.equals(components, vector.components);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 7; // с помощью этого числа (константное число) вычисляют хэш-код
+        int hash = 1;  // начальное значение хэш-кода
+
+        hash = prime * hash + Arrays.hashCode(components);
+
+        return hash;
+    }
+
+    public double getComponent(int index) {
+        if (index < 0 || index >= components.length) {
+            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+        }
+
+        return components[index];
+    }
+
+    public void setComponent(int index, double value) {
+        if (index < 0 || index >= components.length) {
+            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+        }
+
+        components[index] = value;
     }
 }
