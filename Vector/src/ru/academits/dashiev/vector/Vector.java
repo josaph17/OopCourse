@@ -28,10 +28,6 @@ public class Vector {
             throw new NullPointerException("Array is null!");
         }
 
-        if (array.length <= 0) {
-            throw new IllegalArgumentException("Array length must be > 0. Current value: " + array.length);
-        }
-
         components = Arrays.copyOf(array, array.length);
     }
 

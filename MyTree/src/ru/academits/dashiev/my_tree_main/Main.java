@@ -1,9 +1,7 @@
 package ru.academits.dashiev.my_tree_main;
 
 import ru.academits.dashiev.my_tree.MyTree;
-import ru.academits.dashiev.my_tree_node.MyTreeNode;
-
-import javax.swing.tree.MutableTreeNode;
+import ru.academits.dashiev.my_tree.MyTreeNode;
 
 public class Main {
     private static <C extends Comparable<C>> void deleteAndPrint(MyTree<C> tree, C deletable) {
@@ -42,7 +40,7 @@ public class Main {
         tree.add(45);
         tree.add(1);
 
-        MyTreeNode<Integer> finding = tree.findNode(40);
+        MyTreeNode<Integer> finding = tree.contains(40);
 
         System.out.println("Check deleteNode function:");
         checkDeleteNodeFunction();
