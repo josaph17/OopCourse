@@ -1,7 +1,5 @@
 package ru.academits.dashiev.my_tree;
 
-import ru.academits.dashiev.my_tree_node.MyTreeNode;
-
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -11,11 +9,9 @@ import java.util.Queue;
     непроверяемого типа. Компилятор не может проверить тип */
 public class MyTree<T extends Comparable<T>> {
     private MyTreeNode<T> root;
-    private int treeSize;
+    private int size;
 
     public MyTree() { // создаем пустое деревофф
-        treeSize = 0;
-        root = null;
     }
 
     public MyTree(MyTreeNode<T> root) {
@@ -37,7 +33,7 @@ public class MyTree<T extends Comparable<T>> {
         if (root == null) {
             root = new MyTreeNode<>(data);
 
-            treeSize++;
+            size++;
 
             return; // обязательно, чтобы код ниже не выполнялся
         }
@@ -53,7 +49,7 @@ public class MyTree<T extends Comparable<T>> {
                 } else {
                     current.setLeft(new MyTreeNode<>(data)); // вставляем data как левого сына
 
-                    treeSize++;
+                    size++;
 
                     return;
                 }
@@ -63,7 +59,7 @@ public class MyTree<T extends Comparable<T>> {
                 } else {
                     current.setRight(new MyTreeNode<>(data)); // вставляем data как правого сына
 
-                    treeSize++;
+                    size++;
 
                     return;
                 }
@@ -72,7 +68,7 @@ public class MyTree<T extends Comparable<T>> {
     }
 
     public int getSize() {
-        return treeSize;
+        return size;
     }
 
     public void widthBypass() {
@@ -137,7 +133,7 @@ public class MyTree<T extends Comparable<T>> {
         }
     }
 
-    public MyTreeNode<T> findNode(T data) {
+    public MyTreeNode<T> contains(T data) {
         if (root.getData().equals(data)) { // надо сравнивать через equals, а то сравнятся
             return root; // узел существует
         }
@@ -304,7 +300,7 @@ public class MyTree<T extends Comparable<T>> {
             if (root.getLeft() == null && root.getRight() == null) { // у корня нет детей
                 root = null;
 
-                treeSize--;
+                size--;
 
                 return nodeToDelete.getData();
             }
@@ -312,7 +308,7 @@ public class MyTree<T extends Comparable<T>> {
             if (root.getLeft() == null) { // у корня есть 1 правый ребенок
                 root = root.getRight();
 
-                treeSize--;
+                size--;
 
                 return nodeToDelete.getData();
             }
@@ -320,7 +316,7 @@ public class MyTree<T extends Comparable<T>> {
             if (root.getRight() == null) { // у корня есть 1 левый ребенок
                 root = root.getLeft();
 
-                treeSize--;
+                size--;
 
                 return nodeToDelete.getData();
             }
@@ -334,7 +330,7 @@ public class MyTree<T extends Comparable<T>> {
 
                 root = minLastNode;
 
-                treeSize--;
+                size--;
 
                 return nodeToDelete.getData();
             }
@@ -357,7 +353,7 @@ public class MyTree<T extends Comparable<T>> {
             root.setLeft(nodeToDelete.getLeft()); // привязываем левого ребенка к root
             root.setRight(nodeToDelete.getRight()); // привязываем левого ребенка к root
 
-            treeSize--;
+            size--;
 
             return nodeToDelete.getData();
 
@@ -381,7 +377,7 @@ public class MyTree<T extends Comparable<T>> {
 
             }
 
-            treeSize--;
+            size--;
 
             return nodeToDelete.getData(); // 1. Удаляемый узел - лист
         }
@@ -397,7 +393,7 @@ public class MyTree<T extends Comparable<T>> {
                         nodeToDelete.getRight() != null ? nodeToDelete.getRight() : nodeToDelete.getLeft());
             }
 
-            treeSize--;
+            size--;
 
             return nodeToDelete.getData();
         }
@@ -427,7 +423,7 @@ public class MyTree<T extends Comparable<T>> {
                 minLastNode.setLeft(nodeToDelete.getLeft());
             }
 
-            treeSize--;
+            size--;
 
             return nodeToDelete.getData();
         }
@@ -459,7 +455,7 @@ public class MyTree<T extends Comparable<T>> {
                 nodeToDelete.getRight()); // привязываем детей nodeToDelete к minLastNode
         minLastNode.setLeft(nodeToDelete.getLeft());
 
-        treeSize--;
+        size--;
         return nodeToDelete.getData();
     }
 
