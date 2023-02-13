@@ -205,8 +205,7 @@ public class MyTree<T extends Comparable<T>> {
         }
     }
 
-    private MyTreeNode<T> findMinLastNodeParent(MyTreeNode<T> nodeToDelete,
-                                                MyTreeNode<T> rootToDeleteSubTree, T data) {
+    private MyTreeNode<T> findMinLastNodeParent(MyTreeNode<T> nodeToDelete, MyTreeNode<T> rootToDeleteSubTree, T data) {
         if (root.getData().compareTo(data) > 0) {
             // идем влево от корня
             if (rootToDeleteSubTree.getRight() == null) {
