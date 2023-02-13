@@ -28,6 +28,10 @@ public class Vector {
             throw new NullPointerException("Array is null!");
         }
 
+        if (array.length == 0) {
+            throw new IllegalArgumentException("Wrong array length. Length = " + array.length);
+        }
+
         components = Arrays.copyOf(array, array.length);
     }
 
@@ -71,7 +75,7 @@ public class Vector {
         return result;
     }
 
-    public static double getScalarMultiply(Vector vector1, Vector vector2) {
+    public static double getScalarProduct(Vector vector1, Vector vector2) {
         if (vector1 == null) {
             throw new NullPointerException("1st vector is null!");
         }
@@ -145,13 +149,13 @@ public class Vector {
     }
 
     public double getLength() { // e.Получение длины вектора
-        double elementsSquareSum = 0;
+        double elementsSquaresSum = 0;
 
         for (double e : components) {
-            elementsSquareSum += e * e; // умножение т.к. это быстрее Math.pow
+            elementsSquaresSum += e * e; // умножение т.к. это быстрее Math.pow
         }
 
-        return Math.sqrt(elementsSquareSum);
+        return Math.sqrt(elementsSquaresSum);
     }
 
     @Override
@@ -181,7 +185,8 @@ public class Vector {
 
     public double getComponent(int index) {
         if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+            throw new IndexOutOfBoundsException(
+                    "Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         return components[index];
@@ -189,7 +194,8 @@ public class Vector {
 
     public void setComponent(int index, double value) {
         if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+            throw new IndexOutOfBoundsException(
+                    "Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         components[index] = value;
