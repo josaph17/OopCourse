@@ -137,8 +137,8 @@ public class Matrix {
             result[i] = new Vector(matrix2.matrixRow[0].getSize());
 
             for (int j = 0; j < matrix2.matrixRow[i].getSize(); j++) {
-                result[i].setComponent(j, Vector.getScalarMultiply(matrix1.matrixRow[i],
-                                                                   matrix2.getColumn(j)));
+                result[i].setComponent(j, Vector.getScalarProduct(matrix1.matrixRow[i],
+                                                                  matrix2.getColumn(j)));
             }
         }
 
@@ -307,7 +307,7 @@ public class Matrix {
         double[] result = new double[matrixRow.length];
 
         for (int i = 0; i < matrixRow.length; i++) {
-            result[i] = Vector.getScalarMultiply(matrixRow[i], vector);
+            result[i] = Vector.getScalarProduct(matrixRow[i], vector);
         }
 
         return new Vector(result);
