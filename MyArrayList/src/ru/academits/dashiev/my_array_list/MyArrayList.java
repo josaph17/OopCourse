@@ -3,25 +3,29 @@ package ru.academits.dashiev.my_array_list;
 
 import java.util.*;
 
-public class MyArrayList<T> implements List<T> {
-    private int capacity = 4; // константа-поле класса для вместимости по умолчанию, т.е. items.length
-    private T[] items; // внутренний массив
+public class MyArrayList<E> implements List<E> {
+    static int capacity = 4; // вместимость по умолчанию, т.е. items.length
+    private E[] items;
     private int size; /* длина списка(кол-во эл-в в списке) = 0, вместимость списка , длина списка
     и длина массива могут отличаться*/
     private int modCount; // п.7 счетчик изменений
 
     public MyArrayList() {
         // noinspection unchecked, заглушил
+        items = (E[]) new Object[capacity];
         // Чтобы не было ошибки компиляции, массив типа T приводится к Object
-        items = (T[]) new Object[capacity];
     }
 
     public MyArrayList(int capacity) {
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("Capacity must be > 0. Capacity = " + capacity);
+        }
+
         // noinspection unchecked
-        items = (T[]) new Object[capacity]; // заглушил
+        items = (E[]) new Object[capacity]; // заглушил
     }
 
-    public Iterator<T> iterator() {
+    public Iterator<E> iterator() {
         return new MyIterator();
     }
 
@@ -33,16 +37,14 @@ public class MyArrayList<T> implements List<T> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + (size - 1) + ". Current index = " + index);
+            throw new IndexOutOfBoundsException("List min index = 0, max index = " + (size - 1) + ". Current index = " + index);
         }
     }
 
     private void checkIndexToAdd(int index) {
         // Верхняя граница не должна зависеть от длины массива(items.length), а должна зависеть от длины списка
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException(
-                    "List min index = 0, max index = " + size + ". Current index = " + index);
+            throw new IndexOutOfBoundsException("List min index = 0, max index = " + size + ". Current index = " + index);
         }
     }
 
@@ -63,12 +65,12 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean contains(Object o) {
-        return indexOf(o) != -1; // вернуть резутат
+        return indexOf(o) != -1; // вернуть результат
     }
 
     @Override
-    public boolean add(T item) {
-        //        здесь не нужна проверка вместимости, т.к. она есть в add с индексом
+    public boolean add(E item) {
+        // здесь не нужна проверка вместимости, т.к. она есть в add с индексом
         add(size, item); // чтобы не дублировать код !, size сам увеличится
 
         return true;
@@ -89,12 +91,12 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public boolean addAll(Collection<? extends T> c) {
+    public boolean addAll(Collection<? extends E> c) {
         return addAll(size, c); // п.26 чтобы не дублировать код
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends T> c) {
+    public boolean addAll(int index, Collection<? extends E> c) {
         checkIndexToAdd(index);
 
         if (c.isEmpty()) { // если коллекция пустая
@@ -112,11 +114,15 @@ public class MyArrayList<T> implements List<T> {
 
         int i = index;
 
-        for (T item : c) {
+        size = size + c.size();
+
+        if (oldSize != size) {
+            modCount = modCount + c.size();
+        }
+
+        for (E item : c) {
             items[i] = item;
-            i = i + 1;
-            size = size + 1;
-            modCount = modCount + 1;
+            i++;
         }
 
         return oldSize != size;
@@ -128,30 +134,28 @@ public class MyArrayList<T> implements List<T> {
             return;
         }
 
-        for (int i = 0; i < size; i++) {
-            /* нужно занулить ссылки на объекты, хранящиеся в массиве, чтобы сборщик
+        /* нужно занулить ссылки на объекты, хранящиеся в массиве, чтобы сборщик
              мусора мог очистить эти объекты если они больше нигде не используются */
-            items[i] = null;
-        }
+        Arrays.fill(items, null);
 
-        modCount++; // увеличиваем счетчик изменений
+
+        modCount++;
 
         size = 0;
     }
 
-    /* возвращает просто конкретный элемент, это геттер, он выдает эл-т по индексу*/
     @Override
-    public T get(int index) {
+    public E get(int index) {
         checkIndex(index);
 
         return items[index];
     }
 
     @Override
-    public T set(int index, T item) {
+    public E set(int index, E item) {
         checkIndex(index);
 
-        T oldItem = items[index];
+        E oldItem = items[index];
 
         items[index] = item;
 
@@ -159,9 +163,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public void add(int index, T item) {
-        System.out.println(size);
-
+    public void add(int index, E item) {
         checkIndexToAdd(index);
 
         if (size >= items.length) {
@@ -174,62 +176,28 @@ public class MyArrayList<T> implements List<T> {
 
         size++;
 
-        modCount++; // увеличиваем счетчик изменений
+        modCount++;
     }
 
     @Override
-    public T remove(int index) {
+    public E remove(int index) {
         checkIndex(index);
 
-        T removedItem = items[index];
+        E removedItem = items[index];
 
         System.arraycopy(items, index + 1, items, index, size - 1 - index);
 
         items[--size] = null; // сначала size уменьшится, а потом будет использовано
 
-        modCount++; // увеличиваем счетчик изменений
+        modCount++;
 
         return removedItem;
     }
 
     @Override
     public int indexOf(Object o) {
-        // TODO прошу проверить правильно ли работает на null
-        if (o == null) {
-            // если o = null
-            for (int i = 0; i < size; i++) {
-                if (items[i] == null) {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        for (int i = 0; i < size; i++) { // чтобы не вызывать от null
-            if (items[i] != null && items[i].equals(o)) {
-                return i; // equals принмиает Object, Не нужно приведение
-            } // если  items[i] == null, то пропускаем
-        }
-
-        return -1;
-    }
-
-    @Override
-    public int lastIndexOf(Object o) {
-        // TODO прошу проверить правильно ли работает на null
-        if (o == null) { // если o = null
-            for (int i = 0; i < size; i++) {
-                if (items[i] == null) {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        for (int i = size - 1; i >= 0; i--) {
-            if (items[i] != null && items[i].equals(o)) {
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(items[i], null)) {
                 return i;
             }
         }
@@ -237,23 +205,31 @@ public class MyArrayList<T> implements List<T> {
         return -1;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public ListIterator listIterator() {
+    public int lastIndexOf(Object o) {
+        for (int i = size - 1; i >= 0; i--) {
+            if (Objects.equals(items[i], o)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    @Override
+    public ListIterator<E> listIterator() {
         //noinspection ConstantConditions // заглушил
         return null;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public ListIterator listIterator(int index) { // реализация не нужна
+    public ListIterator<E> listIterator(int index) { // реализация не нужна
         //noinspection ConstantConditions // заглушил
         return null;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    public List subList(int fromIndex, int toIndex) { // реализация не нужна
+    public List<E> subList(int fromIndex, int toIndex) { // реализация не нужна
         //noinspection ConstantConditions // заглушил
         return null;
     }
@@ -269,7 +245,7 @@ public class MyArrayList<T> implements List<T> {
 
         int i = 0;
 
-        for (T item : this) {
+        for (E item : this) {
             if (c.contains(item)) {
                 items[i] = item;
                 i++; // передвигаемся по массиву
@@ -278,12 +254,10 @@ public class MyArrayList<T> implements List<T> {
 
         size = i;
 
-        for (int j = size; j < oldSize; j++) {
-            items[i] = null;
-        }
+        Arrays.fill(items, size, oldSize - 1, null);
 
         if (size != oldSize) {
-            modCount = modCount + 1; // достаточно увеличить счетчик на 1 если список изменился
+            modCount++; // достаточно увеличить счетчик на 1 если список изменился
         }
 
         return size != oldSize;
@@ -299,7 +273,7 @@ public class MyArrayList<T> implements List<T> {
 
         int i = 0;
 
-        for (T item : this) {
+        for (E item : this) {
             if (!c.contains(item)) {
                 items[i] = item;
                 i++; // передвигаемся по массиву
@@ -308,12 +282,10 @@ public class MyArrayList<T> implements List<T> {
 
         size = i;
 
-        for (int j = size; j < oldSize; j++) {
-            items[i] = null;
-        }
+        Arrays.fill(items, size, oldSize - 1, null);
 
         if (size != oldSize) {
-            modCount = modCount + 1; // достаточно увеличить счетчик на 1 если список изменился
+            modCount++;
         }
 
         return size != oldSize;
@@ -337,21 +309,25 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public Object[] toArray() {
         /* нужно создать копию и ее возвратить , т.к. если вернуть
-    оригинальный массив, то его могут поменять извне, если возвр. ориг. - то я предоставлю прямой
-    доступ к данным, инкапсуляции не будет */
+        оригинальный массив, то его могут поменять извне, если возвр. ориг. - то я предоставлю прямой
+        доступ к данным, инкапсуляции не будет */
         return Arrays.copyOf(items, size);
     }
 
+    // todo Правильно ли я сделал, что заглушил метод?
+    @SuppressWarnings("TypeParameterHidesVisibleType")
     @Override
-    public <E> E[] toArray(E[] array) { // E, т.к. этот нек-й класс, который может отличаться от T
+    public <E> E[]  toArray(E[] array) { // T, т.к. этот нек-й класс, который может отличаться от E
         if (array == null) {
             throw new NullPointerException("Array is null");
         }
 
         if (array.length < size) {
-            return Arrays.copyOf(array, size); // возвр. новый массив того же типа, что и переданный
+            //noinspection unchecked
+            return (E[]) Arrays.copyOf(array, size, array.getClass()); // возвр. новый массив того же типа, что и переданный
         }
 
+        //noinspection SuspiciousSystemArraycopy
         System.arraycopy(items, 0, array, 0, size); /* возвр. переданный массив,
         заполненный элементами из списка */
 
@@ -363,7 +339,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public void increaseCapacity() {
-        capacity = capacity * 2;
+        capacity *= 2;
 
         items = Arrays.copyOf(items, capacity);
     }
@@ -398,8 +374,7 @@ public class MyArrayList<T> implements List<T> {
         }
 
         for (int i = 0; i < size; i++) {
-            if (items[i] != null && !items[i].equals(
-                    o.items[i])) { // TODO сравниваем только по equals!
+            if (items[i] != null && !Objects.equals(items[i], o.items[i])) { // TODO сравниваем только по equals!
                 return false;
             }
         }
@@ -415,39 +390,33 @@ public class MyArrayList<T> implements List<T> {
 
         StringBuilder sb = new StringBuilder();
 
-        Iterator<T> iterator =  new MyIterator();
-
         sb.append("[");
 
-        while (iterator.hasNext()){
-            sb.append(iterator.next()).append(" ");
+        for (int i = 0; i < size; i++) {
+            sb.append(items[i]).append(", ");
         }
 
-        sb.deleteCharAt(sb.length() - 2);
+        sb.delete(sb.length() - 2, sb.length());
 
         sb.append("]");
 
         return sb.toString();
     }
 
-    private class MyIterator implements Iterator<T> {
-        final int iteratorModCount = modCount;
+    private class MyIterator implements Iterator<E> {
+        private final int primeModCount = modCount;
         private int currentIndex = -1; // обязательно должен быть модификатор доступа
 
         @Override
         public boolean hasNext() {
-            if (iteratorModCount != modCount) {
-                throw new ConcurrentModificationException("Collection changed!");
-            }
-
             return currentIndex + 1 < size; /* && items[currentIndex] != null - на null нельзя
                 ориентироваться т.к. это нормально значение данных, size-1 чтобы не убежали! */
         }
 
         @Override
-        public T next() { // возвр. текущий элемент и переходит к следующему
-            if (currentIndex >= size) {
-                throw new NoSuchElementException("Нет больше элементов в ArrayList");
+        public E next() { // возвр. текущий элемент и переходит к следующему
+            if (primeModCount != modCount) {
+                throw new ConcurrentModificationException("ArrayList is changed!");
             }
 
             ++currentIndex; // сначало увеличиваем индекс

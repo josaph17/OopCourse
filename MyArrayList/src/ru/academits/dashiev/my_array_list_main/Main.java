@@ -74,8 +74,9 @@ public class Main {
 
         int removeIndexElement = 8;
         System.out.println(list1);
-        Double removeElement = list1.remove(removeIndexElement);
-        System.out.println("removeIndexElement(" + removeIndexElement + "), removeElement: " + removeElement);
+        list1.remove(removeIndexElement);
+        System.out.println("list1 after .remove():");
+        System.out.println(list1);
 
         MyArrayList<Double> removeList = new MyArrayList<>();
         removeList.add(1.1);
