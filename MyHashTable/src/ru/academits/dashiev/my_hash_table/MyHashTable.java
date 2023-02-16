@@ -3,16 +3,14 @@ package ru.academits.dashiev.my_hash_table;
 import java.util.*;
 
 public class MyHashTable<E> implements Collection<E> {
-    private final int capacity;
     private LinkedList<E>[] lists; // это точно правильно, Массив односвязных списков
     private int size; // кол-во эл-в
     private int modCount; // кол-во изменений
 
-    public MyHashTable() {
-        capacity = 5;
+    static int defaultCapacity = 5; // константа для размера массива по умолчанию
 
-        //noinspection unchecked
-        lists = new LinkedList[capacity]; // создание массива списков без указания типа
+    public MyHashTable() {
+        this(defaultCapacity);
     }
 
     public MyHashTable(int capacity) {
@@ -20,10 +18,10 @@ public class MyHashTable<E> implements Collection<E> {
             throw new IllegalArgumentException("Wrong capacity <= 0. Capacity = " + capacity);
         }
 
-        this.capacity = capacity;
+        defaultCapacity = capacity;
 
         //noinspection unchecked
-        lists = new LinkedList[capacity];
+        lists = new LinkedList[defaultCapacity];
     }
 
     @Override
@@ -42,13 +40,9 @@ public class MyHashTable<E> implements Collection<E> {
             return false;
         }
 
-        int index = (o == null) ? 0 : Math.abs(o.hashCode() % capacity);
+        int index = (o == null) ? 0 : Math.abs(o.hashCode() % defaultCapacity);
 
-        if (lists[index] != null) {
-            return lists[index].contains(o);
-        }
-
-        return false;
+        return lists[index].contains(o);
     }
 
     @Override
@@ -106,7 +100,7 @@ public class MyHashTable<E> implements Collection<E> {
 
     @Override
     public boolean add(E value) {
-        int index = (value == null) ? 0 : Math.abs(value.hashCode() % capacity);
+        int index = (value == null) ? 0 : Math.abs(value.hashCode() % defaultCapacity);
 
         if (lists[index] == null) {
             lists[index] = new LinkedList<>();
@@ -152,21 +146,13 @@ public class MyHashTable<E> implements Collection<E> {
 
     @Override
     public boolean remove(Object o) {
-        if (size == 0) {
-            return false; // когда список пуст
+        int index = (o == null) ? 0 : Math.abs(o.hashCode() % defaultCapacity);
+
+        if (lists[index] != null) {
+            return lists[index].remove(o);
+        } else {
+            return false;
         }
-
-        int index = (o == null) ? 0 : Math.abs(o.hashCode() % capacity);
-
-        boolean result = lists[index].remove(o);
-
-        if (result) {
-            size--;
-
-            modCount++;
-        }
-
-        return result; // чтобы не делать двойного приведения
     }
 
     @Override
@@ -279,7 +265,7 @@ public class MyHashTable<E> implements Collection<E> {
 
             indexOfElementInList = indexOfElementInList + 1;
 
-            for (int i = indexOfListInArray; indexOfListInArray < capacity; ) {
+            for (int i = indexOfListInArray; indexOfListInArray < size; ) {
                 if (!lists[indexOfListInArray].isEmpty() && indexOfElementInList < lists[indexOfListInArray].size()) {
                     indexOfElementInTable = indexOfElementInTable + 1;
 
@@ -296,13 +282,11 @@ public class MyHashTable<E> implements Collection<E> {
         @Override
         public void remove() {
             if (isNextCalled) {
-                int listSize = lists[indexOfListInArray].size();
+                // int listSize = lists[indexOfListInArray].size();
 
                 System.out.println(
                         "indexOfElementInTable = " + indexOfElementInTable + " , deleted in list[" + indexOfListInArray + "] item index = " + indexOfElementInList //
-                                + " value = " + lists[indexOfListInArray].get(
-                                indexOfElementInList));
-
+                                + " value = " + lists[indexOfListInArray].get(indexOfElementInList));
 
                 lists[indexOfListInArray].remove(indexOfElementInList);
 
