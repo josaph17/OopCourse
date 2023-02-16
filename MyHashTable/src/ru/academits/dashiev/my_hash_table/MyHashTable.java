@@ -8,6 +8,7 @@ public class MyHashTable<E> implements Collection<E> {
     private int modCount; // кол-во изменений
 
     static int defaultCapacity = 5; // константа для размера массива по умолчанию
+    // поле, которое не static поле у каждого свое - может быть разное
 
     public MyHashTable() {
         this(defaultCapacity);
@@ -237,42 +238,45 @@ public class MyHashTable<E> implements Collection<E> {
     }
 
     private class MyIterator implements Iterator<E> {
-        final int iteratorModCount = modCount;
+        private int iteratorModCount = modCount;
 
-        int indexOfElementInTable = -1; // индекс элемента во всей таблице
-        int indexOfListInArray = 0; // индекс списка в массиве
-        int indexOfElementInList = -1; // индекс элемента в списке
+        private int tableElementIndex = -1; // индекс элемента во всей таблице
+        private int listIndex; // индекс списка в массиве
+        private int listElementIndex = -1; // индекс элемента в списке
 
-        boolean isNextCalled; // false по умолчанию
+        private boolean isNextCalled; // false по умолчанию
 
         @Override
         public boolean hasNext() {
-            if (iteratorModCount != modCount) {
-                throw new ConcurrentModificationException("Hashtable changed!");
-            }
-
-            return indexOfElementInTable + 1 < size;
+            return tableElementIndex + 1 < size;
         }
 
         @Override
         public E next() {
-            isNextCalled = true;
+            if (iteratorModCount != modCount) {
+                throw new ConcurrentModificationException("Hashtable changed!");
+            }
 
-            if (indexOfElementInTable >= size) {
+            if (tableElementIndex >= size) {
                 // лекция 13 стр.15
                 throw new NoSuchElementException("Нет больше элементов в HashTable");
             }
 
-            indexOfElementInList = indexOfElementInList + 1;
+            if (hasNext()){
+                isNextCalled = true;
 
-            for (int i = indexOfListInArray; indexOfListInArray < size; ) {
-                if (!lists[indexOfListInArray].isEmpty() && indexOfElementInList < lists[indexOfListInArray].size()) {
-                    indexOfElementInTable = indexOfElementInTable + 1;
+                listElementIndex = listElementIndex + 1;
 
-                    return lists[indexOfListInArray].get(indexOfElementInList);
-                } else {
-                    indexOfElementInList = 0;
-                    indexOfListInArray = indexOfListInArray + 1;
+                for (; listIndex < size; ) {
+                    if (!lists[listIndex].isEmpty() && listElementIndex < lists[listIndex].size()) {
+                        tableElementIndex++;
+
+                        return lists[listIndex].get(listElementIndex);
+                    }
+
+                    listElementIndex = 0;
+
+                    listIndex++;
                 }
             }
 
@@ -282,16 +286,10 @@ public class MyHashTable<E> implements Collection<E> {
         @Override
         public void remove() {
             if (isNextCalled) {
-                // int listSize = lists[indexOfListInArray].size();
+                lists[listIndex].remove(listElementIndex);
 
-                System.out.println(
-                        "indexOfElementInTable = " + indexOfElementInTable + " , deleted in list[" + indexOfListInArray + "] item index = " + indexOfElementInList //
-                                + " value = " + lists[indexOfListInArray].get(indexOfElementInList));
-
-                lists[indexOfListInArray].remove(indexOfElementInList);
-
-                indexOfElementInTable--;
-                indexOfElementInList--;
+                tableElementIndex--;
+                listElementIndex--;
 
                 size--;
 
