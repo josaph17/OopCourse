@@ -1,8 +1,6 @@
 package ru.academits.dashiev.minesweeper_main;
 
-import ru.academits.dashiev.controller.Controller;
-import ru.academits.dashiev.model.Model;
-import ru.academits.dashiev.view.View;
+import ru.academits.dashiev.temperature_view.View;
 
 import javax.swing.*;
 

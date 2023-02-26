@@ -1,7 +1,7 @@
-package ru.academits.dashiev.view;
+package ru.academits.dashiev.temperature_view;
 
 public interface IView {
-    public void initView(Runnable convertAction);
+    // public void initView(Runnable convertAction);
 
     public String getInputTemperatureText();
 

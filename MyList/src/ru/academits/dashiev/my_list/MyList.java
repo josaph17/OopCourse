@@ -17,20 +17,18 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
         size = list.size;
 
-        Node<T> listCurrent = list.head;
+        Node<T> currentListNode = list.head;
 
-        head = new Node<>(listCurrent.getData());
+        head = new Node<>(currentListNode.getData());
 
-        Node<T> current = head;
+        currentListNode = currentListNode.getNext();
 
-        for (int i = 0; i < list.size - 1; i++) {
-            listCurrent = listCurrent.getNext();
+        Node<T> currentNode = head;
 
-            Node<T> newNode = new Node<>(listCurrent.getData());
-
-            current.setNext(newNode);
-
-            current = current.getNext();
+        while(currentListNode != null){
+            currentNode.setNext(new Node<>(currentListNode.getData()));
+            currentListNode = currentListNode.getNext();
+            currentNode = currentNode.getNext();
         }
     }
 
@@ -49,22 +47,22 @@ public class MyList<T> { // класс List  должен быть generic, чт
     private Node<T> getNodeByIndex(int index) {
         Node<T> currentNode = head;
 
-        for (int i = 0; i != index; i++) {
+        for (int i = 0; i < index; i++) {
             currentNode = currentNode.getNext();
         }
 
         return currentNode;
     }
 
-    private void checkAddIndex(int index) {
-        if (index < 0 || index > getSize()) {
-            throw new IndexOutOfBoundsException("List min index = 0, max index = " + (getSize()) + ". Current index = " + index);
+    private void checkIndexForAdd(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("List min index = 0, max index = " + size + ". Current index = " + index);
         }
     }
 
     private void checkIndex(int index) {
-        if (index < 0 || index >= getSize()) {
-            throw new IndexOutOfBoundsException("List min index = 0, max index = " + (getSize() - 1) + ". Current index = " + index);
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("List min index = 0, max index = " + (size - 1) + ". Current index = " + index);
         }
     }
 
@@ -79,11 +77,11 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
         Node<T> currentNode = getNodeByIndex(index);
 
-        T oldData = currentNode.getData();
+        T deletedData = currentNode.getData();
 
         currentNode.setData(data);
 
-        return oldData;
+        return deletedData;
     }
 
     public T removeByIndex(int index) {
@@ -93,13 +91,15 @@ public class MyList<T> { // класс List  должен быть generic, чт
             return removeFirst();
         }
 
-        T deletedNodeData = getNodeByIndex(index).getData();
+        Node<T> beforeRemovedNode = getNodeByIndex(index-1);
 
-        getNodeByIndex(index - 1).setNext(getNodeByIndex(index).getNext()); // общий случай
+        T removedData = beforeRemovedNode.getNext().getData();
+
+        beforeRemovedNode.setNext(beforeRemovedNode.getNext().getNext());
 
         size--;
 
-        return deletedNodeData;
+        return removedData;
     }
 
     public void addFirst(T data) {
@@ -109,7 +109,7 @@ public class MyList<T> { // класс List  должен быть generic, чт
     }
 
     public void addByIndex(int index, T data) {
-        checkAddIndex(index);
+        checkIndexForAdd(index);
 
         if (index == 0) {
             addFirst(data);
@@ -117,9 +117,19 @@ public class MyList<T> { // класс List  должен быть generic, чт
         }
 
         Node<T> previousNode = getNodeByIndex(index - 1);
-        Node<T> nextNode = getNodeByIndex(index);
 
-        previousNode.setNext(new Node<>(data, nextNode));
+        if (index == size){
+            previousNode.setNext(new Node<>(data));
+
+            size++;
+
+            return;
+        }
+
+        Node<T> nextNode = previousNode.getNext();
+        Node<T> newNode = new Node<>(data, nextNode);
+
+        previousNode.setNext(newNode);
 
         size++;
     }
@@ -131,7 +141,6 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
         // Если элмент в начале списка
         if (Objects.equals(head.getData(), data)) {
-
             head = head.getNext();
 
             size--;
@@ -139,23 +148,20 @@ public class MyList<T> { // класс List  должен быть generic, чт
             return true;
         }
 
-        Node<T> removedNode;
-        Node<T> previousNode = head;
 
-        for (int i = 1; !Objects.equals(previousNode.getNext().getData(), data); i++) {
-            previousNode = previousNode.getNext();
+        for (Node<T> previousNode = head; previousNode.getNext()!= null; previousNode = previousNode.getNext()) {
+            if (Objects.equals(previousNode.getNext().getData(), data)){
+                Node<T> removedNode = previousNode.getNext();
+                
+                previousNode.setNext(removedNode.getNext());
 
-            if (i == size - 1) {
-                return false; // нет элемента в списке
+                size--;
+
+                return true;
             }
         }
 
-        removedNode = previousNode.getNext();
-        previousNode.setNext(removedNode.getNext());
-
-        size--;
-
-        return true;
+        return false;
     }
 
     public T removeFirst() {

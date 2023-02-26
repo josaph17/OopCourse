@@ -47,10 +47,10 @@ public class Main {
         System.out.println("Список: " + list);
         System.out.println("remove(int index) - удаление элемента по индексу");
 
-        int deleteIndex = 1;
+        int indexForRemove = 1;
 
-        System.out.println("Удаляем элемент по индексу = " + deleteIndex);
-        System.out.println("Удален элемент со значением = " + list.removeByIndex(deleteIndex));
+        System.out.println("Удаляем элемент по индексу = " + indexForRemove);
+        System.out.println("Удален элемент со значением = " + list.removeByIndex(indexForRemove));
         System.out.println(list);
         System.out.println();
 
@@ -61,20 +61,20 @@ public class Main {
         System.out.println(list);
         System.out.println();
 
-        int addIndex = 3, addValue = 1007;
+        int indexForAdd = 3, valueForAdd = 1007;
 
         System.out.println("addByIndex(int index, T data) - вставка элемента по индексу");
-        System.out.println("Индекс = " + addIndex + ", значение = " + addValue);
-        list.addByIndex(addIndex, addValue);
+        System.out.println("Индекс = " + indexForAdd + ", значение = " + valueForAdd);
+        list.addByIndex(indexForAdd, valueForAdd);
         System.out.println(list);
         System.out.println();
 
-        int removeData = 3523;
+        int dataForRemove = 3523;
 
         System.out.println("remove(T data) - удаление узла по значению, пусть выдает true, если элемент был удален");
         System.out.println("Список до использования данной функции: " + list);
-        System.out.println("Проверяем удален ли  узел со значением = " + removeData);
-        System.out.println("Ответ: " + list.remove(removeData));
+        System.out.println("Проверяем удален ли  узел со значением = " + dataForRemove);
+        System.out.println("Ответ: " + list.remove(dataForRemove));
         System.out.println("Список после использования данной функции: " + list);
         System.out.println();
 

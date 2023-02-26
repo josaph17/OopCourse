@@ -1,6 +1,6 @@
-package ru.academits.dashiev.model;
+package ru.academits.dashiev.temperature_model;
 
-import ru.academits.dashiev.unit.Unit;
+import ru.academits.dashiev.temperature_unit.Unit;
 
 public class Model {
     private Double inputTemperature;
@@ -9,10 +9,6 @@ public class Model {
     private Enum outputUnit;
 
     public Model() {
-        inputTemperature = null;
-        outputTemperature = null;
-        inputUnit = null;
-        outputUnit = null;
     }
 
     public void setInputTemperature(double inputTemperature) {

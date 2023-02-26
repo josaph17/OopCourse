@@ -29,7 +29,7 @@ public class Vector {
         }
 
         if (array.length == 0) {
-            throw new IllegalArgumentException("Wrong array length. Length = " + array.length);
+            throw new IllegalArgumentException("Wrong array length. Length = " + array.length + ". Length must be > 0");
         }
 
         components = Arrays.copyOf(array, array.length);
@@ -185,8 +185,7 @@ public class Vector {
 
     public double getComponent(int index) {
         if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException(
-                    "Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         return components[index];
@@ -194,8 +193,7 @@ public class Vector {
 
     public void setComponent(int index, double value) {
         if (index < 0 || index >= components.length) {
-            throw new IndexOutOfBoundsException(
-                    "Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
+            throw new IndexOutOfBoundsException("Index = " + index + " out of bounds. Valid index value from 0 to " + (components.length - 1));
         }
 
         components[index] = value;
