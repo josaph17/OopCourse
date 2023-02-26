@@ -1,7 +1,7 @@
-package ru.academits.dashiev.controller;
+package ru.academits.dashiev.temperature_controller;
 
-import ru.academits.dashiev.model.Model;
-import ru.academits.dashiev.view.View;
+import ru.academits.dashiev.temperature_model.Model;
+import ru.academits.dashiev.temperature_view.View;
 
 public class Controller {
     private Model model;
@@ -10,12 +10,17 @@ public class Controller {
     public Controller(Model m, View v) {
         model = m;
         view = v;
-
-        // код в скобках и есть Runnable, параметров передаю выражение вызывающую ф-ю convertTemperature
-        view.initView(() -> convertTemperature());
     }
 
-    public void convertTemperature() {
+    public void initController(){
+        // код в скобках и есть Runnable, параметров передаю выражение вызывающую ф-ю convertTemperature
+        // view.initView(() -> convertTemperature());
+        outputCelsiusButton.doClick();
+        inputCelsiusButton.doClick();
+        view.getConvertButton().addActionListener(e -> convertTemperature());
+    }
+
+    private void convertTemperature() {
         try {
             model.setInputTemperature(Double.parseDouble((view.getInputTemperatureText())));
         } catch (NumberFormatException e) {

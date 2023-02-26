@@ -1,4 +1,4 @@
-package ru.academits.dashiev.view;
+package ru.academits.dashiev.temperature_view;
 
 import javax.swing.*;
 import java.awt.*;

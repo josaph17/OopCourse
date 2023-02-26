@@ -1,3 +1,3 @@
-package ru.academits.dashiev.controller;
+package ru.academits.dashiev.temperature_controller;
 
 public class Controller {}

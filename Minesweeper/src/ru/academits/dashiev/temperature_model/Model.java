@@ -1,3 +1,3 @@
-package ru.academits.dashiev.model;
+package ru.academits.dashiev.temperature_model;
 
 public class Model {}

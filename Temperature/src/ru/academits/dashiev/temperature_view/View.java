@@ -1,6 +1,6 @@
-package ru.academits.dashiev.view;
+package ru.academits.dashiev.temperature_view;
 
-import ru.academits.dashiev.unit.Unit;
+import ru.academits.dashiev.temperature_unit.Unit;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,121 +30,133 @@ public class View implements IView {
     private ImageIcon warningIcon;
 
     public View() {
-        String appName = "My temperature app";
+        SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception ignored) {
 
-        frame = new JFrame(appName);
-        frame.setSize(500, 300);
-        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS)); // Layout manager
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // frame close on exit
-        frame.setResizable(false); // not change frame size
-        frame.setVisible(true);
+            }
 
-        panel1 = new JPanel();
-        panel1.setBounds(0, 0, 500, 30);
-        panel1.setBackground(new Color(255, 255, 255, 161));
-        panel1.revalidate(); // to check valid
-        panel1.setAlignmentX(Component.CENTER_ALIGNMENT);
+            String appName = "My temperature app";
 
-        panel2 = new JPanel();
-        panel2.setBounds(0, 0, 500, 120);
-        panel2.setBackground(new Color(255, 255, 255, 161));
-        panel2.revalidate();
-        panel2.setAlignmentX(Component.CENTER_ALIGNMENT);
+            frame = new JFrame(appName);
+            frame.setSize(500, 300);
+            frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS)); // Layout manager
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // frame close on exit
+            frame.setResizable(false); // not change frame size
+            frame.setVisible(true);
 
-        panel3 = new JPanel(); // не меняем
-        panel3.setBounds(0, 0, 500, 200);
-        panel3.setBackground(new Color(255, 255, 255, 161));
-        panel3.revalidate();
-        panel3.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panel1 = new JPanel();
+            panel1.setBounds(0, 0, 500, 30);
+            panel1.setBackground(new Color(255, 255, 255, 161));
+            panel1.revalidate(); // to check valid
+            panel1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        panel4 = new JPanel();
-        panel4.setBounds(0, 0, 500, 30);
-        panel4.setBackground(new Color(255, 255, 255, 161));
-        panel4.revalidate();
-        panel4.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panel2 = new JPanel();
+            panel2.setBounds(0, 0, 500, 120);
+            panel2.setBackground(new Color(255, 255, 255, 161));
+            panel2.revalidate();
+            panel2.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        panel5 = new JPanel();
-        panel5.setBounds(0, 0, 500, 120);
-        panel5.setBackground(new Color(255, 255, 255, 161));
-        panel5.revalidate();
-        panel5.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panel3 = new JPanel(); // не меняем
+            panel3.setBounds(0, 0, 500, 200);
+            panel3.setBackground(new Color(255, 255, 255, 161));
+            panel3.revalidate();
+            panel3.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        appIcon = Toolkit.getDefaultToolkit().getImage("appImg.png"); // create app icon
-        convertButtonIcon = new ImageIcon("change.png"); // convertButtonIcon
-        warningIcon = new ImageIcon("attention.png");
+            panel4 = new JPanel();
+            panel4.setBounds(0, 0, 500, 30);
+            panel4.setBackground(new Color(255, 255, 255, 161));
+            panel4.revalidate();
+            panel4.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        inputField = new JTextField(20); // textField 20 symbols
-        inputField.setBounds(2, 3, 200, 30);
+            panel5 = new JPanel();
+            panel5.setBounds(0, 0, 500, 120);
+            panel5.setBackground(new Color(255, 255, 255, 161));
+            panel5.revalidate();
+            panel5.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        outputField = new JTextField(20);
-        outputField.setBounds(2, 3, 200, 30);
-        outputField.setEditable(false);
+            appIcon = Toolkit.getDefaultToolkit().getImage("appImg.png"); // create app icon
+            convertButtonIcon = new ImageIcon("change.png"); // convertButtonIcon
+            warningIcon = new ImageIcon("attention.png");
 
-        //button.addActionListener((e) -> button.setText("Ищу инструументы")); // button использовали замыкание
-        inputTemperatureAndChooseUnitLabel = new JLabel();
-        inputTemperatureAndChooseUnitLabel.setText("Enter input value and choose temperature unit");
-        inputTemperatureAndChooseUnitLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+            inputField = new JTextField(20); // textField 20 symbols
+            inputField.setBounds(2, 3, 200, 30);
 
-        outputTemperatureAndChooseUnitLabel = new JLabel();
-        outputTemperatureAndChooseUnitLabel.setText("Choose temperature unit");
-        outputTemperatureAndChooseUnitLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+            outputField = new JTextField(20);
+            outputField.setBounds(2, 3, 200, 30);
+            outputField.setEditable(false);
 
-        convertButton = new JButton();
-        convertButton.setText("Convert");
-        convertButton.setIcon(convertButtonIcon);
+            //button.addActionListener((e) -> button.setText("Ищу инструументы")); // button использовали замыкание
+            inputTemperatureAndChooseUnitLabel = new JLabel();
+            inputTemperatureAndChooseUnitLabel.setText("Enter input value and choose temperature unit");
+            inputTemperatureAndChooseUnitLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
-        inputCelsiusButton = new JRadioButton("Celsius");
-        inputFahrenheitButton = new JRadioButton("Fahrenheit");
-        inputKelvinButton = new JRadioButton("Kelvin");
-        inputTemperatureButtonsGroup = new ButtonGroup();
-        inputTemperatureButtonsGroup.add(inputCelsiusButton);
-        inputTemperatureButtonsGroup.add(inputFahrenheitButton);
-        inputTemperatureButtonsGroup.add(inputKelvinButton);
-        outputCelsiusButton = new JRadioButton("Celsius");
-        outputFahrenheitButton = new JRadioButton("Fahrenheit");
-        outputKelvinButton = new JRadioButton("Kelvin");
-        outputTemperatureButtonsGroup = new ButtonGroup();
-        outputTemperatureButtonsGroup.add(outputCelsiusButton);
-        outputTemperatureButtonsGroup.add(outputFahrenheitButton);
-        outputTemperatureButtonsGroup.add(outputKelvinButton);
+            outputTemperatureAndChooseUnitLabel = new JLabel();
+            outputTemperatureAndChooseUnitLabel.setText("Choose temperature unit");
+            outputTemperatureAndChooseUnitLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
-        // add UI elements to Frame
-        frame.setIconImage(appIcon);
+            convertButton = new JButton();
+            convertButton.setText("Convert");
+            convertButton.setIcon(convertButtonIcon);
 
-        frame.getContentPane().setBackground(new Color(197, 197, 199, 161));
-        frame.add(panel1);
-        frame.add(panel2);
-        frame.add(panel3);
-        frame.add(panel4);
-        frame.add(panel5);
+            inputCelsiusButton = new JRadioButton("Celsius");
+            inputFahrenheitButton = new JRadioButton("Fahrenheit");
+            inputKelvinButton = new JRadioButton("Kelvin");
+            inputTemperatureButtonsGroup = new ButtonGroup();
+            inputTemperatureButtonsGroup.add(inputCelsiusButton);
+            inputTemperatureButtonsGroup.add(inputFahrenheitButton);
+            inputTemperatureButtonsGroup.add(inputKelvinButton);
+            outputCelsiusButton = new JRadioButton("Celsius");
+            outputFahrenheitButton = new JRadioButton("Fahrenheit");
+            outputKelvinButton = new JRadioButton("Kelvin");
+            outputTemperatureButtonsGroup = new ButtonGroup();
+            outputTemperatureButtonsGroup.add(outputCelsiusButton);
+            outputTemperatureButtonsGroup.add(outputFahrenheitButton);
+            outputTemperatureButtonsGroup.add(outputKelvinButton);
 
-        panel1.add(inputTemperatureAndChooseUnitLabel);
-        panel2.add(inputField);
-        panel2.add(inputCelsiusButton);
-        panel2.add(inputFahrenheitButton);
-        panel2.add(inputKelvinButton);
-        panel3.add(convertButton);
-        panel4.add(outputTemperatureAndChooseUnitLabel);
-        panel5.add(outputField);
-        panel5.add(outputCelsiusButton);
-        panel5.add(outputFahrenheitButton);
-        panel5.add(outputKelvinButton);
+            // add UI elements to Frame
+            frame.setIconImage(appIcon);
+
+            frame.getContentPane().setBackground(new Color(197, 197, 199, 161));
+            frame.add(panel1);
+            frame.add(panel2);
+            frame.add(panel3);
+            frame.add(panel4);
+            frame.add(panel5);
+
+            panel1.add(inputTemperatureAndChooseUnitLabel);
+            panel2.add(inputField);
+            panel2.add(inputCelsiusButton);
+            panel2.add(inputFahrenheitButton);
+            panel2.add(inputKelvinButton);
+            panel3.add(convertButton);
+            panel4.add(outputTemperatureAndChooseUnitLabel);
+            panel5.add(outputField);
+            panel5.add(outputCelsiusButton);
+            panel5.add(outputFahrenheitButton);
+            panel5.add(outputKelvinButton);
+        });
     }
 
-    @Override
-    public void initView(Runnable convertAction) {
-        outputCelsiusButton.doClick();
-        inputCelsiusButton.doClick();
-
-        // объект e - это событие (event), addActionListener добавляет слушателя для кнопки
-        // как только кнопка нажимается слушател о этом узнает и потом происходит какое-то действие,
-        // actionPerformed, вызывается метод run() из convertAction
-        convertButton.addActionListener(e -> convertAction.run());
+    public JRadioButton getConvertButton() {
+        return convertButton;
     }
+
+//    @Override
+//    public void initView(Runnable convertAction) {
+//        outputCelsiusButton.doClick();
+//        inputCelsiusButton.doClick();
+//convertActione -> convertAction.run());
+//    }
 
     @Override
     public String getInputTemperatureText() {
         return inputField.getText();
+    }
+
+    public void setInputTemperature(String value) {
+        outputField.setText(value);
     }
 
     @Override
