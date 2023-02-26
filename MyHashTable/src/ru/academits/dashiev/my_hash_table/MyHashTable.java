@@ -3,7 +3,7 @@ package ru.academits.dashiev.my_hash_table;
 import java.util.*;
 
 public class MyHashTable<E> implements Collection<E> {
-    private LinkedList<E>[] lists; // это точно правильно, Массив односвязных списков
+    private final LinkedList<E>[] lists; // это точно правильно, Массив односвязных списков
     private int size; // кол-во эл-в
     private int modCount; // кол-во изменений
 
@@ -25,6 +25,10 @@ public class MyHashTable<E> implements Collection<E> {
         lists = new LinkedList[defaultCapacity];
     }
 
+    private int getArrayIndex(Object o){
+        return (o == null) ? 0 : Math.abs(o.hashCode() % lists.length);
+    }
+
     @Override
     public int size() {
         return size;
@@ -41,7 +45,7 @@ public class MyHashTable<E> implements Collection<E> {
             return false;
         }
 
-        int index = (o == null) ? 0 : Math.abs(o.hashCode() % defaultCapacity);
+        int index = getArrayIndex(o);
 
         return lists[index].contains(o);
     }
@@ -67,21 +71,23 @@ public class MyHashTable<E> implements Collection<E> {
     }
 
     @Override
-    public <E> E[] toArray(E[] a) {  // // T- т.к. этот нек-й класс может отличаться от V
+    public <T> T[] toArray(T[] a) {  // // T- т.к. этот нек-й класс может отличаться от V
         if (a == null) {
             throw new NullPointerException("a is null!");
         }
 
         int hashTableSize = size();
 
-        E[] hashTableArray = (E[]) toArray();
+        @SuppressWarnings("unchecked")
+        T[] hashTableArray = (T[]) toArray();
 
         if (hashTableSize > a.length) {
-            E[] newArray = (E[]) Arrays.copyOf(a, hashTableSize, a.getClass());
+            @SuppressWarnings("unchecked")
+            T[] newArray = (T[]) Arrays.copyOf(a, hashTableSize, a.getClass());
 
             int i = 0;
 
-            for (E t : hashTableArray) {
+            for (T t : hashTableArray) {
                 newArray[i] = t;
 
                 i++;
@@ -101,7 +107,7 @@ public class MyHashTable<E> implements Collection<E> {
 
     @Override
     public boolean add(E value) {
-        int index = (value == null) ? 0 : Math.abs(value.hashCode() % defaultCapacity);
+        int index = (value == null) ? 0 : Math.abs(value.hashCode() % lists.length);
 
         if (lists[index] == null) {
             lists[index] = new LinkedList<>();
@@ -147,7 +153,7 @@ public class MyHashTable<E> implements Collection<E> {
 
     @Override
     public boolean remove(Object o) {
-        int index = (o == null) ? 0 : Math.abs(o.hashCode() % defaultCapacity);
+        int index = getArrayIndex(o);
 
         if (lists[index] != null) {
             return lists[index].remove(o);
@@ -161,8 +167,6 @@ public class MyHashTable<E> implements Collection<E> {
         if (c == null) {
             throw new NullPointerException("Collection is null!!!");
         }
-
-        System.out.println(this);
 
         int primeSize = size;
 
@@ -267,7 +271,7 @@ public class MyHashTable<E> implements Collection<E> {
 
                 listElementIndex = listElementIndex + 1;
 
-                for (; listIndex < size; ) {
+                while (listIndex < size) {
                     if (!lists[listIndex].isEmpty() && listElementIndex < lists[listIndex].size()) {
                         tableElementIndex++;
 
@@ -299,40 +303,5 @@ public class MyHashTable<E> implements Collection<E> {
                 throw new IllegalStateException("Operation removeAll() call second time!");
             }
         }
-    }
-
-    public static void main(String[] args) {
-        MyHashTable<Integer> hashTable1 = new MyHashTable<>(3);
-
-        hashTable1.add(88);
-        hashTable1.add(432);
-        //        hashTable1.add(32);
-        hashTable1.add(null);
-        hashTable1.add(32);
-        hashTable1.add(54);
-        hashTable1.add(null);
-
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        arrayList.add(432);
-        arrayList.add(null);
-
-        System.out.println(hashTable1.retainAll(arrayList));
-
-        System.out.println(hashTable1);
-
-        MyHashTable<Integer> hashTable2 = new MyHashTable<>(3);
-        hashTable2.add(1);
-        hashTable2.add(2);
-        hashTable2.add(3);
-        hashTable2.add(4);
-        hashTable2.add(5);
-        System.out.println(hashTable2);
-        Iterator<Integer> iterator = hashTable2.iterator();
-        iterator.next();
-        iterator.next();
-        iterator.remove();
-        iterator.next();
-        iterator.remove();
-        System.out.println(hashTable2);
     }
 }

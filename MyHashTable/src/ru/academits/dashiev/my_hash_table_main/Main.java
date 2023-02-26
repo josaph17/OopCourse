@@ -31,8 +31,7 @@ public class Main {
 
         Integer containsObject = 778;
 
-        System.out.println("hashTable1.contains(" + containsObject + "): " + hashTable1.contains(
-                containsObject));
+        System.out.println("hashTable1.contains(" + containsObject + "): " + hashTable1.contains(containsObject));
 
         LinkedList<Integer> containsLinkedList = new LinkedList<>(Arrays.asList(7, 190, 777));
 
