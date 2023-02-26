@@ -4,10 +4,10 @@ class Node<T> {
     private T data;
     private Node<T> next;
 
+    // Добавление последнего эл-а в список
     public Node(T data) {
         this.data = data;
-        next = null; // указатель указывает на null
-    }// добавление последнего эл-а в список
+    }
 
     public Node(T data, Node<T> next) {
         this.data = data;
