@@ -69,8 +69,7 @@ public class Main {
         double lastIndexElement = 3777.9;
         list1.add(lastIndexElement);
         System.out.println("list1 after .add(" + lastIndexElement + "): " + list1);
-        System.out.println("list1.lastIndexOf(" + lastIndexElement + ") = " + list1.lastIndexOf(
-                lastIndexElement));
+        System.out.println("list1.lastIndexOf(" + lastIndexElement + ") = " + list1.lastIndexOf(lastIndexElement));
 
         int removeIndexElement = 8;
         System.out.println(list1);
@@ -78,16 +77,16 @@ public class Main {
         System.out.println("list1 after .remove():");
         System.out.println(list1);
 
-        MyArrayList<Double> removeList = new MyArrayList<>();
-        removeList.add(1.1);
-        removeList.add(3777.9);
-        removeList.add(2.2);
-        removeList.add(66.7);
-        removeList.add(4.4);
+        MyArrayList<Double> removedList = new MyArrayList<>();
+        removedList.add(1.1);
+        removedList.add(3777.9);
+        removedList.add(2.2);
+        removedList.add(66.7);
+        removedList.add(4.4);
 
-        System.out.println("removeList: " + removeList);
-        list1.removeAll(removeList);
-        System.out.println("list1 after .removeAll(removeList): " + list1);
+        System.out.println("removedList: " + removedList);
+        list1.removeAll(removedList);
+        System.out.println("list1 after .removeAll(removedList): " + list1);
 
         // TODO прошу поверить ф-ю retainAll(Collection c)
         System.out.println("-----------------------");
@@ -116,6 +115,7 @@ public class Main {
         for (Object o : array1) {
             System.out.print(o + " ");
         }
+
         System.out.println();
 
         System.out.println("list1: " + list1);
@@ -127,10 +127,10 @@ public class Main {
         }
 
         System.out.println();
-        System.out.print("Double[] afterToArray = list1.toArray(array2): ");
-        Double[] afterToArray = list1.toArray(array2);
+        System.out.print("Double[] array = list1.toArray(array2): ");
+        Double[] array = list1.toArray(array2);
 
-        for (Double element : afterToArray) {
+        for (Double element : array) {
             System.out.print(element + " ");
         }
 
