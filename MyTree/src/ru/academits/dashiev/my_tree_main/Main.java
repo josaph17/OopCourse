@@ -40,7 +40,7 @@ public class Main {
         tree.add(45);
         tree.add(1);
 
-        MyTreeNode<Integer> finding = tree.contains(40);
+        MyTreeNode<Integer> findingNode = tree.contains(40);
 
         System.out.println("Check deleteNode function:");
         checkDeleteNodeFunction();
@@ -48,13 +48,13 @@ public class Main {
         System.out.println("Tree items count: " + tree.getSize());
 
         System.out.println("widthBypass: ");
-        tree.widthBypass();
+        tree.bypassInWidth();
 
         System.out.println("deepBypass: ");
-        tree.deepBypass();
+        tree.bypassInDeep();
 
         System.out.println("recursionDeepVisit: ");
-        tree.recursionDeepVisit();
+        tree.visitInDeepRecursion();
         System.out.println();
     }
 }
