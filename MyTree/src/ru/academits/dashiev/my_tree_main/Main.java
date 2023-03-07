@@ -40,7 +40,11 @@ public class Main {
         tree.add(45);
         tree.add(1);
 
-        MyTreeNode<Integer> findingNode = tree.contains(40);
+        Integer findingValue = 40;
+
+        boolean isNodeExist = tree.contains(findingValue);
+
+        System.out.println("Is node with value = " + findingValue + " is exist: " + isNodeExist);
 
         System.out.println("Check deleteNode function:");
         checkDeleteNodeFunction();
