@@ -52,13 +52,13 @@ public class Main {
         System.out.println("Tree items count: " + tree.getSize());
 
         System.out.println("widthBypass: ");
-        tree.bypassInWidth();
+        tree.bypassInWidth(System.out::println);
 
         System.out.println("deepBypass: ");
-        tree.bypassInDeep();
+        tree.bypassInDeep(System.out::println);
 
         System.out.println("recursionDeepVisit: ");
-        tree.visitInDeepRecursion();
+        tree.visitInDeepRecursion(System.out::println);
         System.out.println();
     }
 }
