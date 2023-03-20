@@ -1,14 +1,12 @@
 package ru.academits.dashiev.my_tree_main;
 
 import ru.academits.dashiev.my_tree.MyTree;
-import ru.academits.dashiev.my_tree.MyTreeNode;
-
 public class Main {
     private static <C extends Comparable<C>> void deleteAndPrint(MyTree<C> tree, C deletable) {
         System.out.println("New tree");
         tree.printTree();
         try {
-            System.out.println("Delete " + tree.deleteNode(deletable));
+            System.out.println("Delete: " + deletable + ", result: " + tree.deleteNode(deletable));
             tree.printTree();
         } catch (Exception e) {
             e.printStackTrace();
@@ -16,49 +14,59 @@ public class Main {
     }
 
     public static void checkDeleteNodeFunction() {
-        deleteAndPrint(new MyTree<>(2, 6, 1, 4, 3), 2); //1
-        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 7, 6), 5); //2
-        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 6, 7), 5); //3
-        deleteAndPrint(new MyTree<>(5, 10, 0, 8, 7, 6), 5); //4
-        deleteAndPrint(new MyTree<>(5, 10, 0, 50, 100), 5); //5
-        deleteAndPrint(new MyTree<>(10, 5, 3, 8, 1, 4, 9, 7), 5); //6
-        deleteAndPrint(new MyTree<>(10, 100, 93, 108, 91, 94, 109), 93); //6
-        deleteAndPrint(new MyTree<>(100, 50, 200, 110, 205, 40, 45, 1), 50);
-        deleteAndPrint(new MyTree<>(10.0), 5.0);
+        System.out.println("Delete root:");
+        deleteAndPrint(new MyTree<>(null, 3), null); // 1
+        deleteAndPrint(new MyTree<>(null, null, 3, 6), null); // 2
+        deleteAndPrint(new MyTree<>(7, 4, null, 6), 7); // 3
+        deleteAndPrint(new MyTree<>(10, 8, 15, 13, 20, 11), 10); // 4
+        deleteAndPrint(new MyTree<>(10, 8, 15, 13, 20, 11, 12), 10); // 5
+
+
+        System.out.println("Delete not root:");
+
+//        deleteAndPrint(new MyTree<>(2, 6, 1, 4, 3), 2); //1
+//        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 7, 6), 5); //2
+//        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 6, 7), 5); //3
+//        deleteAndPrint(new MyTree<>(5, 10, 0, 8, 7, 6), 5); //4
+//        deleteAndPrint(new MyTree<>(5, 10, 0, 50, 100), 5); //5
+//        deleteAndPrint(new MyTree<>(10, 5, 3, 8, 1, 4, 9, 7), 5); //6
+//        deleteAndPrint(new MyTree<>(10, 100, 93, 108, 91, 94, 109), 93); //6
+//        deleteAndPrint(new MyTree<>(100, 50, 200, 110, 205, 40, 45, 1), 50);
+//        deleteAndPrint(new MyTree<>(10.0), 5.0);
     }
 
     public static void main(String[] args) {//
-        MyTree<Integer> tree = new MyTree<>();
-
-        tree.add(10);
-        tree.add(100);
-        tree.add(50);
-        tree.add(200);
-        tree.add(110);
-        tree.add(205);
-        tree.add(40);
-        tree.add(45);
-        tree.add(1);
-
-        Integer findingValue = 40;
-
-        boolean isNodeExist = tree.contains(findingValue);
-
-        System.out.println("Is node with value = " + findingValue + " is exist: " + isNodeExist);
-
+//        MyTree<Integer> tree = new MyTree<>();
+//
+//        tree.add(10);
+//        tree.add(100);
+//        tree.add(50);
+//        tree.add(200);
+//        tree.add(110);
+//        tree.add(205);
+//        tree.add(40);
+//        tree.add(45);
+//        tree.add(1);
+//
+//        Integer findingValue = 40;
+//
+//        boolean isNodeExist = tree.contains(findingValue);
+//
+//        System.out.println("Is node with value = " + findingValue + " is exist: " + isNodeExist);
+//
         System.out.println("Check deleteNode function:");
         checkDeleteNodeFunction();
-
-        System.out.println("Tree items count: " + tree.getSize());
-
-        System.out.println("widthBypass: ");
-        tree.bypassInWidth(System.out::println);
-
-        System.out.println("deepBypass: ");
-        tree.bypassInDeep(System.out::println);
-
-        System.out.println("recursionDeepVisit: ");
-        tree.visitInDeepRecursion(System.out::println);
-        System.out.println();
+//
+//        System.out.println("Tree items count: " + tree.getSize());
+//
+//        System.out.println("widthBypass: ");
+//        tree.bypassInWidth(System.out::println);
+//
+//        System.out.println("deepBypass: ");
+//        tree.bypassInDeep(System.out::println);
+//
+//        System.out.println("recursionDeepVisit: ");
+//        tree.visitInDeepRecursion(System.out::println);
+//        System.out.println();
     }
 }
