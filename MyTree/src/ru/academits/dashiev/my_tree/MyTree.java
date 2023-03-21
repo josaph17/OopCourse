@@ -487,14 +487,4 @@ public class MyTree<T extends Comparable<T>> {
         }
         System.out.println(separator); // Подводим черту
     }
-
-    public static void main(String[] args) {
-        MyTree<Integer> tree = new MyTree<>(10, 5, null, 8, 7, 6);
-
-        tree.printTree();
-
-        tree.deleteNode(8);
-
-        tree.printTree();
-    }
 }
