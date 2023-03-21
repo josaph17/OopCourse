@@ -14,28 +14,20 @@ public class Main {
     }
 
     public static void checkDeleteNodeFunction() {
-        System.out.println("Delete root:");
-        deleteAndPrint(new MyTree<>(null, 3), null); // 1
-        deleteAndPrint(new MyTree<>(null, null, 3, 6), null); // 2
-        deleteAndPrint(new MyTree<>(7, 4, null, 6), 7); // 3
-        deleteAndPrint(new MyTree<>(10, 8, 15, 13, 20, 11), 10); // 4
-        deleteAndPrint(new MyTree<>(10, 8, 15, 13, 20, 11, 12), 10); // 5
-
-
-        System.out.println("Delete not root:");
-
-//        deleteAndPrint(new MyTree<>(2, 6, 1, 4, 3), 2); //1
-//        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 7, 6), 5); //2
-//        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 6, 7), 5); //3
-//        deleteAndPrint(new MyTree<>(5, 10, 0, 8, 7, 6), 5); //4
-//        deleteAndPrint(new MyTree<>(5, 10, 0, 50, 100), 5); //5
-//        deleteAndPrint(new MyTree<>(10, 5, 3, 8, 1, 4, 9, 7), 5); //6
-//        deleteAndPrint(new MyTree<>(10, 100, 93, 108, 91, 94, 109), 93); //6
-//        deleteAndPrint(new MyTree<>(100, 50, 200, 110, 205, 40, 45, 1), 50);
-//        deleteAndPrint(new MyTree<>(10.0), 5.0);
+        deleteAndPrint(new MyTree<>(2, 6, 1, 4, 3), 2); // 1
+        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 7, 6), 5); // 2
+        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 6, 7), 5); // 3
+        deleteAndPrint(new MyTree<>(5, 10, 0, 8, 7, 6), 5); // 4
+        deleteAndPrint(new MyTree<>(5, 10, 0, 50, 100), 5); // 5
+        deleteAndPrint(new MyTree<>(10, 5, 3, 8, 1, 4, 9, 7), 5); // 6
+        deleteAndPrint(new MyTree<>(10, 100, 93, 108, 91, 94, 109), 93); // 7
+        deleteAndPrint(new MyTree<>(100, 50, 200, 110, 205, 40, 45, 1), 50); // 8
+        deleteAndPrint(new MyTree<>(10.0), 5.0); // 9
+        deleteAndPrint(new MyTree<>(40.0, 30.0, null, null, 17.0, 15.0, 30.0, 13.0, 14.0), null); // 10
     }
 
-    public static void main(String[] args) {//
+    public static void main(String[] args) {
+        //
 //        MyTree<Integer> tree = new MyTree<>();
 //
 //        tree.add(10);
