@@ -1,6 +1,6 @@
 package ru.academits.dashiev.my_tree;
 
-public class MyTreeNode<T extends Comparable<T>>  { // wildcard с ? , Надо указать что-то расш , T - т.к. этот тип надо переиспользовать,
+class MyTreeNode<T extends Comparable<T>>  { // wildcard с ? , Надо указать что-то расш , T - т.к. этот тип надо переиспользовать,
     // теперь все поля extends Comparable
     private MyTreeNode<T> left;
     private MyTreeNode<T> right;
