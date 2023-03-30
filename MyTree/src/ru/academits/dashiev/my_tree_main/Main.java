@@ -7,7 +7,7 @@ public class Main {
         tree.printTree();
 
         try {
-            System.out.println("Delete: " + deletable + ", result: " + tree.deleteNode(deletable));
+            System.out.println("Delete: " + deletable + ", result: " + tree.delete(deletable));
             tree.printTree();
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class Main {
         tree.bypassInDeep(System.out::println);
 
         System.out.println("recursionDeepVisit: ");
-        tree.visitInDeepRecursion(System.out::println);
+        tree.visitInDeepRecursively(System.out::println);
         System.out.println();
     }
 }
