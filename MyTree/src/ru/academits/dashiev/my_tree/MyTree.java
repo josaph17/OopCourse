@@ -288,6 +288,10 @@ public class MyTree<T extends Comparable<T>> {
         }
 
         //Узнаем есть ли вообще nodeToDelete
+
+        boolean deletedIsRightChild = false;
+        boolean deletedIsLeftChild = false;
+
         if(nodeToDeleteParent == null) {
             if (nodeToDelete != root){
                 return false;
@@ -295,10 +299,13 @@ public class MyTree<T extends Comparable<T>> {
         } else {
            if (data == null && nodeToDeleteParent.getLeft()!= null && nodeToDeleteParent.getLeft().getData() == null){
                 nodeToDelete = nodeToDeleteParent.getLeft();
+                deletedIsLeftChild = true;
             } else if (nodeToDeleteParent.getRight() != null && nodeToDeleteParent.getRight().getData().compareTo(data) == 0) {
                 nodeToDelete = nodeToDeleteParent.getRight();
+                deletedIsRightChild = true;
             } else if (nodeToDeleteParent.getLeft() != null && nodeToDeleteParent.getLeft().getData().compareTo(data) == 0){
                 nodeToDelete = nodeToDeleteParent.getLeft();
+                deletedIsLeftChild = true;
             } else {
                 // Так как точно нет элемента для удаления
                 return false;
@@ -309,7 +316,7 @@ public class MyTree<T extends Comparable<T>> {
         if (nodeToDelete.getLeft() == null && nodeToDelete.getRight() == null) {
             if (nodeToDelete == root){
                 root = null;
-            } else if (nodeToDeleteParent.getRight() != null && nodeToDeleteParent.getRight().getData().compareTo(nodeToDelete.getData()) == 0) {
+            } else if (deletedIsRightChild) {
                 nodeToDeleteParent.setRight(null);
             } else {
                 nodeToDeleteParent.setLeft(null);
@@ -325,10 +332,10 @@ public class MyTree<T extends Comparable<T>> {
             if (nodeToDelete == root){
                 if (nodeToDelete.getLeft() == null){
                     root = nodeToDelete.getRight();
-                } else if (nodeToDelete.getRight() == null){
+                } else {
                     root = nodeToDelete.getLeft();
                 }
-            } else if ((nodeToDeleteParent.getRight() != null && nodeToDeleteParent.getRight().getData().compareTo(nodeToDelete.getData()) == 0)) {
+            } else if (deletedIsRightChild) {
                 // удаляемый элемент не null и он точно справа
                 nodeToDeleteParent.setRight(nodeToDelete.getRight() != null ? nodeToDelete.getRight() : nodeToDelete.getLeft());
             } else { // удаляемый элемент не null и он точно слева
@@ -386,8 +393,13 @@ public class MyTree<T extends Comparable<T>> {
         rootToDeleteSubTree = nodeToDelete.getRight();
 
         if (rootToDeleteSubTree.getLeft() == null) {
+            if(deletedIsRightChild){
+                nodeToDeleteParent.setRight(rootToDeleteSubTree);
+            } else {
+                nodeToDeleteParent.setLeft(rootToDeleteSubTree);
+            }
+
             rootToDeleteSubTree.setLeft(nodeToDelete.getLeft());
-            nodeToDeleteParent.setLeft(rootToDeleteSubTree);
 
             size--;
 
@@ -410,11 +422,7 @@ public class MyTree<T extends Comparable<T>> {
             minLastNode.setRight(null);
         }
 
-        if (data == null && nodeToDeleteParent.getLeft()!= null && nodeToDeleteParent.getLeft().getData() == null){
-            nodeToDeleteParent.setLeft(minLastNode);
-        } else if (data == null && nodeToDeleteParent.getRight()!= null && nodeToDeleteParent.getRight().getData() == null){
-            nodeToDeleteParent.setRight(minLastNode);
-        } else if (minLastNodeParent.getRight() != null && minLastNodeParent.getRight().getData().compareTo(nodeToDelete.getData()) == 0) {
+        if (deletedIsRightChild) {
             nodeToDeleteParent.setRight(minLastNode);
         } else {
             nodeToDeleteParent.setLeft(minLastNode);
@@ -479,11 +487,12 @@ public class MyTree<T extends Comparable<T>> {
     }
 
     public static void main(String[] args) {
-        MyTree<Integer> newTree = new MyTree<>(10, null, 17, 15, 13, 30);
+         MyTree<Integer> newTree = new MyTree<>(10, 20, 15, 30, 40);
+        // MyTree<Integer> newTree = new MyTree<>(50, 30, 40, 10, 45);
 
         newTree.printTree();
 
-        newTree.delete(10);
+        newTree.delete(20);
 
         newTree.printTree();
     }
