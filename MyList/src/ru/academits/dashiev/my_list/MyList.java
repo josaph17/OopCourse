@@ -15,19 +15,21 @@ public class MyList<T> { // класс List  должен быть generic, чт
             throw new NullPointerException("List is null!");
         }
 
+        if (list.size == 0){
+            return; // Чтобы программа не упала на пустом списке
+        }
+
         size = list.size;
 
-        Node<T> currentListNode = list.head;
+        head = new Node<>(list.head.getData());
 
-        head = new Node<>(currentListNode.getData());
-
-        currentListNode = currentListNode.getNext();
+        Node<T> listNode = list.head.getNext();
 
         Node<T> currentNode = head;
 
-        while(currentListNode != null){
-            currentNode.setNext(new Node<>(currentListNode.getData()));
-            currentListNode = currentListNode.getNext();
+        while(listNode != null){
+            currentNode.setNext(new Node<>(listNode.getData()));
+            listNode = listNode.getNext();
             currentNode = currentNode.getNext();
         }
     }
@@ -77,11 +79,11 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
         Node<T> currentNode = getNodeByIndex(index);
 
-        T deletedData = currentNode.getData();
+        T oldData = currentNode.getData();
 
         currentNode.setData(data);
 
-        return deletedData;
+        return oldData;
     }
 
     public T removeByIndex(int index) {
@@ -91,11 +93,11 @@ public class MyList<T> { // класс List  должен быть generic, чт
             return removeFirst();
         }
 
-        Node<T> beforeRemovedNode = getNodeByIndex(index-1);
+        Node<T> previousNode = getNodeByIndex(index-1);
 
-        T removedData = beforeRemovedNode.getNext().getData();
+        T removedData = previousNode.getNext().getData();
 
-        beforeRemovedNode.setNext(beforeRemovedNode.getNext().getNext());
+        previousNode.setNext(previousNode.getNext().getNext());
 
         size--;
 
@@ -118,18 +120,7 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
         Node<T> previousNode = getNodeByIndex(index - 1);
 
-        if (index == size){
-            previousNode.setNext(new Node<>(data));
-
-            size++;
-
-            return;
-        }
-
-        Node<T> nextNode = previousNode.getNext();
-        Node<T> newNode = new Node<>(data, nextNode);
-
-        previousNode.setNext(newNode);
+        previousNode.setNext(new Node<>(data, previousNode.getNext()));
 
         size++;
     }
@@ -139,7 +130,7 @@ public class MyList<T> { // класс List  должен быть generic, чт
             return false;
         }
 
-        // Если элмент в начале списка
+        // Если элемент в начале списка
         if (Objects.equals(head.getData(), data)) {
             head = head.getNext();
 
@@ -148,12 +139,10 @@ public class MyList<T> { // класс List  должен быть generic, чт
             return true;
         }
 
-
         for (Node<T> previousNode = head; previousNode.getNext()!= null; previousNode = previousNode.getNext()) {
             if (Objects.equals(previousNode.getNext().getData(), data)){
-                Node<T> removedNode = previousNode.getNext();
-                
-                previousNode.setNext(removedNode.getNext());
+
+                previousNode.setNext(previousNode.getNext().getNext());
 
                 size--;
 
@@ -169,13 +158,13 @@ public class MyList<T> { // класс List  должен быть generic, чт
             throw new NoSuchElementException("List is empty.");
         }
 
-        T oldData = head.getData();
+        T removedData = head.getData();
 
         head = head.getNext();
 
         size--;
 
-        return oldData;
+        return removedData;
     }
 
     public void reverse() { // разворот за линейное время

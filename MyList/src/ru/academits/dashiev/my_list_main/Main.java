@@ -61,7 +61,8 @@ public class Main {
         System.out.println(list);
         System.out.println();
 
-        int indexForAdd = 3, valueForAdd = 1007;
+        int indexForAdd = 3;
+        int valueForAdd = 1007;
 
         System.out.println("addByIndex(int index, T data) - вставка элемента по индексу");
         System.out.println("Индекс = " + indexForAdd + ", значение = " + valueForAdd);
@@ -79,7 +80,7 @@ public class Main {
         System.out.println();
 
         System.out.println("removeFirst() - удаление первого элемента");
-        System.out.println("Был удален элменет со значением =  " + list.removeFirst());
+        System.out.println("Был удален элеменет со значением =  " + list.removeFirst());
         System.out.println(list);
         System.out.println();
 
