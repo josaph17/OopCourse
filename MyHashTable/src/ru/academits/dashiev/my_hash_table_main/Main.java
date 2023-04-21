@@ -8,11 +8,11 @@ public class Main {
     public static void main(String[] args) {
         MyHashTable<Integer> hashTable1 = new MyHashTable<>(15);
 
-        Integer addElement = 421;
+        Integer elementToAdd = 421;
 
         hashTable1.add(87);
         hashTable1.add(111);
-        System.out.println("hashTable1.add(" + addElement + "): " + hashTable1.add(addElement));
+        System.out.println("hashTable1.add(" + elementToAdd + "): " + hashTable1.add(elementToAdd));
 
         System.out.println("hashTable1 size = " + hashTable1.size());
 
@@ -29,9 +29,9 @@ public class Main {
         hashTable1.add(778);
         System.out.print("hashTable1: ");
 
-        Integer containsObject = 778;
+        Integer objectForCheckToContain = 778;
 
-        System.out.println("hashTable1.contains(" + containsObject + "): " + hashTable1.contains(containsObject));
+        System.out.println("hashTable1.contains(" + objectForCheckToContain + "): " + hashTable1.contains(objectForCheckToContain));
 
         LinkedList<Integer> containsLinkedList = new LinkedList<>(Arrays.asList(7, 190, 777));
 
@@ -51,22 +51,22 @@ public class Main {
 
         System.out.println();
 
-        System.out.print("testToArray = hashTable1.toArray(testToArray),tesToArray: ");
+        System.out.print("arrayToTest = hashTable1.toArray(arrayToTest),arrayToTest: ");
 
-        Integer[] testToArray = {1};
+        Integer[] arrayToTest = {1};
 
-        testToArray = hashTable1.toArray(testToArray);
+        arrayToTest = hashTable1.toArray(arrayToTest);
 
-        for (Integer integer : testToArray) {
+        for (Integer integer : arrayToTest) {
             System.out.print(integer + " ");
         }
 
         System.out.println();
 
         System.out.println("-------Не знаю как проверять ф-ии remove, removeAll, retainAll-------");
-        Integer removeElement = 190;
+        Integer elementToRemove = 190;
 
-        hashTable1.remove(removeElement);
+        hashTable1.remove(elementToRemove);
 
         MyHashTable<Integer> hashTable2 = new MyHashTable<>(25);
 
@@ -78,9 +78,9 @@ public class Main {
         hashTable2.add(101);
         hashTable2.add(54353);
 
-        LinkedList<Integer> removeAll = new LinkedList<>(Arrays.asList(54353, 543, 7, 8, 1, 78));
+        LinkedList<Integer> listToRemoveAll = new LinkedList<>(Arrays.asList(54353, 543, 7, 8, 1, 78));
 
-        hashTable2.removeAll(removeAll);
+        hashTable2.removeAll(listToRemoveAll);
 
         MyHashTable<Integer> hashTable3 = new MyHashTable<>(20);
         hashTable3.add(78);
@@ -90,6 +90,6 @@ public class Main {
         hashTable3.add(890);
 
         LinkedList<Integer> retainLinkedList = new LinkedList<>(Arrays.asList(78, 44, 1));
-                hashTable3.retainAll(retainLinkedList);
+        hashTable3.retainAll(retainLinkedList);
     }
 }

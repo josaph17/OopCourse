@@ -7,8 +7,7 @@ public class MyHashTable<E> implements Collection<E> {
     private int size; // кол-во эл-в
     private int modCount; // кол-во изменений
 
-    static int defaultCapacity = 5; // константа для размера массива по умолчанию
-    // поле, которое не static поле у каждого свое - может быть разное
+    static final int defaultCapacity = 10; // константа для размера массива по умолчанию
 
     public MyHashTable() {
         this(defaultCapacity);
@@ -19,10 +18,8 @@ public class MyHashTable<E> implements Collection<E> {
             throw new IllegalArgumentException("Wrong capacity <= 0. Capacity = " + capacity);
         }
 
-        defaultCapacity = capacity;
-
         //noinspection unchecked
-        lists = new LinkedList[defaultCapacity];
+        lists = new LinkedList[capacity];
     }
 
     private int getArrayIndex(Object o){
@@ -47,7 +44,26 @@ public class MyHashTable<E> implements Collection<E> {
 
         int index = getArrayIndex(o);
 
+        if (lists[index] == null){
+            return false;
+        }
+
         return lists[index].contains(o);
+    }
+
+    public static void main(String[] args) {
+        MyHashTable<Integer> hashTable3 = new MyHashTable<>(20);
+        hashTable3.add(78);
+        hashTable3.add(6545);
+        hashTable3.add(54);
+        hashTable3.add(890);
+
+        // LinkedList<Integer> retainLinkedList = new LinkedList<>(Arrays.asList(78, 44, 1));
+        //      hashTable3.retainAll(retainLinkedList);
+        
+        String newText = hashTable3.toString();
+
+        System.out.println(newText);
     }
 
     @Override
@@ -57,14 +73,21 @@ public class MyHashTable<E> implements Collection<E> {
 
     @Override
     public Object[] toArray() {
-        Object[] array = new Object[size()];
+        Object[] array = new Object[size];
 
-        int index = 0;
+        int listIndex = 0;
+        int arrayIndex = 0;
 
-        for (E item : this) {
-            array[index] = item;
+        for(int i = 0; i < lists.length; i ++){
+            if (lists[listIndex] != null){
+                for (E item : lists[listIndex]) {
+                    array[arrayIndex] = item;
 
-            index++;
+                    arrayIndex++;
+                }
+            }
+
+            listIndex ++;
         }
 
         return array;
@@ -76,30 +99,20 @@ public class MyHashTable<E> implements Collection<E> {
             throw new NullPointerException("a is null!");
         }
 
-        int hashTableSize = size();
-
         @SuppressWarnings("unchecked")
         T[] hashTableArray = (T[]) toArray();
 
-        if (hashTableSize > a.length) {
+        if (size > a.length) {
             @SuppressWarnings("unchecked")
-            T[] newArray = (T[]) Arrays.copyOf(a, hashTableSize, a.getClass());
-
-            int i = 0;
-
-            for (T t : hashTableArray) {
-                newArray[i] = t;
-
-                i++;
-            }
+            T[] newArray = (T[]) Arrays.copyOf(hashTableArray, size, a.getClass());
 
             return newArray; // возвр новый ф, но длины хэш Таблицы
         }
 
-        System.arraycopy(hashTableArray, 0, a, 0, hashTableSize); // если равны , на этом закончится
+        System.arraycopy(hashTableArray, 0, a, 0, size); // если равны , на этом закончится
 
-        if (hashTableSize < a.length) {
-            a[hashTableSize] = null;
+        if (size < a.length) {
+            a[size] = null;
         }
 
         return a;
@@ -107,14 +120,13 @@ public class MyHashTable<E> implements Collection<E> {
 
     @Override
     public boolean add(E value) {
-        int index = (value == null) ? 0 : Math.abs(value.hashCode() % lists.length);
+        int index = getArrayIndex(value);
 
         if (lists[index] == null) {
             lists[index] = new LinkedList<>();
         }
 
         size++;
-
         modCount++;
 
         // true т.к. у односвязного списка нет случаев когда он может не добавить
@@ -142,24 +154,21 @@ public class MyHashTable<E> implements Collection<E> {
             throw new NullPointerException("c is null!");
         }
 
-        int primeSize = size;
+        int initialSize = size;
 
         for (E v : c) {
             add(v);
         }
 
-        return primeSize != size;
+        return initialSize != size;
     }
 
     @Override
     public boolean remove(Object o) {
         int index = getArrayIndex(o);
 
-        if (lists[index] != null) {
-            return lists[index].remove(o);
-        } else {
-            return false;
-        }
+        // Код ниже все равно что return lists[index] == null ? false : lists[index].remove(o);
+        return lists[index] != null && lists[index].remove(o);
     }
 
     @Override
@@ -229,26 +238,26 @@ public class MyHashTable<E> implements Collection<E> {
 
         sb.append("[");
 
-        Iterator<E> iterator = new MyIterator();
-
-        while (iterator.hasNext()) {
-            sb.append(iterator.next()).append(" ");
+        for (E element: this) {
+            sb.append(element).append(", ");
         }
 
-        sb.deleteCharAt(sb.length() - 1);
+        sb.delete(sb.length() - 2, sb.length());
         sb.append("]");
 
         return sb.toString();
     }
 
     private class MyIterator implements Iterator<E> {
-        private int iteratorModCount = modCount;
+        private final int initialModCount = modCount;
 
         private int tableElementIndex = -1; // индекс элемента во всей таблице
         private int listIndex; // индекс списка в массиве
-        private int listElementIndex = -1; // индекс элемента в списке
+        private int listElementIndex = 0; // индекс элемента в списке
 
         private boolean isNextCalled; // false по умолчанию
+
+        private boolean flag;
 
         @Override
         public boolean hasNext() {
@@ -257,40 +266,54 @@ public class MyHashTable<E> implements Collection<E> {
 
         @Override
         public E next() {
-            if (iteratorModCount != modCount) {
+            if (initialModCount != modCount) {
                 throw new ConcurrentModificationException("Hashtable changed!");
             }
 
-            if (tableElementIndex >= size) {
+            // Внизу было условие if (tableElementIndex == size)
+            if (!hasNext()) {
                 // лекция 13 стр.15
                 throw new NoSuchElementException("Нет больше элементов в HashTable");
             }
 
-            if (hasNext()){
-                isNextCalled = true;
-
-                listElementIndex = listElementIndex + 1;
-
-                while (listIndex < size) {
-                    if (!lists[listIndex].isEmpty() && listElementIndex < lists[listIndex].size()) {
-                        tableElementIndex++;
-
-                        return lists[listIndex].get(listElementIndex);
-                    }
-
+            while (!flag){
+                while (lists[listIndex] == null){
                     listElementIndex = 0;
+                    listIndex++;
 
+                    flag = true;
+                }
+
+                if (listElementIndex != lists[listIndex].size() && (lists[listIndex] != null)){
+                    flag = true;
+                }
+
+                if (listElementIndex == lists[listIndex].size()){
+                    listElementIndex = 0;
                     listIndex++;
                 }
             }
 
-            return null;
+            isNextCalled = true;
+
+            if (listElementIndex < lists[listIndex].size()) {
+                tableElementIndex++;
+            }
+
+            flag = false;
+
+            return lists[listIndex].get(listElementIndex++);
         }
 
         @Override
         public void remove() {
-            if (isNextCalled) {
+            if (!isNextCalled) {
+                // Чтобы remove не вызвался 2 раза
+                throw new IllegalStateException("Operation remove() in Iterator call second time!");
+            } else {
                 lists[listIndex].remove(listElementIndex);
+
+                modCount++;
 
                 tableElementIndex--;
                 listElementIndex--;
@@ -298,9 +321,6 @@ public class MyHashTable<E> implements Collection<E> {
                 size--;
 
                 isNextCalled = false;
-            } else {
-                // Чтобы remove не вызвался 2 раза
-                throw new IllegalStateException("Operation removeAll() call second time!");
             }
         }
     }
