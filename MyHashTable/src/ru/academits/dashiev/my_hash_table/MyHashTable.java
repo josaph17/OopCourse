@@ -56,14 +56,15 @@ public class MyHashTable<E> implements Collection<E> {
         hashTable3.add(78);
         hashTable3.add(6545);
         hashTable3.add(54);
+        hashTable3.add(1);
         hashTable3.add(890);
 
-        // LinkedList<Integer> retainLinkedList = new LinkedList<>(Arrays.asList(78, 44, 1));
-        //      hashTable3.retainAll(retainLinkedList);
-        
-        String newText = hashTable3.toString();
+        LinkedList<Integer> retainLinkedList = new LinkedList<>(Arrays.asList(78, 44, 1));
+        hashTable3.retainAll(retainLinkedList);
 
-        System.out.println(newText);
+        String stringHashtable3 = hashTable3.toString();
+
+        System.out.println(stringHashtable3);
     }
 
     @Override
@@ -190,6 +191,7 @@ public class MyHashTable<E> implements Collection<E> {
         return primeSize != size;
     }
 
+    // Удаляет элементы, не принадлежащие переданной коллекции
     @Override
     public boolean retainAll(Collection<?> c) {
         if (c == null) {
@@ -202,13 +204,29 @@ public class MyHashTable<E> implements Collection<E> {
 
         int oldHashTableSize = size;
 
-        Iterator<E> iterator = iterator();
+//        for (Object item : c) {
+//            int hashIndex = getArrayIndex(item);
+//
+//            if (lists[hashIndex] != null){
+//                int listSize = lists[hashIndex].size();
+//
+//                for(int i = listSize - 1; i >= 0; i--){
+//                    if (!Objects.equals(lists[hashIndex].get(i), item)){
+//                        lists[hashIndex].remove(i);
+//                    }
+//                }
+//            }
+//        }
 
-        while (iterator.hasNext()) {
-            E value = iterator.next();
+        for (LinkedList<E> list : lists) {
+            if (list != null) {
+                for (int j = list.size() - 1; j >= 0; j--) {
+                    if (!c.contains(list.get(j))) {
+                        list.remove(j);
 
-            if (!c.contains(value)) {
-                iterator.remove();
+                        size--;
+                    }
+                }
             }
         }
 
@@ -307,21 +325,7 @@ public class MyHashTable<E> implements Collection<E> {
 
         @Override
         public void remove() {
-            if (!isNextCalled) {
-                // Чтобы remove не вызвался 2 раза
-                throw new IllegalStateException("Operation remove() in Iterator call second time!");
-            } else {
-                lists[listIndex].remove(listElementIndex);
-
-                modCount++;
-
-                tableElementIndex--;
-                listElementIndex--;
-
-                size--;
-
-                isNextCalled = false;
-            }
+            throw new UnsupportedOperationException();
         }
     }
 }
