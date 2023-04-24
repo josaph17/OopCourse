@@ -62,9 +62,7 @@ public class MyHashTable<E> implements Collection<E> {
         LinkedList<Integer> retainLinkedList = new LinkedList<>(Arrays.asList(78, 44, 1));
         hashTable3.retainAll(retainLinkedList);
 
-        String stringHashtable3 = hashTable3.toString();
-
-        System.out.println(stringHashtable3);
+        System.out.println(hashTable3);
     }
 
     @Override
@@ -269,17 +267,18 @@ public class MyHashTable<E> implements Collection<E> {
     private class MyIterator implements Iterator<E> {
         private final int initialModCount = modCount;
 
-        private int tableElementIndex = -1; // индекс элемента во всей таблице
-        private int listIndex; // индекс списка в массиве
-        private int listElementIndex = 0; // индекс элемента в списке
+        private int hashTableElementIndex = -1; // индекс элемента во всей таблице
+        private int listIndex = 0; // индекс списка в массиве
+        private int listElementIndex = -1; // индекс элемента в списке
 
         private boolean isNextCalled; // false по умолчанию
 
-        private boolean flag;
+        private boolean isListIndexFind;
+        private boolean isNextElementFind;
 
         @Override
         public boolean hasNext() {
-            return tableElementIndex + 1 < size;
+            return hashTableElementIndex + 1 < size;
         }
 
         @Override
@@ -294,37 +293,39 @@ public class MyHashTable<E> implements Collection<E> {
                 throw new NoSuchElementException("Нет больше элементов в HashTable");
             }
 
-            while (!flag){
+            listElementIndex ++;
+
+            while (!isListIndexFind){
                 while (lists[listIndex] == null){
-                    listElementIndex = 0;
+                    // listElementIndex = 0;
                     listIndex++;
 
-                    flag = true;
+                    // Чтобы выйти из while
+                    isListIndexFind = true;
                 }
 
-                if (listElementIndex != lists[listIndex].size() && (lists[listIndex] != null)){
-                    flag = true;
-                }
-
-                if (listElementIndex == lists[listIndex].size()){
+                if (listElementIndex == lists[listIndex].size() || lists[listIndex].size() == 0){
                     listElementIndex = 0;
                     listIndex++;
+                    // Чтобы не выйти из while, видимо сборщик мусора не успевает присвоить null листу если он пуст
+                    isListIndexFind = false;
                 }
             }
 
             isNextCalled = true;
 
             if (listElementIndex < lists[listIndex].size()) {
-                tableElementIndex++;
+                hashTableElementIndex++;
             }
 
-            flag = false;
+            // Меняем isListIndexFind к следующей итерации
+            isListIndexFind = false;
 
-            return lists[listIndex].get(listElementIndex++);
+            return lists[listIndex].get(listElementIndex);
         }
 
         @Override
-        public void remove() public void remove() {
+        public void remove() {
             if (!isNextCalled) {
                 // Чтобы remove не вызвался 2 раза
                 throw new IllegalStateException("Operation remove() in Iterator call second time!");
@@ -333,7 +334,7 @@ public class MyHashTable<E> implements Collection<E> {
 
                 modCount++;
 
-                tableElementIndex--;
+                hashTableElementIndex--;
                 listElementIndex--;
 
                 size--;
