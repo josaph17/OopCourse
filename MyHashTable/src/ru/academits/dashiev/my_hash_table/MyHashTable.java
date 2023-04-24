@@ -324,8 +324,22 @@ public class MyHashTable<E> implements Collection<E> {
         }
 
         @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
+        public void remove() public void remove() {
+            if (!isNextCalled) {
+                // Чтобы remove не вызвался 2 раза
+                throw new IllegalStateException("Operation remove() in Iterator call second time!");
+            } else {
+                lists[listIndex].remove(listElementIndex);
+
+                modCount++;
+
+                tableElementIndex--;
+                listElementIndex--;
+
+                size--;
+
+                isNextCalled = false;
+            }
         }
     }
 }
