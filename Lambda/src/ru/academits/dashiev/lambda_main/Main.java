@@ -6,9 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import static java.util.stream.Collectors.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,20 +26,26 @@ public class Main {
 
         // Person::getName вместо x -> x.getName(), прошу не удалять важный комментарий
         // А) получить список уникальных имен, Б) вывести список уникальных имен
-        String uniqueNames = persons.stream().map(Person::getName).distinct().collect(
-                joining(", "));
+        String uniqueNames = persons.stream()
+                                    .map(Person::name)
+                                    .distinct()
+                                    .collect(Collectors.joining(", "));
 
-        System.out.println("А), Б) список уникальных имен:" + uniqueNames);
+        System.out.println("А), Б) список уникальных имен: " + uniqueNames);
 
         // В) получить список людей младше 18 и посчитать для них средний возраст
-        List<Person> younger18PersonsList = persons.stream().filter(x -> x.getAge() < 18).toList();
+        List<Person> younger18PersonsList = persons.stream()
+                                                   .filter(x -> x.age() < 18)
+                                                   .toList();
 
         if (younger18PersonsList.isEmpty()) {
             System.out.println("B) Can't calculate average!");
         } else {
             // 15. после получения среднего не нужно использовать stream
-            younger18PersonsList.stream().mapToInt(Person::getAge).average().ifPresent(
-                    x -> System.out.println("В) Средний возраст людей младше 18: " + x));
+            younger18PersonsList.stream()
+                                .mapToInt(Person::age)
+                                .average()
+                                .ifPresent(x -> System.out.println("В) Средний возраст людей младше 18: " + x));
         }
 
         // Г) при помощи группировки получить Map, в котором ключи - имена, а значения - средний возраст
@@ -52,16 +57,18 @@ public class Main {
                 -- прошу не считать за ошибку, создать Map, где ключ - возраст*/
 
         Map<String, Double> namesAndAverageAges = persons.stream().collect(
-                groupingBy(Person::getName, averagingInt(Person::getAge)));
+                Collectors.groupingBy(Person::name, Collectors.averagingInt(Person::age)));
 
         System.out.println("Г) namesAndAverageAges map: " + namesAndAverageAges);
 
         // Д) от 20 до 45
-        String from20To45Persons = persons.stream().filter(
-                x -> x.getAge() >= 20 && x.getAge() <= 45).sorted(
-                (p1, p2) -> p2.getAge() - p1.getAge()).map(Person::getName).collect(joining(", "));
+        String personsFrom20To45 = persons.stream()
+                                          .filter(x -> x.age() >= 20 && x.age() <= 45)
+                                          .sorted((p1, p2) -> p2.age() - p1.age())
+                                          .map(Person::name)
+                                          .collect(Collectors.joining(", "));
 
-        System.out.println("Д) Люди от 20 до 45:" + from20To45Persons);
+        System.out.println("Д) Люди от 20 до 45:" + personsFrom20To45);
 
         System.out.println();
 
@@ -69,12 +76,15 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Введите число сколко элементов нужно вычислить: ");
-        int number = scanner.nextInt();
+        System.out.print("Введите число сколько элементов нужно вычислить: ");
+        int countOfElementsToCalculate = scanner.nextInt();
 
         // Код ниже выполняется в вертикальном порядке
         // Math::sqrt вместо result -> Math.sqrt(result), прошу не удалять важный комментарий
 
-        IntStream.iterate(0, x -> x + 1).mapToDouble(Math::sqrt).limit(number + 1).forEach(System.out::println);
+        IntStream.iterate(0, x -> x + 1)
+                 .mapToDouble(Math::sqrt)
+                 .limit(countOfElementsToCalculate)
+                 .forEach(System.out::println);
     }
 }
