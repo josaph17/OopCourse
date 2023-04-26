@@ -26,7 +26,8 @@ public class ArrayListHome {
         } catch (FileNotFoundException e) {
             System.out.println("No file.");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            // IOException непроверяемое исключение. Правильно ли я его обработал?
+            System.out.println("Catch IOException");
         } finally {
             System.out.println("The program continues to work.");
             System.out.println();
