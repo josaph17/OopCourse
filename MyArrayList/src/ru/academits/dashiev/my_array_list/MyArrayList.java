@@ -4,15 +4,16 @@ package ru.academits.dashiev.my_array_list;
 import java.util.*;
 
 public class MyArrayList<E> implements List<E> {
-    private static final int defaultCapacity = 2; // Вместимость по умолчанию, т.е. items.length
     private E[] items;
     private int size; /* Длина списка(кол-во эл-в в списке) = 0, вместимость списка , длина списка
     и длина массива могут отличаться */
     private int modCount; // п.7 счетчик изменений
 
+    private static final int DEFAULT_CAPACITY = 10; // Вместимость по умолчанию, т.е. items.length
+
     public MyArrayList() {
         // noinspection unchecked, заглушил
-        items = (E[]) new Object[defaultCapacity];
+        items = (E[]) new Object[DEFAULT_CAPACITY];
     }
 
     public MyArrayList(int capacity) {
@@ -96,36 +97,32 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        checkIndexToAdd(index);
-
         if (c == null) {
             throw new NullPointerException("Collection is null!!!");
         }
+
+        checkIndexToAdd(index);
 
         if (c.isEmpty()) { // Если коллекция пустая
             return false;
         }
 
-        int oldSize = size;
-
         ensureCapacity(size + c.size()); // Обеспечить длину массива
-
-        System.arraycopy(items, index, items, index + c.size(), size - index);
 
         int i = index;
 
+        System.arraycopy(items, i, items, i + c.size(), size - i);
+
         size += c.size();
 
-        if (oldSize != size) {
-            modCount += c.size();
-        }
+        modCount++; // Если программа дойдет до этого места, то элементы добавятся
 
         for (E item : c) {
             items[i] = item;
             i++;
         }
 
-        return oldSize != size;
+        return true;
     }
 
     @Override
@@ -136,11 +133,33 @@ public class MyArrayList<E> implements List<E> {
 
         /* Нужно занулить ссылки на объекты, хранящиеся в массиве, чтобы сборщик
              мусора мог очистить эти объекты если они больше нигде не используются */
-        Arrays.fill(items, null);
+        Arrays.fill(items, 0, size, null);
 
         modCount++;
-
         size = 0;
+    }
+
+    public static void main(String[] args) {
+        MyArrayList<Double> list1 = new MyArrayList<>();
+        list1.add(0, 1.1);
+        list1.add(2.2);
+        list1.add(3.3);
+        list1.add(0, 3777.9);
+        list1.add(4.4);
+        list1.add(2, 3.09);
+
+        System.out.println("list1: " + list1);
+
+        MyArrayList<Double> removedList = new MyArrayList<>();
+        removedList.add(1.1);
+        removedList.add(3777.9);
+        removedList.add(2.2);
+        removedList.add(66.7);
+        removedList.add(4.4);
+
+        System.out.println("removedList: " + removedList);
+        list1.removeAll(removedList);
+        System.out.println("list1 after .removeAll(removedList): " + list1);
     }
 
     @Override
@@ -174,7 +193,6 @@ public class MyArrayList<E> implements List<E> {
         items[index] = item;
 
         size++;
-
         modCount++;
     }
 
@@ -241,26 +259,28 @@ public class MyArrayList<E> implements List<E> {
             throw new NullPointerException("Collection is null!!!");
         }
 
-        int oldSize = size;
+        int initialSize = size;
 
-        int i = 0;
+        int indexOfRemovedArray = 0;
 
-        for (E item : this) {
-            if (c.contains(item)) {
-                items[i] = item;
-                i++; // Передвигаемся по массиву
+        for (int i = 0; i < size; i++) {
+            if (c.contains(items[i])) {
+                items[indexOfRemovedArray] = items[i];
+                indexOfRemovedArray++; // Передвигаемся по массиву
             }
         }
 
-        size = i;
+        size = indexOfRemovedArray;
 
-        Arrays.fill(items, size, oldSize, null); // Второй индекс является не включительным
+        if (size != initialSize) {
+            Arrays.fill(items, size, initialSize, null); // Второй индекс является не включительным
 
-        if (size != oldSize) {
             modCount++; // Достаточно увеличить счетчик на 1 если список изменился
+
+            return true;
         }
 
-        return size != oldSize;
+        return false;
     }
 
     @Override
@@ -269,26 +289,28 @@ public class MyArrayList<E> implements List<E> {
             throw new NullPointerException("Collection is null!!!");
         }
 
-        int oldSize = size;
+        int initialSize = size;
 
-        int i = 0;
+        int indexOfRemovedArray = 0;
 
-        for (E item : this) {
-            if (!c.contains(item)) {
-                items[i] = item;
-                i++; // Передвигаемся по массиву
+        for (int i = 0; i < initialSize; i++ ) {
+            if (!c.contains(items[i])) {
+                items[indexOfRemovedArray] = items[i];
+                indexOfRemovedArray++; // Передвигаемся по массиву
             }
         }
 
-        size = i;
+        size = indexOfRemovedArray;
 
-        Arrays.fill(items, size, oldSize, null); // Второй индекс является не включительным
+        if (size != initialSize) {
+            Arrays.fill(items, size, initialSize, null); // Второй индекс является не включительным
 
-        if (size != oldSize) {
             modCount++;
+
+            return true;
         }
 
-        return size != oldSize;
+        return false;
     }
 
     @Override
@@ -336,12 +358,14 @@ public class MyArrayList<E> implements List<E> {
         return array;
     }
 
-    public void increaseCapacity() {
+    private void increaseCapacity() {
+        // Задаем вместимость по умолчанию, как в конструкторе без аргументов
         if (items.length == 0){
-            items = Arrays.copyOf(items, 1);
+            //noinspection unchecked
+            items = (E[]) new Object[DEFAULT_CAPACITY];
+        } else{
+            items = Arrays.copyOf(items, items.length * 2);
         }
-
-        items = Arrays.copyOf(items, items.length * 2);
     }
 
     @Override
@@ -359,7 +383,8 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        // Чтобы акцент был на аргументе
+        if (obj == this) {
             return true;
         }
 
@@ -367,15 +392,14 @@ public class MyArrayList<E> implements List<E> {
             return false;
         }
 
-        @SuppressWarnings("unchecked")
-        MyArrayList<E> sameTypeObject = (MyArrayList<E>) obj;
+        MyArrayList<?> objectWithTypeConversion = (MyArrayList<?>) obj;
 
-        if (size != sameTypeObject.size) {
+        if (size != objectWithTypeConversion.size) {
             return false;
         }
 
         for (int i = 0; i < size; i++) {
-            if (!Objects.equals(items[i], sameTypeObject.items[i])) { // Сравниваем только по equals!
+            if (!Objects.equals(items[i], objectWithTypeConversion.items[i])) { // Сравниваем только по equals!
                 return false;
             }
         }
@@ -416,15 +440,15 @@ public class MyArrayList<E> implements List<E> {
 
         @Override
         public E next() { // Возвр. текущий элемент и переходит к следующему
+            if (!hasNext()){
+                throw new NoSuchElementException("Not find element, currentIndex (" + currentIndex + ") >= size ("+ size + ")");
+            }
+
             if (initialModCount != modCount) {
                 throw new ConcurrentModificationException("ArrayList is changed!");
             }
 
             ++currentIndex; // Сначало увеличиваем индекс
-
-            if (currentIndex >= size){
-                throw new NoSuchElementException("Not find element, currentIndex (" + currentIndex + ") >= size ("+ size + ")");
-            }
 
             return items[currentIndex];
         }
