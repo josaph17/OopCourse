@@ -1,4 +1,4 @@
-package ru.academits.dashiev.arrayList_home;
+package ru.academits.dashiev.array_list_home;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,18 +9,22 @@ public class ArrayListHome {
     public static void main(String[] args) {
         System.out.println("-- Task 1 --");
 
-        // создаем сканер от FileInputStream
+        // Создаем сканер от FileInputStream
         try (BufferedReader reader = new BufferedReader(new FileReader("input.txt"))) {
-            // дальше работаем со сканером как обычно
-            ArrayList<String> fileStringsList = new ArrayList<>();
+            // Дальше работаем со сканером как обычно
+            ArrayList<String> fileLinesList = new ArrayList<>();
 
-            while (!fileStringsList.add(reader.readLine())) {
-                // теперь close Не нужен он вызовется сам
+            // Для считывания строк
+            String line;
+
+            while((line = reader.readLine()) != null){
+                fileLinesList.add(line);
             }
 
-            System.out.println("fileStringsList: " + fileStringsList);
+            System.out.println("fileLinesList: " + fileLinesList);
+
         } catch (FileNotFoundException e) {
-            System.out.println("Нету файла.");
+            System.out.println("No file.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -45,8 +49,7 @@ public class ArrayListHome {
 
         System.out.println("-- Task 3 --");
 
-        ArrayList<Integer> repeatingNumbersList = new ArrayList<>(
-                Arrays.asList(1, 5, 2, 1, 3, 5, 3, 3));
+        ArrayList<Integer> repeatingNumbersList = new ArrayList<>(Arrays.asList(1, 5, 2, 1, 3, 5, 3, 3));
         System.out.println("repeatingNumbersList: " + repeatingNumbersList);
 
         ArrayList<Integer> uniqueNumbersList = new ArrayList<>(repeatingNumbersList.size());
