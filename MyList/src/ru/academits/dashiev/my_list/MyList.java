@@ -29,7 +29,9 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
         while(listNode != null){
             currentNode.setNext(new Node<>(listNode.getData()));
+
             listNode = listNode.getNext();
+            
             currentNode = currentNode.getNext();
         }
     }
@@ -190,7 +192,7 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("[");
+        sb.append('[');
 
         for (Node<T> currentNode = head; currentNode != null; currentNode = currentNode.getNext()) {
             sb.append(currentNode.getData()).append(", ");
@@ -198,7 +200,7 @@ public class MyList<T> { // класс List  должен быть generic, чт
 
         sb.delete(sb.length() - 2, sb.length());
 
-        sb.append("]");
+        sb.append(']');
 
         return sb.toString();
     }
