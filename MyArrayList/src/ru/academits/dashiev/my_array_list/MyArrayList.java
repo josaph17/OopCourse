@@ -4,12 +4,12 @@ package ru.academits.dashiev.my_array_list;
 import java.util.*;
 
 public class MyArrayList<E> implements List<E> {
+    private static final int DEFAULT_CAPACITY = 10; // Вместимость по умолчанию, т.е. items.length
+
     private E[] items;
     private int size; /* Длина списка(кол-во эл-в в списке) = 0, вместимость списка , длина списка
     и длина массива могут отличаться */
     private int modCount; // п.7 счетчик изменений
-
-    private static final int DEFAULT_CAPACITY = 10; // Вместимость по умолчанию, т.е. items.length
 
     public MyArrayList() {
         // noinspection unchecked, заглушил
@@ -25,10 +25,6 @@ public class MyArrayList<E> implements List<E> {
         items = (E[]) new Object[capacity]; // Заглушил
     }
 
-    public Iterator<E> iterator() {
-        return new MyIterator();
-    }
-
     public void ensureCapacity(int capacity) {
         if (items.length < capacity) {
             items = Arrays.copyOf(items, capacity);
@@ -41,7 +37,7 @@ public class MyArrayList<E> implements List<E> {
         }
     }
 
-    private void checkIndexToAdd(int index) {
+    private void checkIndexForAdd(int index) {
         // Верхняя граница не должна зависеть от длины массива(items.length), а должна зависеть от длины списка
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("List min index = 0, max index = " + size + ". Current index = " + index);
@@ -101,7 +97,7 @@ public class MyArrayList<E> implements List<E> {
             throw new NullPointerException("Collection is null!!!");
         }
 
-        checkIndexToAdd(index);
+        checkIndexForAdd(index);
 
         if (c.isEmpty()) { // Если коллекция пустая
             return false;
@@ -109,13 +105,13 @@ public class MyArrayList<E> implements List<E> {
 
         ensureCapacity(size + c.size()); // Обеспечить длину массива
 
-        int i = index;
-
-        System.arraycopy(items, i, items, i + c.size(), size - i);
+        System.arraycopy(items, index, items, index + c.size(), size - index);
 
         size += c.size();
 
         modCount++; // Если программа дойдет до этого места, то элементы добавятся
+
+        int i = index;
 
         for (E item : c) {
             items[i] = item;
@@ -139,29 +135,6 @@ public class MyArrayList<E> implements List<E> {
         size = 0;
     }
 
-    public static void main(String[] args) {
-        MyArrayList<Double> list1 = new MyArrayList<>();
-        list1.add(0, 1.1);
-        list1.add(2.2);
-        list1.add(3.3);
-        list1.add(0, 3777.9);
-        list1.add(4.4);
-        list1.add(2, 3.09);
-
-        System.out.println("list1: " + list1);
-
-        MyArrayList<Double> removedList = new MyArrayList<>();
-        removedList.add(1.1);
-        removedList.add(3777.9);
-        removedList.add(2.2);
-        removedList.add(66.7);
-        removedList.add(4.4);
-
-        System.out.println("removedList: " + removedList);
-        list1.removeAll(removedList);
-        System.out.println("list1 after .removeAll(removedList): " + list1);
-    }
-
     @Override
     public E get(int index) {
         checkIndex(index);
@@ -182,7 +155,7 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public void add(int index, E item) {
-        checkIndexToAdd(index);
+        checkIndexForAdd(index);
 
         if (size >= items.length) {
             increaseCapacity();
@@ -261,16 +234,16 @@ public class MyArrayList<E> implements List<E> {
 
         int initialSize = size;
 
-        int indexOfRemovedArray = 0;
+        int indexAfterRetain = 0;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < initialSize; i++) {
             if (c.contains(items[i])) {
-                items[indexOfRemovedArray] = items[i];
-                indexOfRemovedArray++; // Передвигаемся по массиву
+                items[indexAfterRetain] = items[i];
+                indexAfterRetain++; // Передвигаемся по массиву
             }
         }
 
-        size = indexOfRemovedArray;
+        size = indexAfterRetain;
 
         if (size != initialSize) {
             Arrays.fill(items, size, initialSize, null); // Второй индекс является не включительным
@@ -291,16 +264,16 @@ public class MyArrayList<E> implements List<E> {
 
         int initialSize = size;
 
-        int indexOfRemovedArray = 0;
+        int indexAfterRemove = 0;
 
         for (int i = 0; i < initialSize; i++ ) {
             if (!c.contains(items[i])) {
-                items[indexOfRemovedArray] = items[i];
-                indexOfRemovedArray++; // Передвигаемся по массиву
+                items[indexAfterRemove] = items[i];
+                indexAfterRemove++; // Передвигаемся по массиву
             }
         }
 
-        size = indexOfRemovedArray;
+        size = indexAfterRemove;
 
         if (size != initialSize) {
             Arrays.fill(items, size, initialSize, null); // Второй индекс является не включительным
@@ -374,6 +347,8 @@ public class MyArrayList<E> implements List<E> {
 
         int hash = 1;
 
+        /* 11. hashCode - здесь эффективнее использовать цикл for вместо foreach по this.
+        Этот пункт можно не исправлять. Прошу не считать за ошибку этот комментарий от Вас */
         for (Object item : this) {
             hash = prime * hash + ((item == null) ? 0 : item.hashCode());
         }
@@ -392,14 +367,14 @@ public class MyArrayList<E> implements List<E> {
             return false;
         }
 
-        MyArrayList<?> objectWithTypeConversion = (MyArrayList<?>) obj;
+        MyArrayList<?> listWithTypeConversion = (MyArrayList<?>) obj;
 
-        if (size != objectWithTypeConversion.size) {
+        if (size != listWithTypeConversion.size) {
             return false;
         }
 
         for (int i = 0; i < size; i++) {
-            if (!Objects.equals(items[i], objectWithTypeConversion.items[i])) { // Сравниваем только по equals!
+            if (!Objects.equals(items[i], listWithTypeConversion.items[i])) { // Сравниваем только по equals!
                 return false;
             }
         }
@@ -415,15 +390,14 @@ public class MyArrayList<E> implements List<E> {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("[");
+        sb.append('[');
 
         for (int i = 0; i < size; i++) {
             sb.append(items[i]).append(", ");
         }
 
         sb.delete(sb.length() - 2, sb.length());
-
-        sb.append("]");
+        sb.append(']');
 
         return sb.toString();
     }
@@ -452,5 +426,9 @@ public class MyArrayList<E> implements List<E> {
 
             return items[currentIndex];
         }
+    }
+
+    public Iterator<E> iterator() {
+        return new MyIterator();
     }
 }
