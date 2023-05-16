@@ -13,10 +13,15 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("-- Задача 1 --");
 
-        List<Person> persons = Arrays.asList(new Person("Иван", 23), new Person("Сергей", 44),
-                                             new Person("Джон", 16), new Person("Лиза", 20),
-                                             new Person("Сергей", 15), new Person("Анна", 21),
-                                             new Person("Джон", 33), new Person("Джон", 10));
+        List<Person> persons = Arrays.asList(new Person("Иван", 23),
+                                             new Person("Сергей", 44),
+                                             new Person("Джон", 16),
+                                             new Person("Лиза", 20),
+                                             new Person("Сергей", 15),
+                                             new Person("Анна", 21),
+                                             new Person("Джон", 33),
+                                             new Person("Джон", 10)
+        );
 
         System.out.println("Изначальный список:");
         persons.forEach(person -> System.out.print(person + " "));
@@ -49,15 +54,8 @@ public class Main {
         }
 
         // Г) при помощи группировки получить Map, в котором ключи - имена, а значения - средний возраст
-
-        /* Map<String, List<Person>> neoPeople = people.stream().collect(Collectors.groupingBy(p-> p.getName());
-         -- прошу не считать за ошибку, пригодится создать Map, где ключ - имя, значение List<Person>, зо*/
-        /* Map<Integer, List<Person>> peopleByAge = people.stream()
-                .collect(Collectors.groupingBy(Person::getAge));
-                -- прошу не считать за ошибку, создать Map, где ключ - возраст*/
-
-        Map<String, Double> namesAndAverageAges = persons.stream().collect(
-                Collectors.groupingBy(Person::name, Collectors.averagingInt(Person::age)));
+        Map<String, Double> namesAndAverageAges = persons.stream()
+                                                         .collect(Collectors.groupingBy(Person::name, Collectors.averagingInt(Person::age)));
 
         System.out.println("Г) namesAndAverageAges map: " + namesAndAverageAges);
 
@@ -68,7 +66,7 @@ public class Main {
                                           .map(Person::name)
                                           .collect(Collectors.joining(", "));
 
-        System.out.println("Д) Люди от 20 до 45:" + personsFrom20To45);
+        System.out.println("Д) Люди от 20 до 45: " + personsFrom20To45);
 
         System.out.println();
 
@@ -77,14 +75,14 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Введите число сколько элементов нужно вычислить: ");
-        int countOfElementsToCalculate = scanner.nextInt();
+        int countForCalculate = scanner.nextInt();
 
         // Код ниже выполняется в вертикальном порядке
         // Math::sqrt вместо result -> Math.sqrt(result), прошу не удалять важный комментарий
 
         IntStream.iterate(0, x -> x + 1)
                  .mapToDouble(Math::sqrt)
-                 .limit(countOfElementsToCalculate)
+                 .limit(countForCalculate)
                  .forEach(System.out::println);
     }
 }
