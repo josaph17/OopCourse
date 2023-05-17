@@ -63,7 +63,6 @@ public class Main {
 
         System.out.println();
 
-        System.out.println("-------Не знаю как проверять ф-ии remove, removeAll, retainAll-------");
         Integer elementToRemove = 190;
 
         hashTable1.remove(elementToRemove);
@@ -78,9 +77,14 @@ public class Main {
         hashTable2.add(101);
         hashTable2.add(54353);
 
-        LinkedList<Integer> listToRemoveAll = new LinkedList<>(Arrays.asList(54353, 543, 7, 8, 1, 78));
+        LinkedList<Integer> listForRemoveAll = new LinkedList<>(Arrays.asList(54353, 543, 7, 8, 1, 78));
 
-        hashTable2.removeAll(listToRemoveAll);
+        System.out.println("HashTable2 before removeAll: " + hashTable2);
+        System.out.println("listForRemoveAll: " + listForRemoveAll);
+
+        hashTable2.removeAll(listForRemoveAll);
+
+        System.out.println("HashTable2 after removeAll: " + hashTable2);
 
         MyHashTable<Integer> hashTable3 = new MyHashTable<>(20);
         hashTable3.add(78);
@@ -90,6 +94,12 @@ public class Main {
         hashTable3.add(890);
 
         LinkedList<Integer> retainLinkedList = new LinkedList<>(Arrays.asList(78, 44, 1));
+
+        System.out.println("HashTable3 before retainAll: " + hashTable3);
+        System.out.println("retainLinkedList: " + retainLinkedList);
+
         hashTable3.retainAll(retainLinkedList);
+
+        System.out.println("HashTable3 after retainAll: " + hashTable3);
     }
 }
