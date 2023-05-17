@@ -3,26 +3,26 @@ package ru.academits.dashiev.my_hash_table;
 import java.util.*;
 
 public class MyHashTable<E> implements Collection<E> {
+    private static final int DEFAULT_CAPACITY = 10; // константа для размера массива по умолчанию
+
     private final LinkedList<E>[] lists; // это точно правильно, Массив односвязных списков
     private int size; // кол-во эл-в
     private int modCount; // кол-во изменений
 
-    static final int defaultCapacity = 10; // константа для размера массива по умолчанию
-
     public MyHashTable() {
-        this(defaultCapacity);
+        this(DEFAULT_CAPACITY);
     }
 
     public MyHashTable(int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException("Wrong capacity <= 0. Capacity = " + capacity);
+            throw new IllegalArgumentException("Capacity must be >= 0. Capacity = " + capacity);
         }
 
         //noinspection unchecked
         lists = new LinkedList[capacity];
     }
 
-    private int getArrayIndex(Object o){
+    private int getIndex(Object o){
         return (o == null) ? 0 : Math.abs(o.hashCode() % lists.length);
     }
 
@@ -42,59 +42,49 @@ public class MyHashTable<E> implements Collection<E> {
             return false;
         }
 
-        int index = getArrayIndex(o);
+        int index = getIndex(o);
 
-        if (lists[index] == null){
-            return false;
-        }
-
-        return lists[index].contains(o);
-    }
-
-    @Override
-    public Iterator<E> iterator() {
-        return new MyIterator();
+        return lists[index] != null && lists[index].contains(o);
     }
 
     @Override
     public Object[] toArray() {
         Object[] array = new Object[size];
 
-        int listIndex = 0;
         int arrayIndex = 0;
 
         for(int i = 0; i < lists.length; i ++){
-            if (lists[listIndex] != null){
-                for (E item : lists[listIndex]) {
+            if (lists[i] != null){
+                for (E item : lists[i]) {
                     array[arrayIndex] = item;
 
                     arrayIndex++;
                 }
             }
 
-            listIndex ++;
+            i ++;
         }
 
         return array;
     }
 
     @Override
-    public <T> T[] toArray(T[] a) {  // // T- т.к. этот нек-й класс может отличаться от V
+    public <T> T[] toArray(T[] a) {  // // T- т.к. этот некоторый класс может отличаться от E
         if (a == null) {
             throw new NullPointerException("a is null!");
         }
 
-        @SuppressWarnings("unchecked")
-        T[] hashTableArray = (T[]) toArray();
+        // hashTableArray - лучше сделать типа Object[], т.к. это по факту пока не T[], Прошу не считать за ошибку
+        // важный комментарий
+        Object[] hashTableArray =  toArray();
 
         if (size > a.length) {
-            @SuppressWarnings("unchecked")
-            T[] newArray = (T[]) Arrays.copyOf(hashTableArray, size, a.getClass());
-
-            return newArray; // возвр новый ф, но длины хэш Таблицы
+            // возвр новый массив, но длины хэш Таблицы
+            //noinspection unchecked
+            return (T[]) Arrays.copyOf(hashTableArray, size, a.getClass());
         }
 
-        System.arraycopy(hashTableArray, 0, a, 0, size); // если равны , на этом закончится
+        System.arraycopy(hashTableArray, 0, a, 0, size);
 
         if (size < a.length) {
             a[size] = null;
@@ -105,14 +95,14 @@ public class MyHashTable<E> implements Collection<E> {
 
     @Override
     public boolean add(E value) {
-        int index = getArrayIndex(value);
+        int index = getIndex(value);
 
         if (lists[index] == null) {
             lists[index] = new LinkedList<>();
         }
 
-        size++;
         modCount++;
+        size++;
 
         // true т.к. у односвязного списка нет случаев когда он может не добавить
         return lists[index].add(value);
@@ -150,10 +140,16 @@ public class MyHashTable<E> implements Collection<E> {
 
     @Override
     public boolean remove(Object o) {
-        int index = getArrayIndex(o);
+        int index = getIndex(o);
 
-        // Код ниже все равно что return lists[index] == null ? false : lists[index].remove(o);
-        return lists[index] != null && lists[index].remove(o);
+        if(lists[index] != null && lists[index].remove(o)){
+            modCount++;
+            size--;
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -162,20 +158,28 @@ public class MyHashTable<E> implements Collection<E> {
             throw new NullPointerException("c is null!");
         }
 
+        if (c.size() == 0) {
+            return false;
+        }
+
         if (size == 0) { // HashTable is empty
             return false;
         }
 
         int oldHashTableSize = size;
 
-        for (LinkedList<E> list : lists) {
-            if (list != null) {
-                for (int j = list.size() - 1; j >= 0; j--) {
-                    if (c.contains(list.get(j))) {
-                        list.remove(j);
+        // Не менял на forEach поскольку код становится для меня не читаемым
+        for (int i = 0; i < lists.length; i++) {
+            if(lists[i] != null) {
+                int initialCurrentListSize = lists[i].size();
 
-                        size--;
-                    }
+                lists[i].removeAll(c);
+
+                int initialCurrentListSizeAfterAll = lists[i].size();
+
+                if (initialCurrentListSize != initialCurrentListSizeAfterAll) {
+                    modCount++;
+                    size = size - (initialCurrentListSize - initialCurrentListSizeAfterAll);
                 }
             }
         }
@@ -184,33 +188,10 @@ public class MyHashTable<E> implements Collection<E> {
     }
 
     // Удаляет элементы, не принадлежащие переданной коллекции
+    // 14. Можно не реализовывать remove итератора и реализовать retainAll без него.
+    //Этот пункт можно не исправлять
     @Override
     public boolean retainAll(Collection<?> c) {
-        // Реализация без remove в Итераторе
-//        if (c == null) {
-//            throw new NullPointerException("c is null!");
-//        }
-//
-//        if (size == 0) { // HashTable is empty
-//            return false;
-//        }
-//
-//        int oldHashTableSize = size;
-//
-//        for (LinkedList<E> list : lists) {
-//            if (list != null) {
-//                for (int j = list.size() - 1; j >= 0; j--) {
-//                    if (!c.contains(list.get(j))) {
-//                        list.remove(j);
-//
-//                        size--;
-//                    }
-//                }
-//            }
-//        }
-
-        // return oldHashTableSize != size;
-
         if (c == null) {
             throw new NullPointerException("c is null!");
         }
@@ -243,7 +224,6 @@ public class MyHashTable<E> implements Collection<E> {
         Arrays.fill(lists, null);
 
         modCount++;
-
         size = 0;
     }
 
@@ -255,28 +235,27 @@ public class MyHashTable<E> implements Collection<E> {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("[");
+        sb.append('[');
 
         for (E element: this) {
             sb.append(element).append(", ");
         }
 
         sb.delete(sb.length() - 2, sb.length());
-        sb.append("]");
+        sb.append(']');
 
         return sb.toString();
     }
 
     private class MyIterator implements Iterator<E> {
-        private final int initialModCount = modCount;
+        private int initialModCount = modCount;
 
         private int hashTableElementIndex = -1; // индекс элемента во всей таблице
-        private int listIndex = 0; // индекс списка в массиве
+        private int listIndex; // индекс списка в массиве
         private int listElementIndex = -1; // индекс элемента в списке
 
         // Для remove() в Итераторе
-        private boolean isRemoveCalledOnce; // false по умолчанию
-
+        private boolean isRemoveCalledTwice; // false по умолчанию
         private boolean isNextFind;
 
         @Override
@@ -300,15 +279,12 @@ public class MyHashTable<E> implements Collection<E> {
 
             while (!isNextFind){
                 while (lists[listIndex] == null){
-                    // listElementIndex = 0;
-                    listIndex++;
-
-                    // Чтобы выйти из while, но сюда можно упасть если мы удвлили из list зн-я и
+                    // Чтобы выйти из while, но сюда можно упасть если мы удалили из list зн-я и
                     // лист .size() теперь равен 0
-                    isNextFind = true;
+                    listIndex++;
                 }
 
-                if (listElementIndex >= lists[listIndex].size() || lists[listIndex].size() == 0){
+                if (lists[listIndex].isEmpty() || listElementIndex >= lists[listIndex].size()){
                     listElementIndex = 0;
                     listIndex++;
                     // Чтобы не выйти из while, видимо сборщик мусора не успевает присвоить null листу если он пуст
@@ -318,11 +294,10 @@ public class MyHashTable<E> implements Collection<E> {
                 }
             }
 
-            isRemoveCalledOnce = true;
+            isRemoveCalledTwice = true;
 
             hashTableElementIndex++;
 
-            // Меняем isListIndexFind к следующей итерации
             isNextFind = false;
 
             return lists[listIndex].get(listElementIndex);
@@ -330,20 +305,28 @@ public class MyHashTable<E> implements Collection<E> {
 
         @Override
         public void remove() {
-            if (!isRemoveCalledOnce) {
+            if (!isRemoveCalledTwice) {
                 // Чтобы remove не вызвался 2 раза
                 throw new IllegalStateException("Operation remove() in Iterator call second time on" +
                                                         "that element!");
-            } else {
-                lists[listIndex].remove(listElementIndex);
-
-                hashTableElementIndex--;
-                listElementIndex--;
-
-                size--;
-
-                isRemoveCalledOnce = false;
             }
+
+            lists[listIndex].remove(listElementIndex);
+
+            hashTableElementIndex--;
+            listElementIndex--;
+
+            // initialModCount++ чтобы итератор не падал из-за того что сам меняет колекцию
+            initialModCount++;
+            modCount++;
+            size--;
+
+            isRemoveCalledTwice = false;
         }
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new MyIterator();
     }
 }
