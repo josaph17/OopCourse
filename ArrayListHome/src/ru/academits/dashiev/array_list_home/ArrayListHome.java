@@ -3,7 +3,6 @@ package ru.academits.dashiev.array_list_home;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class ArrayListHome {
     public static void main(String[] args) {
@@ -24,10 +23,9 @@ public class ArrayListHome {
             System.out.println("fileLinesList: " + fileLinesList);
 
         } catch (FileNotFoundException e) {
-            System.out.println("No file.");
+            System.out.println("File not found.");
         } catch (IOException e) {
-            // IOException непроверяемое исключение. Правильно ли я его обработал?
-            System.out.println("Catch IOException");
+            System.out.println("File error.");
         } finally {
             System.out.println("The program continues to work.");
             System.out.println();
@@ -35,7 +33,7 @@ public class ArrayListHome {
 
         System.out.println("-- Task 2 --");
 
-        List<Integer> list = new ArrayList<>(Arrays.asList(1, 74, 23, 53, 44, 11, 11, 80));
+        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(1, 74, 23, 53, 44, 11, 11, 80));
 
         System.out.println("list: " + list);
 
