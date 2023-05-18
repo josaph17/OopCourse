@@ -169,13 +169,13 @@ public class MyHashTable<E> implements Collection<E> {
         int oldHashTableSize = size;
 
         // Не менял на forEach поскольку код становится для меня не читаемым
-        for (int i = 0; i < lists.length; i++) {
-            if(lists[i] != null) {
-                int initialCurrentListSize = lists[i].size();
+        for (LinkedList<E> list : lists) {
+            if (list != null) {
+                int initialCurrentListSize = list.size();
 
-                lists[i].removeAll(c);
+                list.removeAll(c);
 
-                int initialCurrentListSizeAfterAll = lists[i].size();
+                int initialCurrentListSizeAfterAll = list.size();
 
                 if (initialCurrentListSize != initialCurrentListSizeAfterAll) {
                     modCount++;
@@ -255,8 +255,7 @@ public class MyHashTable<E> implements Collection<E> {
         private int listElementIndex = -1; // индекс элемента в списке
 
         // Для remove() в Итераторе
-        private boolean isRemoveCalledTwice; // false по умолчанию
-        private boolean isNextFind;
+        private boolean isRemoveCalledOnce; // false по умолчанию
 
         @Override
         public boolean hasNext() {
@@ -277,35 +276,34 @@ public class MyHashTable<E> implements Collection<E> {
 
             listElementIndex ++;
 
+            boolean isNextFind = false;
+
             while (!isNextFind){
                 while (lists[listIndex] == null){
-                    // Чтобы выйти из while, но сюда можно упасть если мы удалили из list зн-я и
-                    // лист .size() теперь равен 0
+                    // Чтобы выйти из while, но сюда можно упасть если мы удалили из list значения и
+                    // список.size() теперь равен 0
                     listIndex++;
                 }
 
-                if (lists[listIndex].isEmpty() || listElementIndex >= lists[listIndex].size()){
+                if (listElementIndex >= lists[listIndex].size()){
                     listElementIndex = 0;
                     listIndex++;
                     // Чтобы не выйти из while, видимо сборщик мусора не успевает присвоить null листу если он пуст
-                    isNextFind = false;
                 } else {
                     isNextFind = true;
                 }
             }
 
-            isRemoveCalledTwice = true;
+            isRemoveCalledOnce = true;
 
             hashTableElementIndex++;
-
-            isNextFind = false;
 
             return lists[listIndex].get(listElementIndex);
         }
 
         @Override
         public void remove() {
-            if (!isRemoveCalledTwice) {
+            if (!isRemoveCalledOnce) {
                 // Чтобы remove не вызвался 2 раза
                 throw new IllegalStateException("Operation remove() in Iterator call second time on" +
                                                         "that element!");
@@ -321,7 +319,7 @@ public class MyHashTable<E> implements Collection<E> {
             modCount++;
             size--;
 
-            isRemoveCalledTwice = false;
+            isRemoveCalledOnce = false;
         }
     }
 
