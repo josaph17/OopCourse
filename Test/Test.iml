@@ -7,6 +7,6 @@
     </content>
     <orderEntry type="jdk" jdkName="17 (2)" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="MyArrayList" />
+    <orderEntry type="module" module-name="ArrayList" />
   </component>
 </module>

@@ -1,13 +1,13 @@
-package ru.academits.dashiev.my_array_list_main;
+package ru.academits.dashiev.array_list_main;
 
-import ru.academits.dashiev.my_array_list.MyArrayList;
+import ru.academits.dashiev.array_list.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        MyArrayList<Integer> list1 = new MyArrayList<>();
+        ArrayList<Integer> list1 = new ArrayList<>();
         System.out.println("list size = " + list1.size());
 
-        MyArrayList<Integer> list2 = new MyArrayList<>(5);
+        ArrayList<Integer> list2 = new ArrayList<>(5);
         System.out.println("list2 size = " + list2.size());
 
         list1.add(0, 1);
@@ -28,7 +28,7 @@ public class Main {
         list1.addAll(list2);
         System.out.println("list1.addAll(list2), list1: " + list1);
 
-        MyArrayList<Integer> list3 = new MyArrayList<>();
+        ArrayList<Integer> list3 = new ArrayList<>();
         list3.add(43);
         list3.add(32);
         System.out.println("list3: " + list3);
@@ -42,7 +42,7 @@ public class Main {
 
         System.out.println("list1.contains(3777.9): " + list1.contains(37));
 
-        MyArrayList<Integer> list4 = new MyArrayList<>();
+        ArrayList<Integer> list4 = new ArrayList<>();
         list4.add(67);
         list4.add(4);
         list4.add(1);
@@ -63,7 +63,7 @@ public class Main {
         System.out.println("list1: " + list1);
         System.out.println("list1.indexOf(" + findIndex + "): " + list1.indexOf(findIndex));
 
-        MyArrayList<Double> emptyList = new MyArrayList<>();
+        ArrayList<Double> emptyList = new ArrayList<>();
         System.out.println("emptyList.isEmpty(): " + emptyList.isEmpty());
 
         int lastIndexElement = 37;
@@ -77,7 +77,7 @@ public class Main {
         System.out.println("list1 after .remove():");
         System.out.println(list1);
 
-        MyArrayList<Integer> removedList = new MyArrayList<>();
+        ArrayList<Integer> removedList = new ArrayList<>();
         removedList.add(1);
         removedList.add(37);
         removedList.add(2);
@@ -90,7 +90,7 @@ public class Main {
 
         // TODO прошу поверить ф-ю retainAll(Collection c)
         System.out.println("-----------------------");
-        MyArrayList<Integer> list5 = new MyArrayList<>();
+        ArrayList<Integer> list5 = new ArrayList<>();
         list5.add(432);
         list5.add(32);
         list5.add(9);
@@ -99,7 +99,7 @@ public class Main {
 
         System.out.println("list5: " + list5);
 
-        MyArrayList<Integer> list6 = new MyArrayList<>();
+        ArrayList<Integer> list6 = new ArrayList<>();
         list6.add(564);
         list6.add(9);
         list6.add(99);
@@ -129,7 +129,7 @@ public class Main {
         }
 
         System.out.println();
-        System.out.print("Double[] array = list1.toArray(array2): ");
+        System.out.print("[] array = list1.toArray(array2): ");
         Integer[] array = list1.toArray(array2);
 
         for (Integer element : array) {
