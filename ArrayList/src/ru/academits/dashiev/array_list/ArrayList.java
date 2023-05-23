@@ -1,9 +1,9 @@
-package ru.academits.dashiev.my_array_list;
+package ru.academits.dashiev.array_list;
 // Коммент на будущее ! null - это нормальные данные для любой коллекции, для них все должно работать
 
 import java.util.*;
 
-public class MyArrayList<E> implements List<E> {
+public class ArrayList<E> implements List<E> {
     private static final int DEFAULT_CAPACITY = 10; // Вместимость по умолчанию, т.е. items.length
 
     private E[] items;
@@ -11,12 +11,12 @@ public class MyArrayList<E> implements List<E> {
     и длина массива могут отличаться */
     private int modCount; // п.7 счетчик изменений
 
-    public MyArrayList() {
+    public ArrayList() {
         // noinspection unchecked, заглушил
         items = (E[]) new Object[DEFAULT_CAPACITY];
     }
 
-    public MyArrayList(int capacity) {
+    public ArrayList(int capacity) {
         if (capacity < 0) {
             throw new IllegalArgumentException("Capacity must be >= 0. Capacity = " + capacity);
         }
@@ -107,9 +107,8 @@ public class MyArrayList<E> implements List<E> {
 
         System.arraycopy(items, index, items, index + c.size(), size - index);
 
-        size += c.size();
-
         modCount++; // Если программа дойдет до этого места, то элементы добавятся
+        size += c.size();
 
         int i = index;
 
@@ -165,8 +164,8 @@ public class MyArrayList<E> implements List<E> {
 
         items[index] = item;
 
-        size++;
         modCount++;
+        size++;
     }
 
     @Override
@@ -177,11 +176,10 @@ public class MyArrayList<E> implements List<E> {
 
         System.arraycopy(items, index + 1, items, index, size - 1 - index);
 
+        modCount++;
         size--;
 
         items[size] = null;
-
-        modCount++;
 
         return removedItem;
     }
@@ -317,7 +315,8 @@ public class MyArrayList<E> implements List<E> {
 
         if (array.length < size) {
             //noinspection unchecked
-            return (T[]) Arrays.copyOf(array, size, array.getClass()); // Возвр. новый массив того же типа, что и переданный
+            return (T[]) Arrays.copyOf(items, size, array.getClass()); // Возвр. новый массив того
+            // же типа, что и переданный, но с данными из списка
         }
 
         //noinspection SuspiciousSystemArraycopy
@@ -367,14 +366,14 @@ public class MyArrayList<E> implements List<E> {
             return false;
         }
 
-        MyArrayList<?> listWithTypeConversion = (MyArrayList<?>) obj;
+        ArrayList<?> list = (ArrayList<?>) obj;
 
-        if (size != listWithTypeConversion.size) {
+        if (size != list.size) {
             return false;
         }
 
         for (int i = 0; i < size; i++) {
-            if (!Objects.equals(items[i], listWithTypeConversion.items[i])) { // Сравниваем только по equals!
+            if (!Objects.equals(items[i], list.items[i])) { // Сравниваем только по equals!
                 return false;
             }
         }
