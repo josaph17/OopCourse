@@ -21,7 +21,6 @@ public class ArrayListHome {
             }
 
             System.out.println("fileLinesList: " + fileLinesList);
-
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         } catch (IOException e) {
@@ -33,7 +32,9 @@ public class ArrayListHome {
 
         System.out.println("-- Task 2 --");
 
-        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(1, 74, 23, 53, 44, 11, 11, 80));
+        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(
+                1, 74, 23, 53, 44, 11, 11, 80
+        ));
 
         System.out.println("list: " + list);
 
@@ -48,7 +49,9 @@ public class ArrayListHome {
 
         System.out.println("-- Task 3 --");
 
-        ArrayList<Integer> repeatingNumbersList = new ArrayList<>(Arrays.asList(1, 5, 2, 1, 3, 5, 3, 3));
+        ArrayList<Integer> repeatingNumbersList = new ArrayList<>(Arrays.asList(
+                1, 5, 2, 1, 3, 5, 3, 3
+        ));
         System.out.println("repeatingNumbersList: " + repeatingNumbersList);
 
         ArrayList<Integer> uniqueNumbersList = new ArrayList<>(repeatingNumbersList.size());
