@@ -2,64 +2,64 @@ package ru.academits.dashiev.my_tree_main;
 
 import ru.academits.dashiev.my_tree.MyTree;
 public class Main {
-    private static <C extends Comparable<C>> void deleteAndPrint(MyTree<C> tree, C deletable) {
-        System.out.println("New tree");
-        tree.printTree();
-
-        try {
-            System.out.println("Delete: " + deletable + ", result: " + tree.delete(deletable));
-            tree.printTree();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void deleteNodeCheck() {
-        deleteAndPrint(new MyTree<>(2, 6, 1, 4, 3), 2); // 1
-        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 7, 6), 5); // 2
-        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 6, 7), 5); // 3
-        deleteAndPrint(new MyTree<>(5, 10, 0, 8, 7, 6), 5); // 4
-        deleteAndPrint(new MyTree<>(5, 10, 0, 50, 100), 5); // 5
-        deleteAndPrint(new MyTree<>(10, 5, 3, 8, 1, 4, 9, 7), 5); // 6
-        deleteAndPrint(new MyTree<>(10, 100, 93, 108, 91, 94, 109), 93); // 7
-        deleteAndPrint(new MyTree<>(100, 50, 200, 110, 205, 40, 45, 1), 50); // 8
-        deleteAndPrint(new MyTree<>(10.0), 5.0); // 9
-        deleteAndPrint(new MyTree<>(40.0, 30.0, null, null, 17.0, 15.0, 30.0, 13.0, 14.0), null); // 10
-        deleteAndPrint(new MyTree<>(null, null, 17.0, 15.0, 30.0, 13.0), null); // 11
-    }
-
-    public static void main(String[] args) {
-        MyTree<Integer> tree = new MyTree<>();
-
-        tree.add(10);
-        tree.add(100);
-        tree.add(50);
-        tree.add(200);
-        tree.add(110);
-        tree.add(205);
-        tree.add(40);
-        tree.add(45);
-        tree.add(1);
-
-        Integer findingValue = 40;
-
-        boolean isNodeExist = tree.contains(findingValue);
-
-        System.out.println("Is node with value = " + findingValue + " is exist: " + isNodeExist);
-
-        System.out.println("Check deleteNode function:");
-        deleteNodeCheck();
-
-        System.out.println("Tree items count: " + tree.getSize());
-
-        System.out.println("widthBypass:");
-        tree.bypassInWidth(System.out::println);
-
-        System.out.println("deepBypass:");
-        tree.bypassInDeep(System.out::println);
-
-        System.out.println("recursionDeepVisit: ");
-        tree.visitInDeepRecursively(System.out::println);
-        System.out.println();
-    }
+//    private static <C extends Comparable<C>> void deleteAndPrint(MyTree<C> tree, C deletable) {
+//        System.out.println("New tree");
+//        tree.printTree();
+//
+//        try {
+//            System.out.println("Delete: " + deletable + ", result: " + tree.delete(deletable));
+//            tree.printTree();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public static void deleteNodeCheck() {
+//        deleteAndPrint(new MyTree<>(2, 6, 1, 4, 3), 2); // 1
+//        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 7, 6), 5); // 2
+//        deleteAndPrint(new MyTree<>(5, 10, 0, 9, 8, 6, 7), 5); // 3
+//        deleteAndPrint(new MyTree<>(5, 10, 0, 8, 7, 6), 5); // 4
+//        deleteAndPrint(new MyTree<>(5, 10, 0, 50, 100), 5); // 5
+//        deleteAndPrint(new MyTree<>(10, 5, 3, 8, 1, 4, 9, 7), 5); // 6
+//        deleteAndPrint(new MyTree<>(10, 100, 93, 108, 91, 94, 109), 93); // 7
+//        deleteAndPrint(new MyTree<>(100, 50, 200, 110, 205, 40, 45, 1), 50); // 8
+//        deleteAndPrint(new MyTree<>(10.0), 5.0); // 9
+//        deleteAndPrint(new MyTree<>(40.0, 30.0, null, null, 17.0, 15.0, 30.0, 13.0, 14.0), null); // 10
+//        deleteAndPrint(new MyTree<>(null, null, 17.0, 15.0, 30.0, 13.0), null); // 11
+//    }
+//
+//    public static void main(String[] args) {
+//        MyTree<Integer> tree = new MyTree<>();
+//
+//        tree.add(10);
+//        tree.add(100);
+//        tree.add(50);
+//        tree.add(200);
+//        tree.add(110);
+//        tree.add(205);
+//        tree.add(40);
+//        tree.add(45);
+//        tree.add(1);
+//
+//        Integer findingValue = 40;
+//
+//        boolean isNodeExist = tree.contains(findingValue);
+//
+//        System.out.println("Is node with value = " + findingValue + " is exist: " + isNodeExist);
+//
+//        System.out.println("Check deleteNode function:");
+//        deleteNodeCheck();
+//
+//        System.out.println("Tree items count: " + tree.getSize());
+//
+//        System.out.println("widthBypass:");
+//        tree.bypassInWidth(System.out::println);
+//
+//        System.out.println("deepBypass:");
+//        tree.bypassInDeep(System.out::println);
+//
+//        System.out.println("recursionDeepVisit: ");
+//        tree.visitInDeepRecursively(System.out::println);
+//        System.out.println();
+//    }
 }
