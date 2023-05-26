@@ -9,20 +9,20 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-public class MyTree<T> {
-    private MyTreeNode<T> root;
+public class MyTree<E> {
+    private MyTreeNode<E> root;
     private int size;
 
-    private Comparator<T> comparator;
+    private Comparator<E> comparator;
 
     public MyTree() { // конструктор без компаратора
     }
 
-    public MyTree(Comparator<T> comparator){ // конструктор с компаратором
+    public MyTree(Comparator<E> comparator){ // конструктор с компаратором
         this.comparator = comparator;
     }
 
-    private int compare(T o1, T o2){
+    private int compare(E o1, E o2){
         // в задаче shape o1 - текущий узел, 02 - x, сравниваем текущий узел с x
         if (comparator != null){
             return comparator.compare(o1, o2);
@@ -41,12 +41,12 @@ public class MyTree<T> {
         }
 
         @SuppressWarnings("unchecked")
-        Comparable<T> object1 = (Comparable<T>) o1;
+        Comparable<E> object1 = (Comparable<E>) o1;
 
         return object1.compareTo(o2);
     }
 
-    public void add(T data) {
+    public void add(E data) {
         if (root == null) {
             root = new MyTreeNode<>(data);
 
@@ -55,7 +55,7 @@ public class MyTree<T> {
             return; // обязательно, чтобы код ниже не выполнялся
         }
 
-        MyTreeNode<T> current = root;
+        MyTreeNode<E> current = root;
 
         while (true) { // если значения будут повторяться то ветка перейдет вправо
             if (compare(current.getData(), data) > 0) { // из лекции если x<узла 18 стр., equals можно заменить на compare,
@@ -83,150 +83,116 @@ public class MyTree<T> {
         }
     }
 
-    public static void main(String[] args) {
-        MyTree<Shape> tree = new MyTree<>(new AreaComparator());
-        tree.add(new Square(5));
-        tree.add(null);
-        tree.add(null);
-        tree.add(new Square(4));
-        tree.add(new Triangle(10, 6, 8, 10, 5, 2));
-        tree.add(new Triangle(2, 3, 1, 1, 7, 4));
-        tree.add(new Triangle(2, 3, 1, 1, 7, 4));
-        tree.add(new Circle(5));
-        tree.add(new Circle(6));
-        tree.add(null);
-
-        tree.printTree();
-
-        MyTree<Integer> tree2 = new MyTree<>();
-
-        tree2.add(10);
-        tree2.add(null);
-        tree2.add(3);
-        tree2.add(2);
-        tree2.add(2);
-        tree2.add(null);
-
-        tree2.printTree();
-    }
-
     public int getSize() {
         return size;
     }
 
-//    public void bypassInWidth(Consumer<? super T> function) {
-//        if (size == 0) {
-//            return; // Когда дерево пустое
-//        }
-//
-//        Queue<MyTreeNode<T>> queue = new LinkedList<>();
-//
-//        // положить в очередь в очередь корень дерева, false если не получается вставить
-//        queue.offer(root);
-//
-//        while (!queue.isEmpty()) { // пока очередь не пуста
-//            MyTreeNode<T> data = queue.poll(); // достаем 1-ый элемент из очереди и удаляем его
-//
-//            function.accept(data.getData());
-//
-//            if (data.getLeft() != null) {
-//                queue.offer(data.getLeft()); //добавить эл-т
-//            }
-//
-//            if (data.getRight() != null) {
-//                queue.offer(data.getRight());
-//            }
-//        }
-//    }
+    public void bypassInWidth(Consumer<? super E> function) {
+        if (size == 0) {
+            return; // Когда дерево пустое
+        }
 
-//    public void bypassInDeep(Consumer<? super T> function) {
-//        if (size == 0) {
-//            return; // Когда дерево пустое
-//        }
-//
-//        Deque<MyTreeNode<T>> stack = new LinkedList<>();
-//
-//        // положить в очередь в очередь корень дерева, false если не получается вставить
-//        stack.addLast(root);
-//
-//        while (!stack.isEmpty()) { // пока очередь не пуста
-//            MyTreeNode<T> data = stack.removeLast(); // достаем последний элемент из стэка и удаляем его
-//
-//            function.accept(data.getData());
-//
-//            if (data.getRight() != null) { // ложим детей в обратном порядке
-//                stack.addLast(data.getRight());
-//            }
-//
-//            if (data.getLeft() != null) {
-//                stack.addLast(data.getLeft());
-//            }
-//        }
-//    }
+        Queue<MyTreeNode<E>> queue = new LinkedList<>();
 
-//    public void visitInDeepRecursively(Consumer<? super T> function) {
-//        if (size == 0) {
-//            return; // Когда дерево пустое
-//        }
-//
-//        bypassInDeepRecursively(root, function);
-//    }
+        // положить в очередь в очередь корень дерева, false если не получается вставить
+        queue.offer(root);
 
-//    private void bypassInDeepRecursively(MyTreeNode<T> data, Consumer<? super T> function) { // private, чтобы не вызвать извне
-//        function.accept(data.getData());
-//
-//        // System.out.print(node.getData() + " ");
-//
-//        if (data.getLeft() != null) {
-//            bypassInDeepRecursively(data.getLeft(), function);
-//        }
-//
-//        if (data.getRight() != null) {
-//            bypassInDeepRecursively(data.getRight(), function);
-//        }
-//    }
+        while (!queue.isEmpty()) { // пока очередь не пус та
+            MyTreeNode<E> data = queue.poll(); // достаем 1-ый элемент из очереди и удаляем его
 
-//    public boolean contains(T data) {
-//        // Если дерево пустое
-//        if(size == 0){
-//            return false;
-//        }
-//
-//        MyTreeNode<T> current = root;
-//        int compareResult = current.getData().compareTo(data);
-//
-//        while (true) {
-//            if(current.getData() == null){
-//                if(data == null){
-//                    return true;
-//                }
-//
-//                if (current.getRight() != null) {
-//                    current = current.getRight();
-//                } else {
-//                    return false;
-//                }
-//            }
-//
-//            if (compareResult == 0) {
-//                return true;
-//            }
-//
-//            if (compareResult > 0) { // из лекции если x < узла 17 стр.
-//                if (current.getLeft() != null) {
-//                    current = current.getLeft();
-//                } else {
-//                    return false;
-//                }
-//            } else {
-//                if (current.getRight() != null) {
-//                    current = current.getRight();
-//                } else {
-//                    return false;
-//                }
-//            }
-//        }
-//    }
+            function.accept(data.getData());
+
+            if (data.getLeft() != null) {
+                queue.offer(data.getLeft()); //добавить эл-т
+            }
+
+            if (data.getRight() != null) {
+                queue.offer(data.getRight());
+            }
+        }
+    }
+
+    public void bypassInDeep(Consumer<? super E> function) {
+        if (size == 0) {
+            return; // Когда дерево пустое
+        }
+
+        Deque<MyTreeNode<E>> stack = new LinkedList<>();
+
+        // положить в очередь в очередь корень дерева, false если не получается вставить
+        stack.addLast(root);
+
+        while (!stack.isEmpty()) { // пока очередь не пуста
+            MyTreeNode<E> data = stack.removeLast(); // достаем последний элемент из стэка и удаляем его
+
+            function.accept(data.getData());
+
+            if (data.getRight() != null) { // ложим детей в обратном порядке
+                stack.addLast(data.getRight());
+            }
+
+            if (data.getLeft() != null) {
+                stack.addLast(data.getLeft());
+            }
+        }
+    }
+
+    public void visitInDeepRecursively(Consumer<? super E> function) {
+        if (size == 0) {
+            return; // Когда дерево пустое
+        }
+
+        bypassInDeepRecursively(root, function);
+    }
+
+    private void bypassInDeepRecursively(MyTreeNode<E> data, Consumer<? super E> function) { // private, чтобы не вызвать извне
+        function.accept(data.getData());
+
+        // System.out.print(node.getData() + " ");
+
+        if (data.getLeft() != null) {
+            bypassInDeepRecursively(data.getLeft(), function);
+        }
+
+        if (data.getRight() != null) {
+            bypassInDeepRecursively(data.getRight(), function);
+        }
+    }
+
+    public boolean contains(E data) {
+        // Если дерево пустое
+        if(size == 0){
+            return false;
+        }
+
+        MyTreeNode<E> current = root;
+
+        int compareResult = 0;
+
+        while (true) {
+            compareResult = compare(current.getData(), data);
+
+            if (compareResult == 0) {
+                return true;
+            }
+
+            if (compareResult > 0){
+                if (current.getLeft() != null) {
+                    current = current.getLeft();
+                } else {
+                    return false;
+                }
+            }
+
+            if (compareResult < 0){
+                if (current.getRight() != null) {
+                    current = current.getRight();
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
 
 //    private MyTreeNode<T> findNodeToDeleteParent(T data) {
 //        MyTreeNode<T> current = root;
@@ -458,8 +424,39 @@ public class MyTree<T> {
 //        return true;
 //    }
 
+    public static void main(String[] args) {
+        MyTree<Shape> tree = new MyTree<>(new AreaComparator());
+        tree.add(new Square(5));
+        tree.add(null);
+        tree.add(null);
+        tree.add(new Square(4));
+        tree.add(new Triangle(10, 6, 8, 10, 5, 2));
+        tree.add(new Triangle(2, 3, 1, 1, 7, 4));
+        tree.add(new Triangle(2, 3, 1, 1, 7, 4));
+        tree.add(new Circle(5));
+        tree.add(new Circle(6));
+        tree.add(null);
+
+        //                tree.printTree();
+
+        //        MyTree<Integer> tree2 = new MyTree<>();
+        //
+        //        tree2.add(10);
+        //        tree2.add(null);
+        //        tree2.add(3);
+        //        tree2.add(2);
+        //        tree2.add(2);
+        //        tree2.add(null);
+
+        // tree2.printTree();
+
+        // tree2.visitInDeepRecursively(System.out::println);
+
+        System.out.println(tree.size);
+    }
+
     public void printTree() {
-        Deque<MyTreeNode<T>> globalStack = new LinkedList<>();
+        Deque<MyTreeNode<E>> globalStack = new LinkedList<>();
 
         globalStack.addLast(root);
 
@@ -470,7 +467,7 @@ public class MyTree<T> {
         System.out.println(separator); // Черта для указания начала нового дерева
 
         while (!isRowEmpty) {
-            Deque<MyTreeNode<T>> localStack = new LinkedList<>();
+            Deque<MyTreeNode<E>> localStack = new LinkedList<>();
             isRowEmpty = true;
 
             for (int i = 0; i < gapsCount; i++){
@@ -478,14 +475,14 @@ public class MyTree<T> {
             }
 
             while (!globalStack.isEmpty()) { // Пока в общем стеке есть элементы
-                MyTreeNode<T> data = globalStack.pop(); // Берем следующий, при этом удаляя его из стека
+                MyTreeNode<E> node = globalStack.pop(); // Берем следующий, при этом удаляя его из стека
 
-                if (data != null) {
-                    System.out.print(data.getData()); // Выводим его значение в консоли
-                    localStack.addLast(data.getLeft()); // Сохраняем в локальный стек, наследники текущего элемента
-                    localStack.addLast(data.getRight());
+                if (node != null) {
+                    System.out.print(node.getData()); // Выводим его значение в консоли
+                    localStack.addLast(node.getLeft()); // Сохраняем в локальный стек, наследники текущего элемента
+                    localStack.addLast(node.getRight());
 
-                    if (data.getLeft() != null || data.getRight() != null){
+                    if (node.getLeft() != null || node.getRight() != null){
                         isRowEmpty = false;
                     }
                 } else {
@@ -505,6 +502,7 @@ public class MyTree<T> {
             while (!localStack.isEmpty())
                 globalStack.push(localStack.removeLast()); // Перемещаем все элементы из локального стека в глобальный
         }
+        
         System.out.println(separator); // Подводим черту
     }
 }
