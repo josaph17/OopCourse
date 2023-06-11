@@ -1,6 +1,6 @@
 package ru.academits.dashiev.temperature_view;
 
-import ru.academits.dashiev.temperature_unit.Unit;
+import ru.academits.dashiev.unit.Unit;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,7 +80,8 @@ public class View implements IView {
             convertButtonIcon = new ImageIcon("change.png"); // convertButtonIcon
             warningIcon = new ImageIcon("attention.png");
 
-            inputField = new JTextField(20); // textField 20 symbols
+            inputField = new JTextField();
+            inputField.setColumns(20); // textField 20 symbols
             inputField.setBounds(2, 3, 200, 30);
 
             outputField = new JTextField(20);
@@ -139,7 +140,7 @@ public class View implements IView {
         });
     }
 
-    public JRadioButton getConvertButton() {
+    public JButton getConvertButton() {
         return convertButton;
     }
 
@@ -147,7 +148,7 @@ public class View implements IView {
 //    public void initView(Runnable convertAction) {
 //        outputCelsiusButton.doClick();
 //        inputCelsiusButton.doClick();
-//convertActione -> convertAction.run());
+//convertAction -> convertAction.run());
 //    }
 
     @Override
@@ -165,29 +166,29 @@ public class View implements IView {
     }
 
     @Override
-    public Enum getInputTemperatureType() {
+    public String getInputTemperatureName() {
         if (inputKelvinButton.isSelected()) {
-            return Unit.KELVIN;
+            return "KELVIN";
         }
 
         if (inputFahrenheitButton.isSelected()) {
-            return Unit.FAHRENHEIT;
+            return "FAHRENHEIT";
         }
 
-        return Unit.CELSIUS;
+        return "CELSIUS";
     }
 
     @Override
-    public Enum getOutputTemperatureType() {
+    public String getOutputTemperatureName() {
         if (outputKelvinButton.isSelected()) {
-            return Unit.KELVIN;
+            return "KELVIN";
         }
 
         if (outputFahrenheitButton.isSelected()) {
-            return Unit.FAHRENHEIT;
+            return "FAHRENHEIT";
         }
 
-        return Unit.CELSIUS;
+        return "CELSIUS";
     }
 
     @Override

@@ -1,42 +1,46 @@
 package ru.academits.dashiev.temperature_model;
 
-import ru.academits.dashiev.temperature_unit.Unit;
+import ru.academits.dashiev.unit.Unit;
 
 public class Model {
-    private Double inputTemperature;
-    private Double outputTemperature;
-    private Enum inputUnit;
-    private Enum outputUnit;
+    private Double inputTemperatureValue;
+    private Double outputTemperatureValue;
+    private String inputTemperatureName;
+    private String outputTemperatureName;
 
     public Model() {
     }
 
-    public void setInputTemperature(double inputTemperature) {
-        this.inputTemperature = inputTemperature;
+    public void setInputTemperatureValue(double inputTemperatureValue) {
+        this.inputTemperatureValue = inputTemperatureValue;
     }
 
-    public double getOutputTemperature() {
-        return outputTemperature;
+    public double getInputTemperatureValue() {
+        return inputTemperatureValue;
     }
 
-    public void setOutputTemperature(double outputTemperature) {
-        this.outputTemperature = outputTemperature;
+    public void setOutputTemperatureValue(double outputTemperatureValue) {
+        this.outputTemperatureValue = outputTemperatureValue;
     }
 
-    public void setInputUnit(Enum inputUnit) {
-        this.inputUnit = inputUnit;
+    public double getOutputTemperatureValue() {
+        return outputTemperatureValue;
     }
 
-    public void setOutputUnit(Enum outputUnit) {
-        this.outputUnit = outputUnit;
+    public void setInputTemperatureName(String inputTemperatureName) {
+        this.inputTemperatureName = inputTemperatureName;
+    }
+
+    public void setOutputTemperatureName(String outputTemperatureName) {
+        this.outputTemperatureName = outputTemperatureName;
     }
 
     public Double calculateOutputTemperature() {
-        if ((outputUnit.compareTo(Unit.FAHRENHEIT) == 0)) {
+        if ((outputTemperatureName.equals("FAHRENHEIT"))) {
             return calculateOutputTemperatureToFahrenheit();
         }
 
-        if (outputUnit.compareTo(Unit.KELVIN) == 0) {
+        if (outputTemperatureName.equals("KELVIN")) {
             return calculateOutputTemperatureToKelvin();
         }
 
@@ -44,38 +48,38 @@ public class Model {
     }
 
     private Double calculateOutputTemperatureToCelsius() {
-        if (inputUnit.compareTo(Unit.FAHRENHEIT) == 0) {
-            return (inputTemperature - 32) * (5.0 / 9.0);
+        if (inputTemperatureName.equals("FAHRENHEIT")) {
+            return (inputTemperatureValue - 32) * (5.0 / 9.0);
         }
 
-        if (inputUnit.compareTo(Unit.KELVIN) == 0) {
-            return inputTemperature - 273.15;
+        if (inputTemperatureName.equals("KELVIN")) {
+            return inputTemperatureValue - 273.15;
         }
 
-        return inputTemperature;
+        return inputTemperatureValue;
     }
 
     private Double calculateOutputTemperatureToFahrenheit() {
-        if (inputUnit.compareTo(Unit.CELSIUS) == 0) {
-            return (inputTemperature - 32) * (5.0 / 9.0);
+        if (inputTemperatureName.equals("CELSIUS")) {
+            return (inputTemperatureValue - 32) * (5.0 / 9.0);
         }
 
-        if (inputUnit.compareTo(Unit.KELVIN) == 0) {
-            return (inputTemperature * (9.0 / 5.0)) + 32;
+        if (inputTemperatureName.equals("KELVIN")) {
+            return (inputTemperatureValue * (9.0 / 5.0)) + 32;
         }
 
-        return inputTemperature;
+        return inputTemperatureValue;
     }
 
     private Double calculateOutputTemperatureToKelvin() {
-        if (inputUnit.compareTo(Unit.CELSIUS) == 0) {
-            return inputTemperature + 273.15;
+        if (inputTemperatureName.compareTo("CELSIUS") == 0) {
+            return inputTemperatureValue + 273.15;
         }
 
-        if (inputUnit.compareTo(Unit.FAHRENHEIT) == 0) {
-            return (inputTemperature - 32) * (5.0 / 9.0) + 273.15;
+        if (inputTemperatureName.compareTo("FAHRENHEIT") == 0) {
+            return (inputTemperatureValue - 32) * (5.0 / 9.0) + 273.15;
         }
 
-        return inputTemperature;
+        return inputTemperatureValue;
     }
 }

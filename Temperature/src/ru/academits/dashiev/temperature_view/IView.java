@@ -7,9 +7,9 @@ public interface IView {
 
     public void setOutputTemperature(String value);
 
-    public Enum getInputTemperatureType();
+    public String getInputTemperatureName();
 
-    public Enum getOutputTemperatureType();
+    public String getOutputTemperatureName();
 
     public void showWrongInputError();
 }

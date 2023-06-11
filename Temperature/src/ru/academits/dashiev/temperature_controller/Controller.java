@@ -4,37 +4,48 @@ import ru.academits.dashiev.temperature_model.Model;
 import ru.academits.dashiev.temperature_view.View;
 
 public class Controller {
-    private Model model;
-    private View view;
+    private static Model model;
+    private static View view;
 
     public Controller(Model m, View v) {
         model = m;
         view = v;
     }
 
-    public void initController(){
-        // код в скобках и есть Runnable, параметров передаю выражение вызывающую ф-ю convertTemperature
-        // view.initView(() -> convertTemperature());
-        outputCelsiusButton.doClick();
-        inputCelsiusButton.doClick();
-        view.getConvertButton().addActionListener(e -> convertTemperature());
+    public void initView(Runnable convertAction) {
+//        view.пуе
     }
 
-    private void convertTemperature() {
+    public static void saveInputTemperature() {
+        // код в скобках и есть Runnable, параметров передаю выражение вызывающую ф-ю convertTemperature
+        // view.initView(() -> convertTemperature());
         try {
-            model.setInputTemperature(Double.parseDouble((view.getInputTemperatureText())));
+            model.setInputTemperatureValue(Double.parseDouble((view.getInputTemperatureText())));
         } catch (NumberFormatException e) {
             view.showWrongInputError();
 
             return; // остановить функцию, чтобы дальше не пошла исполняться
-        }
+        }    }
 
-        model.setInputUnit(view.getInputTemperatureType());
+    public void initController(){
+        // view.getConvertButton().addActionListener(e -> convertTemperature());
+    }
 
-        model.setOutputUnit(view.getOutputTemperatureType());
+    private void convertTemperature() {
+//        try {
+//            model.setInputTemperature(Double.parseDouble((view.getInputTemperatureText())));
+//        } catch (NumberFormatException e) {
+//            view.showWrongInputError();
+//
+//            return; // остановить функцию, чтобы дальше не пошла исполняться
+//        }
 
-        model.setOutputTemperature(model.calculateOutputTemperature());
+        model.setInputTemperatureName(view.getInputTemperatureName());
 
-        view.setOutputTemperature(("" + model.getOutputTemperature()));
+        model.setOutputTemperatureName(view.getOutputTemperatureName());
+
+        model.setOutputTemperatureValue(model.calculateOutputTemperature());
+
+        view.setOutputTemperature(("" + model.getOutputTemperatureValue()));
     }
 }
