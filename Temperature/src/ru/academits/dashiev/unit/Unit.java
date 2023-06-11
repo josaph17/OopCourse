@@ -1,4 +1,4 @@
-package ru.academits.dashiev.temperature_unit;
+package ru.academits.dashiev.unit;
 
 public enum Unit {
     CELSIUS, FAHRENHEIT, KELVIN
