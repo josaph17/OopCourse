@@ -1,37 +1,13 @@
 package ru.academits.dashiev.temperature_unit;
 
-public class Fahrenheit implements ITemperature {
-    public static final String NAME = "FAHRENHEIT";
-
-    private Double value;
-
+public class Fahrenheit implements ITemperatureUnit {
     @Override
-    public String getName() {
-        return NAME;
-    }
-
-    @Override
-    public Double getValue() {
-        return value;
-    }
-
-    @Override
-    public void setValue(Double value) {
-        this.value = value;
-    }
-
-    @Override
-    public Double calculateKelvin() {
-        return (value - 32) * (5.0 / 9.0) + 273.15;
-    }
-
-    @Override
-    public Double calculateFahrenheit() {
-        return value;
-    }
-
-    @Override
-    public Double calculateCelsius() {
+    public Double calculateCelsius(Double value) {
         return (value - 32) * (5.0 / 9.0);
+    }
+
+    @Override
+    public Double initFromCelsius(Double value) {
+        return value * (9.0 / 5.0) + 32;
     }
 }
