@@ -1,14 +1,56 @@
 package ru.academits.dashiev.temperature_model;
 
-import ru.academits.dashiev.unit.Unit;
+import javax.swing.*;
+import javax.swing.event.ListDataListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class Model {
+public class Model implements ComboBoxModel {
+    // private List<String> data = new ArrayList<>();
+    private List<String> data = new ArrayList<>();
+    private int selected = 0;
     private Double inputTemperatureValue;
     private Double outputTemperatureValue;
     private String inputTemperatureName;
     private String outputTemperatureName;
 
+    private ITemperatureUnit inputTemperature;
+
+    private ITemperatureUnit outputTemperature;
+
     public Model() {
+        data = Arrays.asList("Celsius", "Fahrenheit", "Kelvin");
+    }
+
+    public void setSelectedItem(Object o)
+    {
+        selected = data.indexOf(o);
+    }
+
+    public Object getSelectedItem()
+    {
+        return data.get(selected);
+    }
+
+    public int getSize()
+    {
+        return data.size();
+    }
+
+    public Object getElementAt(int i)
+    {
+        return data.get(i);
+    }
+
+    @Override
+    public void addListDataListener(ListDataListener l) {
+
+    }
+
+    @Override
+    public void removeListDataListener(ListDataListener l) {
+
     }
 
     public void setInputTemperatureValue(double inputTemperatureValue) {

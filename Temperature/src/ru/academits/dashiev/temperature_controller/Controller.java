@@ -3,6 +3,9 @@ package ru.academits.dashiev.temperature_controller;
 import ru.academits.dashiev.temperature_model.Model;
 import ru.academits.dashiev.temperature_view.View;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Controller {
     private static Model model;
     private static View view;
@@ -28,7 +31,12 @@ public class Controller {
         }    }
 
     public void initController(){
-        // view.getConvertButton().addActionListener(e -> convertTemperature());
+        // прописать инициалзацию контроллева церпез модель
+
+        view.initInputTemperatureComboBox(new Model());
+        view.initOutputTemperatureComboBox(new Model());
+
+         view.getConvertButton().addActionListener(e -> convertTemperature());
     }
 
     private void convertTemperature() {
