@@ -1,7 +1,5 @@
 package ru.academits.dashiev.temperature_view;
 
-import ru.academits.dashiev.unit.Unit;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,6 +15,10 @@ public class View implements IView {
     private JLabel inputTemperatureAndChooseUnitLabel;
     private JLabel outputTemperatureAndChooseUnitLabel;
     private JButton convertButton;
+    private JLabel inputTemperatureLabel;
+    private JLabel outputTemperatureLabel;
+    private JComboBox inputTemperatureComboBox;
+    private JComboBox outputTemperatureComboBox;
     private JRadioButton inputCelsiusButton;
     private JRadioButton inputFahrenheitButton;
     private JRadioButton inputKelvinButton;
@@ -101,20 +103,23 @@ public class View implements IView {
             convertButton.setText("Convert");
             convertButton.setIcon(convertButtonIcon);
 
-            inputCelsiusButton = new JRadioButton("Celsius");
-            inputFahrenheitButton = new JRadioButton("Fahrenheit");
-            inputKelvinButton = new JRadioButton("Kelvin");
-            inputTemperatureButtonsGroup = new ButtonGroup();
-            inputTemperatureButtonsGroup.add(inputCelsiusButton);
-            inputTemperatureButtonsGroup.add(inputFahrenheitButton);
-            inputTemperatureButtonsGroup.add(inputKelvinButton);
-            outputCelsiusButton = new JRadioButton("Celsius");
-            outputFahrenheitButton = new JRadioButton("Fahrenheit");
-            outputKelvinButton = new JRadioButton("Kelvin");
-            outputTemperatureButtonsGroup = new ButtonGroup();
-            outputTemperatureButtonsGroup.add(outputCelsiusButton);
-            outputTemperatureButtonsGroup.add(outputFahrenheitButton);
-            outputTemperatureButtonsGroup.add(outputKelvinButton);
+//            inputCelsiusButton = new JRadioButton("Celsius");
+//            inputFahrenheitButton = new JRadioButton("Fahrenheit");
+//            inputKelvinButton = new JRadioButton("Kelvin");
+//            inputTemperatureButtonsGroup = new ButtonGroup();
+//            inputTemperatureButtonsGroup.add(inputCelsiusButton);
+//            inputTemperatureButtonsGroup.add(inputFahrenheitButton);
+//            inputTemperatureButtonsGroup.add(inputKelvinButton);
+//            outputCelsiusButton = new JRadioButton("Celsius");
+//            outputFahrenheitButton = new JRadioButton("Fahrenheit");
+//            outputKelvinButton = new JRadioButton("Kelvin");
+//            outputTemperatureButtonsGroup = new ButtonGroup();
+//            outputTemperatureButtonsGroup.add(outputCelsiusButton);
+//            outputTemperatureButtonsGroup.add(outputFahrenheitButton);
+//            outputTemperatureButtonsGroup.add(outputKelvinButton);
+
+            inputTemperatureComboBox = new JComboBox();
+            outputTemperatureComboBox = new JComboBox();
 
             // add UI elements to Frame
             frame.setIconImage(appIcon);
@@ -127,16 +132,18 @@ public class View implements IView {
             frame.add(panel5);
 
             panel1.add(inputTemperatureAndChooseUnitLabel);
+            panel2.add(inputTemperatureComboBox);
             panel2.add(inputField);
-            panel2.add(inputCelsiusButton);
-            panel2.add(inputFahrenheitButton);
-            panel2.add(inputKelvinButton);
+//            panel2.add(inputCelsiusButton);
+//            panel2.add(inputFahrenheitButton);
+//            panel2.add(inputKelvinButton);
             panel3.add(convertButton);
             panel4.add(outputTemperatureAndChooseUnitLabel);
+            panel5.add(outputTemperatureComboBox);
             panel5.add(outputField);
-            panel5.add(outputCelsiusButton);
-            panel5.add(outputFahrenheitButton);
-            panel5.add(outputKelvinButton);
+//            panel5.add(outputCelsiusButton);
+//            panel5.add(outputFahrenheitButton);
+//            panel5.add(outputKelvinButton);
         });
     }
 
@@ -196,5 +203,13 @@ public class View implements IView {
         JOptionPane.showOptionDialog(null, "Input wrong value! Input number", "Input error",
                                      JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                                      warningIcon, null, 0);
+    }
+
+    public void initInputTemperatureComboBox(ComboBoxModel<String> aModel){
+        inputTemperatureComboBox.setModel(aModel);
+    }
+
+    public void initOutputTemperatureComboBox(ComboBoxModel<String> aModel){
+        inputTemperatureComboBox.setModel(aModel);
     }
 }

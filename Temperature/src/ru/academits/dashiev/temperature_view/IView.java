@@ -12,4 +12,8 @@ public interface IView {
     public String getOutputTemperatureName();
 
     public void showWrongInputError();
+
+//    public void setInputDegreeValue(Double vale);
+//
+//    public Double getDegreeValue();
 }
