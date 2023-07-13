@@ -10,24 +10,36 @@ public class Main {
 
         Integer elementToAdd = 421;
 
-        hashTable1.add(87);
-        hashTable1.add(111);
         System.out.println("hashTable1.add(" + elementToAdd + "): " + hashTable1.add(elementToAdd));
+
+        Integer elementToAdd2 = 87;
+        Integer elementToAdd3 = 111;
+
+        hashTable1.add(elementToAdd2);
+        hashTable1.add(elementToAdd3);
+
+        System.out.println("hashTable1 after add elements "+ elementToAdd2 + ", " + elementToAdd3 + ": " + hashTable1);
 
         System.out.println("hashTable1 size = " + hashTable1.size());
 
-        List<Integer> arrayList1 = new ArrayList<>(Arrays.asList(789, 233));
+        List<Integer> list1 = new ArrayList<>(Arrays.asList(789, 233));
 
-        hashTable1.addAll(arrayList1);
-        System.out.print("hashTable1.addAll(arrayList1), hashTable1: ");
+        System.out.println("list1: " + list1);
+
+        hashTable1.addAll(list1);
+        System.out.println("hashTable1.addAll(list1), hashTable1: " + hashTable1);
 
         hashTable1.clear();
-        System.out.print("hashTable1 after hashTable1.clear(): ");
+        System.out.println("hashTable1 after hashTable1.clear(): " + hashTable1);
 
-        hashTable1.add(7);
-        hashTable1.add(190);
-        hashTable1.add(778);
-        System.out.print("hashTable1: ");
+        Integer elementToAdd4 = 7;
+        Integer elementToAdd5 = 190;
+        Integer elementToAdd6 = 778;
+
+        hashTable1.add(elementToAdd4);
+        hashTable1.add(elementToAdd5);
+        hashTable1.add(elementToAdd6);
+        System.out.println("hashTable1 after add "+ elementToAdd4 + ", " + elementToAdd5 +", " + elementToAdd6 +": " + hashTable1);
 
         Integer objectForCheckToContain = 778;
 
