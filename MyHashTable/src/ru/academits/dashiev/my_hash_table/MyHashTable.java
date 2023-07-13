@@ -53,16 +53,14 @@ public class MyHashTable<E> implements Collection<E> {
 
         int arrayIndex = 0;
 
-        for(int i = 0; i < lists.length; i ++){
-            if (lists[i] != null){
-                for (E item : lists[i]) {
+        for (LinkedList<E> list : lists) {
+            if (list != null){
+                for (E item : list) {
                     array[arrayIndex] = item;
 
                     arrayIndex++;
                 }
             }
-
-            i ++;
         }
 
         return array;
@@ -94,8 +92,8 @@ public class MyHashTable<E> implements Collection<E> {
     }
 
     @Override
-    public boolean add(E value) {
-        int index = getIndex(value);
+    public boolean add(E item) {
+        int index = getIndex(item);
 
         if (lists[index] == null) {
             lists[index] = new LinkedList<>();
@@ -105,7 +103,7 @@ public class MyHashTable<E> implements Collection<E> {
         size++;
 
         // true т.к. у односвязного списка нет случаев когда он может не добавить
-        return lists[index].add(value);
+        return lists[index].add(item);
     }
 
     @Override
@@ -131,8 +129,8 @@ public class MyHashTable<E> implements Collection<E> {
 
         int initialSize = size;
 
-        for (E v : c) {
-            add(v);
+        for (E item : c) {
+            add(item);
         }
 
         return initialSize != size;
@@ -158,11 +156,7 @@ public class MyHashTable<E> implements Collection<E> {
             throw new NullPointerException("c is null!");
         }
 
-        if (c.size() == 0) {
-            return false;
-        }
-
-        if (size == 0) { // HashTable is empty
+        if (isEmpty() || size == 0) { // HashTable is empty
             return false;
         }
 
@@ -173,18 +167,19 @@ public class MyHashTable<E> implements Collection<E> {
             if (list != null) {
                 int initialCurrentListSize = list.size();
 
-                list.removeAll(c);
-
-                int initialCurrentListSizeAfterAll = list.size();
-
-                if (initialCurrentListSize != initialCurrentListSizeAfterAll) {
-                    modCount++;
-                    size = size - (initialCurrentListSize - initialCurrentListSizeAfterAll);
+                if(list.removeAll(c)){
+                    size -= (initialCurrentListSize - list.size());
                 }
             }
         }
 
-        return oldHashTableSize != size;
+        boolean isHashTableModified = (oldHashTableSize != size);
+
+        if (isHashTableModified){
+            modCount++;
+        }
+
+        return isHashTableModified;
     }
 
     // Удаляет элементы, не принадлежащие переданной коллекции
@@ -202,15 +197,17 @@ public class MyHashTable<E> implements Collection<E> {
 
         int oldHashTableSize = size;
 
-        Iterator<E> iterator = iterator();
-
-        while (iterator.hasNext()) {
+        /* внизу вместо лямбды было выражение
+         while (iterator.hasNext()) {
             E value = iterator.next();
 
             if (!c.contains(value)) {
                 iterator.remove();
             }
-        }
+        } */
+
+        //todo Прошу объяснить откуда эта лямбда выражение.Мне его предоставила сама IDEA
+        removeIf(value -> !c.contains(value));
 
         return oldHashTableSize != size;
     }
@@ -237,8 +234,8 @@ public class MyHashTable<E> implements Collection<E> {
 
         sb.append('[');
 
-        for (E element: this) {
-            sb.append(element).append(", ");
+        for (E item: this) {
+            sb.append(item).append(", ");
         }
 
         sb.delete(sb.length() - 2, sb.length());
@@ -252,10 +249,10 @@ public class MyHashTable<E> implements Collection<E> {
 
         private int hashTableElementIndex = -1; // индекс элемента во всей таблице
         private int listIndex; // индекс списка в массиве
-        private int listElementIndex = -1; // индекс элемента в списке
+        private int itemIndex = -1; // индекс элемента в списке
 
         // Для remove() в Итераторе
-        private boolean isRemoveCalledOnce; // false по умолчанию
+        private boolean isRemoveCalled; // false по умолчанию
 
         @Override
         public boolean hasNext() {
@@ -274,45 +271,33 @@ public class MyHashTable<E> implements Collection<E> {
                 throw new NoSuchElementException("No more elements in HashTable");
             }
 
-            isRemoveCalledOnce = false;
+            isRemoveCalled = false;
 
-            listElementIndex ++;
+            itemIndex++;
 
-            boolean isNextFind = false;
-
-            while (!isNextFind){
-                while (lists[listIndex] == null || lists[listIndex].isEmpty()){
-                    // Чтобы выйти из while, но сюда можно упасть если мы удалили из list значения и
-                    // список.size() теперь равен 0
-                    listIndex++;
-                }
-
-               if (listElementIndex >= lists[listIndex].size()){
-                    listElementIndex = 0;
-                    listIndex++;
-                } else {
-                    isNextFind = true;
-                }
+            while (lists[listIndex] == null || itemIndex >= lists[listIndex].size()){
+                listIndex++;
+                itemIndex = 0;
             }
 
             hashTableElementIndex++;
 
-            return lists[listIndex].get(listElementIndex);
+            return lists[listIndex].get(itemIndex);
         }
 
         @Override
         public void remove() {
-            if (isRemoveCalledOnce) {
+            if (isRemoveCalled) {
                 // Чтобы remove не вызвался 2 раза
                 throw new IllegalStateException("Operation iterator.remove() call second time!");
-            } else {
-                isRemoveCalledOnce = true;
             }
 
-            lists[listIndex].remove(listElementIndex);
+            isRemoveCalled = true;
+
+            lists[listIndex].remove(itemIndex);
 
             hashTableElementIndex--;
-            listElementIndex--;
+            itemIndex--;
 
             // initialModCount++ чтобы код не падал поскольку итератор сам меняет колекцию
             initialModCount++;
