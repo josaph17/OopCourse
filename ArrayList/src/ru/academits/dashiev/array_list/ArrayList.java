@@ -231,7 +231,6 @@ public class ArrayList<E> implements List<E> {
         }
 
         int initialSize = size;
-
         int indexAfterRetain = 0;
 
         for (int i = 0; i < initialSize; i++) {
@@ -243,15 +242,15 @@ public class ArrayList<E> implements List<E> {
 
         size = indexAfterRetain;
 
-        if (size != initialSize) {
-            Arrays.fill(items, size, initialSize, null); // Второй индекс является не включительным
-
-            modCount++; // Достаточно увеличить счетчик на 1 если список изменился
-
-            return true;
+        if (size == initialSize) {
+            return false;
         }
 
-        return false;
+        Arrays.fill(items, size, initialSize, null); // Второй индекс является не включительным
+
+        modCount++; // Достаточно увеличить счетчик на 1 если список изменился
+
+        return true;
     }
 
     @Override
@@ -261,7 +260,6 @@ public class ArrayList<E> implements List<E> {
         }
 
         int initialSize = size;
-
         int indexAfterRemove = 0;
 
         for (int i = 0; i < initialSize; i++ ) {
@@ -273,15 +271,15 @@ public class ArrayList<E> implements List<E> {
 
         size = indexAfterRemove;
 
-        if (size != initialSize) {
-            Arrays.fill(items, size, initialSize, null); // Второй индекс является не включительным
-
-            modCount++;
-
-            return true;
+        if (size == initialSize){
+            return false;
         }
 
-        return false;
+        Arrays.fill(items, size, initialSize, null); // Второй индекс является не включительным
+
+        modCount++;
+
+        return true;
     }
 
     @Override
@@ -401,7 +399,7 @@ public class ArrayList<E> implements List<E> {
         return sb.toString();
     }
 
-    private class MyIterator implements Iterator<E> {
+    private class Iterator implements java.util.Iterator<E> {
         private final int initialModCount = modCount;
         private int currentIndex = -1; // Обязательно должен быть модификатор доступа
 
@@ -414,7 +412,7 @@ public class ArrayList<E> implements List<E> {
         @Override
         public E next() { // Возвр. текущий элемент и переходит к следующему
             if (!hasNext()){
-                throw new NoSuchElementException("Not find element, currentIndex (" + currentIndex + ") >= size ("+ size + ")");
+                throw new NoSuchElementException("There is no element because the arrayList has ended.");
             }
 
             if (initialModCount != modCount) {
@@ -427,7 +425,7 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
-    public Iterator<E> iterator() {
-        return new MyIterator();
+    public java.util.Iterator<E> iterator() {
+        return new Iterator();
     }
 }

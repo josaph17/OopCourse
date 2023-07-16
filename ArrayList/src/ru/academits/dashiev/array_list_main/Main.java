@@ -129,7 +129,7 @@ public class Main {
         }
 
         System.out.println();
-        System.out.print("[] array = list1.toArray(array2): ");
+        System.out.print("array = list1.toArray(array2): ");
         Integer[] array = list1.toArray(array2);
 
         for (Integer element : array) {
