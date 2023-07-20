@@ -50,6 +50,7 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
+    @Override
     public int size() { // получение размера списка
         return size; // Кол-во эл-в в списке
     }
@@ -399,7 +400,7 @@ public class ArrayList<E> implements List<E> {
         return sb.toString();
     }
 
-    private class Iterator implements java.util.Iterator<E> {
+    private class ArrayListIterator implements Iterator<E> {
         private final int initialModCount = modCount;
         private int currentIndex = -1; // Обязательно должен быть модификатор доступа
 
@@ -425,7 +426,7 @@ public class ArrayList<E> implements List<E> {
         }
     }
 
-    public java.util.Iterator<E> iterator() {
-        return new Iterator();
+    public Iterator<E> iterator() {
+        return new ArrayListIterator();
     }
 }
