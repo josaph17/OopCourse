@@ -1,21 +1,21 @@
-package ru.academits.dashiev.my_hash_table;
+package ru.academits.dashiev.hash_table;
 
 import java.util.*;
 
-public class MyHashTable<E> implements Collection<E> {
+public class HashTable<E> implements Collection<E> {
     private static final int DEFAULT_CAPACITY = 10; // константа для размера массива по умолчанию
 
     private final LinkedList<E>[] lists; // это точно правильно, Массив односвязных списков
     private int size; // кол-во эл-в
     private int modCount; // кол-во изменений
 
-    public MyHashTable() {
+    public HashTable() {
         this(DEFAULT_CAPACITY);
     }
 
-    public MyHashTable(int capacity) {
+    public HashTable(int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException("Capacity must be >= 0. Capacity = " + capacity);
+            throw new IllegalArgumentException("Illegal capacity value. Capacity = " + capacity);
         }
 
         //noinspection unchecked
@@ -69,7 +69,7 @@ public class MyHashTable<E> implements Collection<E> {
     @Override
     public <T> T[] toArray(T[] a) {  // // T- т.к. этот некоторый класс может отличаться от E
         if (a == null) {
-            throw new NullPointerException("a is null!");
+            throw new NullPointerException("Array is null!");
         }
 
         // hashTableArray - лучше сделать типа Object[], т.к. это по факту пока не T[], Прошу не считать за ошибку
@@ -156,7 +156,7 @@ public class MyHashTable<E> implements Collection<E> {
             throw new NullPointerException("c is null!");
         }
 
-        if (isEmpty() || size == 0) { // HashTable is empty
+        if (size == 0) { // HashTable is empty
             return false;
         }
 
@@ -165,10 +165,10 @@ public class MyHashTable<E> implements Collection<E> {
         // Не менял на forEach поскольку код становится для меня не читаемым
         for (LinkedList<E> list : lists) {
             if (list != null) {
-                int initialCurrentListSize = list.size();
+                int initialListSize = list.size();
 
                 if(list.removeAll(c)){
-                    size -= (initialCurrentListSize - list.size());
+                    size -= (initialListSize - list.size());
                 }
             }
         }
@@ -187,8 +187,32 @@ public class MyHashTable<E> implements Collection<E> {
     //Этот пункт можно не исправлять
     @Override
     public boolean retainAll(Collection<?> c) {
+        // todo прошу не считать за замечание, хочу запомнить данный способ реализации фкункции
+//        if (c == null) {
+//            throw new NullPointerException("Collection is null!");
+//        }
+//
+//        if (size == 0) { // HashTable is empty
+//            return false;
+//        }
+//
+//        int oldHashTableSize = size;
+//
+//        /* внизу вместо лямбды было выражение
+//         while (iterator.hasNext()) {
+//            E value = iterator.next();
+//
+//            if (!c.contains(value)) {
+//                iterator.remove();
+//            }
+//        } */
+//
+//        removeIf(value -> !c.contains(value));
+//
+//        return oldHashTableSize != size;
+
         if (c == null) {
-            throw new NullPointerException("Collection is null!");
+            throw new NullPointerException("c is null!");
         }
 
         if (size == 0) { // HashTable is empty
@@ -197,17 +221,22 @@ public class MyHashTable<E> implements Collection<E> {
 
         int oldHashTableSize = size;
 
-        /* внизу вместо лямбды было выражение
-         while (iterator.hasNext()) {
-            E value = iterator.next();
+        // Не менял на forEach поскольку код становится для меня не читаемым
+        for (LinkedList<E> list : lists) {
+            if (list != null) {
+                int initialListSize = list.size();
 
-            if (!c.contains(value)) {
-                iterator.remove();
+                if(list.retainAll(c)){
+                    size -= (initialListSize - list.size());
+                }
             }
-        } */
+        }
 
-        //todo Прошу объяснить откуда эта лямбда выражение.Мне его предоставила сама IDEA
-        removeIf(value -> !c.contains(value));
+        boolean isHashTableModified = (oldHashTableSize != size);
+
+        if (isHashTableModified){
+            modCount++;
+        }
 
         return oldHashTableSize != size;
     }
@@ -247,7 +276,7 @@ public class MyHashTable<E> implements Collection<E> {
     private class MyIterator implements Iterator<E> {
         private int initialModCount = modCount;
 
-        private int hashTableElementIndex = -1; // индекс элемента во всей таблице
+        private int hashTableItemIndex = -1; // индекс элемента во всей таблице
         private int listIndex; // индекс списка в массиве
         private int itemIndex = -1; // индекс элемента в списке
 
@@ -256,7 +285,7 @@ public class MyHashTable<E> implements Collection<E> {
 
         @Override
         public boolean hasNext() {
-            return hashTableElementIndex + 1 < size;
+            return hashTableItemIndex + 1 < size;
         }
 
         @Override
@@ -265,10 +294,10 @@ public class MyHashTable<E> implements Collection<E> {
                 throw new ConcurrentModificationException("Hashtable changed!");
             }
 
-            // Внизу было условие if (tableElementIndex == size)
+            // Внизу было условие if (tableItemIndex == size)
             if (!hasNext()) {
                 // лекция 13 стр.15
-                throw new NoSuchElementException("No more elements in HashTable");
+                throw new NoSuchElementException("No more items in HashTable");
             }
 
             isRemoveCalled = false;
@@ -280,7 +309,7 @@ public class MyHashTable<E> implements Collection<E> {
                 itemIndex = 0;
             }
 
-            hashTableElementIndex++;
+            hashTableItemIndex++;
 
             return lists[listIndex].get(itemIndex);
         }
@@ -296,7 +325,7 @@ public class MyHashTable<E> implements Collection<E> {
 
             lists[listIndex].remove(itemIndex);
 
-            hashTableElementIndex--;
+            hashTableItemIndex--;
             itemIndex--;
 
             // initialModCount++ чтобы код не падал поскольку итератор сам меняет колекцию
