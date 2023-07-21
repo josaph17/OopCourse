@@ -293,19 +293,23 @@ public class Tree<E> {
 
         // Todo 2. Удаление узла - c одним ребенком
         if (nodeToDelete.getLeft() == null || nodeToDelete.getRight() == null) {
-            if (nodeToDelete == root){
-                if (nodeToDelete.getLeft() == null){
+            if (nodeToDelete.getRight() != null) {
+                if (nodeToDelete == root) {
                     root = nodeToDelete.getRight();
-                } else {
-                    root = nodeToDelete.getLeft();
+                } else if (isRightChild){
+                    nodeToDeleteParent.setRight(nodeToDelete.getRight());
+                }else {
+                    nodeToDeleteParent.setLeft(nodeToDelete.getRight());
                 }
-            } else if (isRightChild) {
-                // удаляемый элемент не null и он точно справа
-                nodeToDeleteParent.setRight(nodeToDelete.getRight() != null ? nodeToDelete.getRight() : nodeToDelete.getLeft());
-            } else { // удаляемый элемент не null и он точно слева
-                nodeToDeleteParent.setLeft(nodeToDelete.getRight() != null ? nodeToDelete.getRight() : nodeToDelete.getLeft());
-            }
-
+            } else {
+                if (nodeToDelete == root) {
+                    root = nodeToDelete.getLeft();
+                } else if (isRightChild){
+                    nodeToDeleteParent.setRight(nodeToDelete.getLeft());
+                }else {
+                    nodeToDeleteParent.setLeft(nodeToDelete.getLeft());
+                }
+        }
             size--;
 
             return true;
