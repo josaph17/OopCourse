@@ -61,17 +61,17 @@ public class Main {
 
         System.out.println();
 
-        System.out.println("widthBypass:");
+        System.out.println("bypassInWidth:");
         tree.bypassInWidth(System.out::println);
 
         System.out.println();
 
-        System.out.println("deepBypass:");
+        System.out.println("bypassInDeep:");
         tree.bypassInDeep(System.out::println);
 
         System.out.println();
 
-        System.out.println("recursionDeepVisit:");
+        System.out.println("bypassInDeepRecursively:");
         tree.bypassInDeepRecursively(System.out::println);
         System.out.println();
 
