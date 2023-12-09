@@ -88,7 +88,6 @@ public class Main {
         list1.removeAll(removedList);
         System.out.println("list1 after .removeAll(removedList): " + list1);
 
-        // TODO прошу поверить ф-ю retainAll(Collection c)
         System.out.println("-----------------------");
         ArrayList<Integer> list5 = new ArrayList<>();
         list5.add(432);
