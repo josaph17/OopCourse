@@ -7,7 +7,7 @@ public class ArrayList<E> implements List<E> {
     private static final int DEFAULT_CAPACITY = 10; // Вместимость по умолчанию, т.е. items.length
 
     private E[] items;
-    private int size; /* Длина списка(кол-во эл-в в списке) = 0, вместимость списка , длина списка
+    private int size; /* Длина списка(кол-во эл-в в списке) = 0, вместимость списка, длина списка
     и длина массива могут отличаться */
     private int modCount; // п.7 счетчик изменений
 
@@ -247,7 +247,7 @@ public class ArrayList<E> implements List<E> {
             return false;
         }
 
-        Arrays.fill(items, size, initialSize, null); // Второй индекс является не включительным
+        Arrays.fill(items, size, initialSize, null); // Второй индекс является не входит
 
         modCount++; // Достаточно увеличить счетчик на 1 если список изменился
 
@@ -276,7 +276,7 @@ public class ArrayList<E> implements List<E> {
             return false;
         }
 
-        Arrays.fill(items, size, initialSize, null); // Второй индекс является не включительным
+        Arrays.fill(items, size, initialSize, null); // Второй индекс является не входит
 
         modCount++;
 
@@ -300,8 +300,8 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public Object[] toArray() {
-        /* Нужно создать копию и ее возвратить , т.к. если вернуть
-        оригинальный массив, то его могут поменять извне, если возвр. ориг. - то я предоставлю прямой
+        /* Нужно создать копию и ее возвратить т.к. если вернуть
+        оригинальный массив, то его могут поменять извне, если возвратится ориг. - то я предоставлю прямой
         доступ к данным, инкапсуляции не будет */
         return Arrays.copyOf(items, size);
     }
@@ -314,12 +314,12 @@ public class ArrayList<E> implements List<E> {
 
         if (array.length < size) {
             //noinspection unchecked
-            return (T[]) Arrays.copyOf(items, size, array.getClass()); // Возвр. новый массив того
+            return (T[]) Arrays.copyOf(items, size, array.getClass()); // Возвратится новый массив того
             // же типа, что и переданный, но с данными из списка
         }
 
         //noinspection SuspiciousSystemArraycopy
-        System.arraycopy(items, 0, array, 0, size); /* Возвр. переданный массив,
+        System.arraycopy(items, 0, array, 0, size); /* Возвращается переданный массив,
         заполненный элементами из списка */
 
         if (array.length > size) {
@@ -411,7 +411,7 @@ public class ArrayList<E> implements List<E> {
         }
 
         @Override
-        public E next() { // Возвр. текущий элемент и переходит к следующему
+        public E next() { // Возвращается текущий элемент и переходит к следующему
             if (!hasNext()){
                 throw new NoSuchElementException("There is no element because the arrayList has ended.");
             }
@@ -420,12 +420,13 @@ public class ArrayList<E> implements List<E> {
                 throw new ConcurrentModificationException("ArrayList is changed!");
             }
 
-            ++currentIndex; // Сначало увеличиваем индекс
+            ++currentIndex; // Сначала увеличиваем индекс
 
             return items[currentIndex];
         }
     }
 
+    @Override
     public Iterator<E> iterator() {
         return new ArrayListIterator();
     }
