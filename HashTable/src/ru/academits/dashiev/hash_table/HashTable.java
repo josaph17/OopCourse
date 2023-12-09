@@ -15,7 +15,7 @@ public class HashTable<E> implements Collection<E> {
 
     public HashTable(int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException("Illegal capacity value. Capacity = " + capacity);
+            throw new IllegalArgumentException("Illegal capacity value. Capacity must be >= 0. Capacity = " + capacity);
         }
 
         //noinspection unchecked
@@ -72,12 +72,12 @@ public class HashTable<E> implements Collection<E> {
             throw new NullPointerException("Array is null!");
         }
 
-        // hashTableArray - лучше сделать типа Object[], т.к. это по факту пока не T[], Прошу не считать за ошибку
+        // hashTableArray - лучше сделать типа Object[], т.к. это по факту пока не T[], прошу не считать за ошибку
         // важный комментарий
         Object[] hashTableArray =  toArray();
 
         if (size > a.length) {
-            // возвр новый массив, но длины хэш Таблицы
+            // возвращается новый массив, но длины хэш Таблицы
             //noinspection unchecked
             return (T[]) Arrays.copyOf(hashTableArray, size, a.getClass());
         }
@@ -102,7 +102,7 @@ public class HashTable<E> implements Collection<E> {
         modCount++;
         size++;
 
-        // true т.к. у односвязного списка нет случаев когда он может не добавить
+        // True т.к. у односвязного списка нет случаев когда он может не добавить
         return lists[index].add(item);
     }
 
@@ -125,6 +125,10 @@ public class HashTable<E> implements Collection<E> {
     public boolean addAll(Collection<? extends E> c) {
         if (c == null) {
             throw new NullPointerException("Collection is null!");
+        }
+
+        if (c.isEmpty()) {
+            return false;
         }
 
         int initialSize = size;
@@ -153,7 +157,7 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public boolean removeAll(Collection<?> c) {
         if (c == null) {
-            throw new NullPointerException("c is null!");
+            throw new NullPointerException("Parameter collection is null!");
         }
 
         if (size == 0) { // HashTable is empty
@@ -162,7 +166,6 @@ public class HashTable<E> implements Collection<E> {
 
         int oldHashTableSize = size;
 
-        // Не менял на forEach поскольку код становится для меня не читаемым
         for (LinkedList<E> list : lists) {
             if (list != null) {
                 int initialListSize = list.size();
@@ -187,7 +190,7 @@ public class HashTable<E> implements Collection<E> {
     //Этот пункт можно не исправлять
     @Override
     public boolean retainAll(Collection<?> c) {
-        // todo прошу не считать за замечание, хочу запомнить данный способ реализации фкункции
+        // todo прошу не считать за замечание, хочу запомнить данный способ реализации функции
 //        if (c == null) {
 //            throw new NullPointerException("Collection is null!");
 //        }
@@ -212,7 +215,7 @@ public class HashTable<E> implements Collection<E> {
 //        return oldHashTableSize != size;
 
         if (c == null) {
-            throw new NullPointerException("c is null!");
+            throw new NullPointerException("Parameter collection is null!");
         }
 
         if (size == 0) { // HashTable is empty
@@ -221,18 +224,17 @@ public class HashTable<E> implements Collection<E> {
 
         int oldHashTableSize = size;
 
-        // Не менял на forEach поскольку код становится для меня не читаемым
         for (LinkedList<E> list : lists) {
             if (list != null) {
                 int initialListSize = list.size();
 
                 if(list.retainAll(c)){
-                    size -= (initialListSize - list.size());
+                    size -= initialListSize - list.size();
                 }
             }
         }
 
-        boolean isHashTableModified = (oldHashTableSize != size);
+        boolean isHashTableModified = oldHashTableSize != size;
 
         if (isHashTableModified){
             modCount++;
@@ -273,7 +275,7 @@ public class HashTable<E> implements Collection<E> {
         return sb.toString();
     }
 
-    private class MyIterator implements Iterator<E> {
+    private class Iterator implements java.util.Iterator<E> {
         private int initialModCount = modCount;
 
         private int hashTableItemIndex = -1; // индекс элемента во всей таблице
@@ -328,7 +330,7 @@ public class HashTable<E> implements Collection<E> {
             hashTableItemIndex--;
             itemIndex--;
 
-            // initialModCount++ чтобы код не падал поскольку итератор сам меняет колекцию
+            // initialModCount++ чтобы код не падал поскольку итератор сам меняет коллекцию
             initialModCount++;
             modCount++;
             size--;
@@ -336,7 +338,7 @@ public class HashTable<E> implements Collection<E> {
     }
 
     @Override
-    public Iterator<E> iterator() {
-        return new MyIterator();
+    public java.util.Iterator<E> iterator() {
+        return new Iterator();
     }
 }
