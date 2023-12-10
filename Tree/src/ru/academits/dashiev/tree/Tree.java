@@ -315,9 +315,10 @@ public class Tree<E> {
         }
 
         // Todo 3. Удаление узла - c двумя детьми
-        TreeNode<E> minLastNodeParent;
-        TreeNode<E> minLastNode;
         TreeNode<E> rootToDeleteSubTree = root.getRight();
+
+        TreeNode<E> minLastNodeParent = rootToDeleteSubTree;
+        TreeNode<E> minLastNode = rootToDeleteSubTree.getLeft();
 
         // Если узел - корень
         if (nodeToDelete == root){
@@ -331,9 +332,6 @@ public class Tree<E> {
 
                 return true;
             }
-
-            minLastNodeParent = rootToDeleteSubTree;
-            minLastNode = rootToDeleteSubTree.getLeft();
 
             // Находим самый левый элемент
             while (minLastNode.getLeft() != null){
@@ -373,9 +371,6 @@ public class Tree<E> {
             return true;
         }
 
-        minLastNodeParent = rootToDeleteSubTree;
-        minLastNode = minLastNodeParent.getLeft();
-
         while (minLastNode.getLeft() != null) {
             minLastNodeParent = minLastNode; // -- нашли minLastNodeParent
             minLastNode = minLastNodeParent.getLeft(); // -- нашли minLastNode
@@ -410,9 +405,6 @@ public class Tree<E> {
 
         int gapsCount = 32; // Начальное значение расстояния между элементами
         boolean isRowEmpty = false;
-        String separator = "-----------------------------------------------------------------";
-
-        System.out.println(separator); // Черта для указания начала нового дерева
 
         while (!isRowEmpty) {
             Deque<TreeNode<E>> localStack = new LinkedList<>();
@@ -450,7 +442,5 @@ public class Tree<E> {
             while (!localStack.isEmpty())
                 globalStack.push(localStack.removeLast()); // Перемещаем все элементы из локального стека в глобальный
         }
-        
-        System.out.println(separator); // Подводим черту
     }
 }
