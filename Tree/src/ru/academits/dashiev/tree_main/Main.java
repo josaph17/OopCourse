@@ -11,14 +11,19 @@ public class Main {
         System.out.println("New tree before delete = " + deletableElement + ", size = " + tree.getSize() + ":");
         tree.printTree();
 
+        // String separator = "-----------------------------------------------------------------";
+        String separator = "*****************************************************************";
+
         try {
             System.out.println("After tree.delete(" + deletableElement + "), result: " + tree.delete(deletableElement) + ", size = " + tree.getSize());
             tree.printTree();
+            System.out.println(separator);
+            System.out.println();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        System.out.println();
+        // System.out.println();
     }
 
     public static void checkDeleteNode() {
@@ -61,17 +66,17 @@ public class Main {
 
         System.out.println();
 
-        System.out.println("widthBypass:");
+        System.out.println("bypassInWidth:");
         tree.bypassInWidth(System.out::println);
 
         System.out.println();
 
-        System.out.println("deepBypass:");
+        System.out.println("bypassInDeep:");
         tree.bypassInDeep(System.out::println);
 
         System.out.println();
 
-        System.out.println("recursionDeepVisit:");
+        System.out.println("bypassInDeepRecursively:");
         tree.bypassInDeepRecursively(System.out::println);
         System.out.println();
 
