@@ -18,6 +18,7 @@ public class Main {
             System.out.println("After tree.delete(" + deletableElement + "), result: " + tree.delete(deletableElement) + ", size = " + tree.getSize());
             tree.printTree();
             System.out.println(separator);
+            System.out.println();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,45 +42,45 @@ public class Main {
     }
 
     public static void main(String[] args) {
-//        Tree<Integer> tree = new Tree<>();
-//
-//        tree.add(10);
-//        tree.add(100);
-//        tree.add(50);
-//        tree.add(200);
-//        tree.add(110);
-//        tree.add(205);
-//        tree.add(40);
-//        tree.add(45);
-//        tree.add(1);
-//
-//        Integer findingValue = 40;
-//
-//        tree.printTree();
-//
-//        boolean isNodeExist = tree.contains(findingValue);
-//
-//        System.out.println("Is node with value = " + findingValue + " is exist: " + isNodeExist);
-//
-//        System.out.println("Tree items count: " + tree.getSize());
-//
-//        System.out.println();
-//
-//        System.out.println("bypassInWidth:");
-//        tree.bypassInWidth(System.out::println);
-//
-//        System.out.println();
-//
-//        System.out.println("bypassInDeep:");
-//        tree.bypassInDeep(System.out::println);
-//
-//        System.out.println();
-//
-//        System.out.println("bypassInDeepRecursively:");
-//        tree.bypassInDeepRecursively(System.out::println);
-//        System.out.println();
-//
-//        System.out.println("Check deleteNode function:");
+        Tree<Integer> tree = new Tree<>();
+
+        tree.add(10);
+        tree.add(100);
+        tree.add(50);
+        tree.add(200);
+        tree.add(110);
+        tree.add(205);
+        tree.add(40);
+        tree.add(45);
+        tree.add(1);
+
+        Integer findingValue = 40;
+
+        tree.printTree();
+
+        boolean isNodeExist = tree.contains(findingValue);
+
+        System.out.println("Is node with value = " + findingValue + " is exist: " + isNodeExist);
+
+        System.out.println("Tree items count: " + tree.getSize());
+
+        System.out.println();
+
+        System.out.println("bypassInWidth:");
+        tree.bypassInWidth(System.out::println);
+
+        System.out.println();
+
+        System.out.println("bypassInDeep:");
+        tree.bypassInDeep(System.out::println);
+
+        System.out.println();
+
+        System.out.println("bypassInDeepRecursively:");
+        tree.bypassInDeepRecursively(System.out::println);
+        System.out.println();
+
+        System.out.println("Check deleteNode function:");
         checkDeleteNode();
     }
 }

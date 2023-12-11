@@ -201,6 +201,7 @@ public class Tree<E> {
     private TreeNode<E> findNodeParent(E data) {
         // Вместо findNodeToDeleteParent переименовали в findNodeParent
         TreeNode<E> currentNode = root;
+        TreeNode<E> parentNode = root;
 
         while(true){
             int compareResult = compare(currentNode.getData(), data);
@@ -264,7 +265,7 @@ public class Tree<E> {
                 return false;
             }
         } else {
-           if (nodeToDeleteParent.getLeft()!= null && compare(nodeToDeleteParent.getLeft().getData(), data) == 0){
+            if (nodeToDeleteParent.getLeft()!= null && compare(nodeToDeleteParent.getLeft().getData(), data) == 0){
                 nodeToDelete = nodeToDeleteParent.getLeft();
             } else if (nodeToDeleteParent.getRight() != null && compare(nodeToDeleteParent.getRight().getData(), data) == 0) {
                 nodeToDelete = nodeToDeleteParent.getRight();
@@ -275,13 +276,14 @@ public class Tree<E> {
             }
         }
 
-         /* Todo 1. Удаляемый узел - лист */
+        /* Todo 1. Удаляемый узел - лист */
         if (nodeToDelete.getLeft() == null && nodeToDelete.getRight() == null) {
             if (nodeToDelete == root){
                 root = null;
             } else if (isRightChild) {
                 nodeToDeleteParent.setRight(null);
             } else {
+                assert nodeToDeleteParent != null;
                 nodeToDeleteParent.setLeft(null);
             }
 
@@ -306,6 +308,7 @@ public class Tree<E> {
             } else if (isRightChild){
                 nodeToDeleteParent.setRight(nextNode);
             }else {
+                assert nodeToDeleteParent != null;
                 nodeToDeleteParent.setLeft(nextNode);
             }
 
@@ -315,65 +318,50 @@ public class Tree<E> {
         }
 
         // Todo 3. Удаление узла - c двумя детьми
+        TreeNode<E> minLastNodeParent;
+        TreeNode<E> minLastNode;
         TreeNode<E> rootToDeleteSubTree = root.getRight();
 
-        TreeNode<E> minLastNodeParent = rootToDeleteSubTree;
-        TreeNode<E> minLastNode = rootToDeleteSubTree.getLeft();
+        if (nodeToDelete!= root){
+            rootToDeleteSubTree = nodeToDelete.getRight();
+        }
 
-        // Если узел - корень
-        if (nodeToDelete == root){
-            // В правом поддереве у узла нет левого ребенка
-            if(rootToDeleteSubTree.getLeft() == null){
+        // В правом поддереве у узла нет левого ребенка
+        if (rootToDeleteSubTree.getLeft() == null) {
+            if (nodeToDelete == root){
                 rootToDeleteSubTree.setLeft(root.getLeft());
 
                 root = rootToDeleteSubTree;
-
-                size --;
-
-                return true;
-            }
-
-            // Находим самый левый элемент
-            while (minLastNode.getLeft() != null){
-                minLastNodeParent = minLastNode;
-                minLastNode = minLastNode.getLeft();
-            }
-
-            if(minLastNode.getRight() != null){
-                // Если у самого левого узла есть правый сын
-                minLastNodeParent.setLeft(minLastNode.getRight());
-            } else {
-                minLastNodeParent.setLeft(null);
-            }
-
-            minLastNode.setLeft(nodeToDelete.getLeft());
-            minLastNode.setRight(nodeToDelete.getRight());
-            root = minLastNode;
-
-            size --;
-
-            return true;
-        }
-
-        rootToDeleteSubTree = nodeToDelete.getRight();
-
-        if (rootToDeleteSubTree.getLeft() == null) {
-            if(isRightChild){
+            } else if(isRightChild){
                 nodeToDeleteParent.setRight(rootToDeleteSubTree);
-            } else {
-                nodeToDeleteParent.setLeft(rootToDeleteSubTree);
-            }
 
-            rootToDeleteSubTree.setLeft(nodeToDelete.getLeft());
+                rootToDeleteSubTree.setLeft(nodeToDelete.getLeft());
+
+            } else {
+                // TODO что такое assert? IDEA подсказала так сделать, чтобы не было "Method invocation 'setLeft' may produce 'NullPointerException'"
+                assert nodeToDeleteParent != null;
+                nodeToDeleteParent.setLeft(rootToDeleteSubTree);
+
+                rootToDeleteSubTree.setLeft(nodeToDelete.getLeft());
+            }
 
             size--;
 
             return true;
         }
 
+        minLastNodeParent = rootToDeleteSubTree;
+        minLastNode = rootToDeleteSubTree.getLeft();
+
+        // Находим самый левый элемент
         while (minLastNode.getLeft() != null) {
             minLastNodeParent = minLastNode; // -- нашли minLastNodeParent
-            minLastNode = minLastNodeParent.getLeft(); // -- нашли minLastNode
+
+            if (nodeToDelete == root){
+                minLastNode = minLastNode.getLeft();
+            } else {
+                minLastNode = minLastNodeParent.getLeft(); // -- нашли minLastNode
+            }
         }
 
         if (minLastNode.getRight() == null) {
@@ -381,17 +369,22 @@ public class Tree<E> {
         } else {
             // если у minLastNode есть ребенок
             minLastNodeParent.setLeft(minLastNode.getRight());
-            minLastNode.setRight(null);
+            if (nodeToDelete != root){
+                minLastNode.setRight(null);
+            }
         }
 
-        if (isRightChild) {
+        minLastNode.setLeft(nodeToDelete.getLeft());
+        minLastNode.setRight(nodeToDelete.getRight()); // привязываем детей nodeToDelete к minLastNode
+
+        if (nodeToDelete == root){
+            root = minLastNode;
+        } else if (isRightChild) {
             nodeToDeleteParent.setRight(minLastNode);
         } else {
+            assert nodeToDeleteParent != null;
             nodeToDeleteParent.setLeft(minLastNode);
         }
-
-        minLastNode.setRight(nodeToDelete.getRight()); // привязываем детей nodeToDelete к minLastNode
-        minLastNode.setLeft(nodeToDelete.getLeft());
 
         size--;
 
