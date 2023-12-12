@@ -258,7 +258,7 @@ public class Tree<E> {
 
         //Узнаем есть ли вообще nodeToDelete
 
-        boolean isRightChild = false;
+        boolean isRightChild = false; // Про тот элемент, который надо удалить
 
         if(nodeToDeleteParent == null) {
             if (nodeToDelete != root){
@@ -357,21 +357,13 @@ public class Tree<E> {
         while (minLastNode.getLeft() != null) {
             minLastNodeParent = minLastNode; // -- нашли minLastNodeParent
 
-            if (nodeToDelete == root){
-                minLastNode = minLastNode.getLeft();
-            } else {
-                minLastNode = minLastNodeParent.getLeft(); // -- нашли minLastNode
-            }
+            minLastNode = minLastNodeParent.getLeft(); // -- нашли minLastNode
         }
 
-        if (minLastNode.getRight() == null) {
-            minLastNodeParent.setLeft(null);
-        } else {
-            // если у minLastNode есть ребенок
-            minLastNodeParent.setLeft(minLastNode.getRight());
-            if (nodeToDelete != root){
-                minLastNode.setRight(null);
-            }
+        minLastNodeParent.setLeft(minLastNode.getRight());
+
+        if (nodeToDelete != root){
+            minLastNode.setRight(null);
         }
 
         minLastNode.setLeft(nodeToDelete.getLeft());
