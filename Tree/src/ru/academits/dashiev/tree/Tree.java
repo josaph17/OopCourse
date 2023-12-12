@@ -258,7 +258,7 @@ public class Tree<E> {
 
         //Узнаем есть ли вообще nodeToDelete
 
-        boolean isRightChild = false; // Про тот элемент, который надо удалить
+        boolean isRightChild = false; // Про тот узел, который надо удалить
 
         if(nodeToDeleteParent == null) {
             if (nodeToDelete != root){
