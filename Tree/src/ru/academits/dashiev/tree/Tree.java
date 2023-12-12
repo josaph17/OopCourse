@@ -294,22 +294,24 @@ public class Tree<E> {
 
         // Todo 2. Удаление узла - c одним ребенком
         if (nodeToDelete.getLeft() == null || nodeToDelete.getRight() == null) {
-            TreeNode<E> nextNode;
-            if (nodeToDelete.getRight() != null) {
-                nextNode = nodeToDelete.getRight();
+            TreeNode<E> notNullChild;
 
-            } else {
-                nextNode = nodeToDelete.getLeft();
-
+            if (nodeToDelete.getLeft() != null){
+                notNullChild = nodeToDelete.getLeft();
+            } else{
+                notNullChild = nodeToDelete.getRight();
             }
 
-            if (nodeToDelete == root) {
-                root = nextNode;
-            } else if (isRightChild){
-                nodeToDeleteParent.setRight(nextNode);
-            }else {
+            if (nodeToDelete == root){
+                if (nodeToDelete.getLeft() == null){
+                    root = notNullChild;
+                }
+            } else if (isRightChild) {
+                // удаляемый элемент не null и он точно справа
+                nodeToDeleteParent.setRight(notNullChild);
+            } else { // удаляемый элемент не null и он точно слева
                 assert nodeToDeleteParent != null;
-                nodeToDeleteParent.setLeft(nextNode);
+                nodeToDeleteParent.setLeft(notNullChild);
             }
 
             size--;
