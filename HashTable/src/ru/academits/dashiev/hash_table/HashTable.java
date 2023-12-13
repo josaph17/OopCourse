@@ -82,6 +82,7 @@ public class HashTable<E> implements Collection<E> {
             return (T[]) Arrays.copyOf(hashTableArray, size, a.getClass());
         }
 
+        //noinspection SuspiciousSystemArraycopy
         System.arraycopy(hashTableArray, 0, a, 0, size);
 
         if (size < a.length) {
@@ -127,17 +128,16 @@ public class HashTable<E> implements Collection<E> {
             throw new NullPointerException("Collection is null!");
         }
 
+        // этот метод может вернуть false только если переданная коллекция пустая
         if (c.isEmpty()) {
             return false;
         }
-
-        int initialSize = size;
 
         for (E item : c) {
             add(item);
         }
 
-        return initialSize != size;
+        return true;
     }
 
     @Override
@@ -164,6 +164,10 @@ public class HashTable<E> implements Collection<E> {
             return false;
         }
 
+        if (c.isEmpty()) {
+            return false;
+        }
+
         int oldHashTableSize = size;
 
         for (LinkedList<E> list : lists) {
@@ -171,12 +175,12 @@ public class HashTable<E> implements Collection<E> {
                 int initialListSize = list.size();
 
                 if(list.removeAll(c)){
-                    size -= (initialListSize - list.size());
+                    size -= initialListSize - list.size();
                 }
             }
         }
 
-        boolean isHashTableModified = (oldHashTableSize != size);
+        boolean isHashTableModified = oldHashTableSize != size;
 
         if (isHashTableModified){
             modCount++;
