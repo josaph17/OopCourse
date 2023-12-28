@@ -1,10 +1,7 @@
-package ru.academits.dashiev.temperature_controller;
+package ru.academits.dashiev.temperature.temperature_controller;
 
-import ru.academits.dashiev.temperature_model.Model;
-import ru.academits.dashiev.temperature_view.View;
-
-import java.util.Arrays;
-import java.util.List;
+import ru.academits.dashiev.temperature.temperature_model.Model;
+import ru.academits.dashiev.temperature.temperature_view.View;
 
 public class Controller {
     private static Model model;
@@ -40,14 +37,6 @@ public class Controller {
     }
 
     private void convertTemperature() {
-//        try {
-//            model.setInputTemperature(Double.parseDouble((view.getInputTemperatureText())));
-//        } catch (NumberFormatException e) {
-//            view.showWrongInputError();
-//
-//            return; // остановить функцию, чтобы дальше не пошла исполняться
-//        }
-
         model.setInputTemperatureName(view.getInputTemperatureName());
 
         model.setOutputTemperatureName(view.getOutputTemperatureName());

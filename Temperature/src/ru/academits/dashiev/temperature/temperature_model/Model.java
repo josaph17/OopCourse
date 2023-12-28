@@ -1,4 +1,4 @@
-package ru.academits.dashiev.temperature_model;
+package ru.academits.dashiev.temperature.temperature_model;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
@@ -15,9 +15,9 @@ public class Model implements ComboBoxModel {
     private String inputTemperatureName;
     private String outputTemperatureName;
 
-    private ITemperatureUnit inputTemperature;
+    private InterfaceTemperatureUnit inputTemperature;
 
-    private ITemperatureUnit outputTemperature;
+    private InterfaceTemperatureUnit outputTemperature;
 
     public Model() {
         data = Arrays.asList("Celsius", "Fahrenheit", "Kelvin");

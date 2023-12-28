@@ -1,4 +1,4 @@
-package ru.academits.dashiev.temperature_model;
+package ru.academits.dashiev.temperature.temperature_model;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,6 +9,6 @@ public class Main {
 
         Converter.convert(temperature1, temperature2);
 
-        System.out.println("Convert " + value + " Fahrenheit in Kelvin: " + temperature2.getValue());
+        System.out.println("Convert " + value + " Fahrenheit in Kelvin: " + temperature2.getCu2rrentTemperature());
     }
 }

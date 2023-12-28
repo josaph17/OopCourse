@@ -1,4 +1,4 @@
-package ru.academits.dashiev.temperature_view;
+package ru.academits.dashiev.temperature.temperature_view;
 
 public interface IView {
     // public void initView(Runnable convertAction);
@@ -12,8 +12,4 @@ public interface IView {
     public String getOutputTemperatureName();
 
     public void showWrongInputError();
-
-//    public void setInputDegreeValue(Double vale);
-//
-//    public Double getDegreeValue();
 }
