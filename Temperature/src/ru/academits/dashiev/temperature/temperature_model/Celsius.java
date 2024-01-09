@@ -14,5 +14,5 @@ public class Celsius implements InterfaceTemperatureUnit {
     @Override
     public String toString(){
         return "Celsius";
-    };
+    }
 }

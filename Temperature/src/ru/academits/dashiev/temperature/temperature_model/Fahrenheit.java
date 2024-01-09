@@ -14,5 +14,5 @@ public class Fahrenheit implements InterfaceTemperatureUnit {
     @Override
     public String toString(){
         return "Fahrenheit";
-    };
+    }
 }

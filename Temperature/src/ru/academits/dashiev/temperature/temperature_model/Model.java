@@ -1,127 +1,60 @@
 package ru.academits.dashiev.temperature.temperature_model;
 
-import javax.swing.*;
-import javax.swing.event.ListDataListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-public class Model implements ComboBoxModel {
-    // private List<String> data = new ArrayList<>();
-    private List<String> data = new ArrayList<>();
-    private int selected = 0;
-    private Double inputTemperatureValue;
-    private Double outputTemperatureValue;
-    private String inputTemperatureName;
-    private String outputTemperatureName;
-
-    private InterfaceTemperatureUnit inputTemperature;
-
-    private InterfaceTemperatureUnit outputTemperature;
+public class Model {
+    private final String[] units;
+    private double inputTemperature;
+    private double outputTemperature;
 
     public Model() {
-        data = Arrays.asList("Celsius", "Fahrenheit", "Kelvin");
+        units = new String[]{new Celsius().toString(), new Fahrenheit().toString(), new Kelvin().toString()};
+        inputTemperature = 1.7e-308 ;
+        outputTemperature = 1.7e-308;
     }
 
-    public void setSelectedItem(Object o)
-    {
-        selected = data.indexOf(o);
+    public String[] getUnits(){
+        return units;
     }
 
-    public Object getSelectedItem()
-    {
-        return data.get(selected);
+    public double getInputTemperature() {
+        return inputTemperature;
     }
 
-    public int getSize()
-    {
-        return data.size();
+    public double getOutputTemperature() {
+        return outputTemperature;
     }
 
-    public Object getElementAt(int i)
-    {
-        return data.get(i);
+    public void setInputTemperature(double inputTemperature) {
+        this.inputTemperature = inputTemperature;
     }
 
-    @Override
-    public void addListDataListener(ListDataListener l) {
-
+    public void setOutputTemperature(double outputTemperature) {
+        this.outputTemperature = outputTemperature;
     }
 
-    @Override
-    public void removeListDataListener(ListDataListener l) {
+    public double getTemperatureFromInputToOutput(String inputTemperatureName, String outputTemperatureName) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        String path = "ru.academits.dashiev.temperature.temperature_model.";
 
-    }
+        String path1 = path + inputTemperatureName;
+        String path2 = path + outputTemperatureName;
 
-    public void setInputTemperatureValue(double inputTemperatureValue) {
-        this.inputTemperatureValue = inputTemperatureValue;
-    }
+        Class<?> inputTemperatureClass = Class.forName(path1);
+        Class<?> outputTemperatureClass = Class.forName(path2);
 
-    public double getInputTemperatureValue() {
-        return inputTemperatureValue;
-    }
+        String inputMethodName = "convertFromCurrentToBasic";
+        String outputMethodName = "convertFromBasicToCurrent";
 
-    public void setOutputTemperatureValue(double outputTemperatureValue) {
-        this.outputTemperatureValue = outputTemperatureValue;
-    }
+        @SuppressWarnings("unchecked") Method inputMethod = Class.forName(path1).getDeclaredMethod("convertFromCurrentToBasic", double.class);
+        @SuppressWarnings("unchecked") Method outputMethod = Class.forName(path2).getDeclaredMethod("convertFromBasicToCurrent", double.class);
 
-    public double getOutputTemperatureValue() {
-        return outputTemperatureValue;
-    }
+        double convertFromCurrentToBasicResult = (double) inputMethod.invoke(inputTemperatureClass.newInstance(),inputTemperature);
 
-    public void setInputTemperatureName(String inputTemperatureName) {
-        this.inputTemperatureName = inputTemperatureName;
-    }
+        double convertFromBasicToCurrentResult = (double) outputMethod.invoke(outputTemperatureClass.newInstance(),convertFromCurrentToBasicResult);
 
-    public void setOutputTemperatureName(String outputTemperatureName) {
-        this.outputTemperatureName = outputTemperatureName;
-    }
+        double roundedUpFinalTemperature = (double) Math.round(convertFromBasicToCurrentResult * 100) / 100;
 
-    public Double calculateOutputTemperature() {
-        if ((outputTemperatureName.equals("FAHRENHEIT"))) {
-            return calculateOutputTemperatureToFahrenheit();
-        }
-
-        if (outputTemperatureName.equals("KELVIN")) {
-            return calculateOutputTemperatureToKelvin();
-        }
-
-        return calculateOutputTemperatureToCelsius(); // default
-    }
-
-    private Double calculateOutputTemperatureToCelsius() {
-        if (inputTemperatureName.equals("FAHRENHEIT")) {
-            return (inputTemperatureValue - 32) * (5.0 / 9.0);
-        }
-
-        if (inputTemperatureName.equals("KELVIN")) {
-            return inputTemperatureValue - 273.15;
-        }
-
-        return inputTemperatureValue;
-    }
-
-    private Double calculateOutputTemperatureToFahrenheit() {
-        if (inputTemperatureName.equals("CELSIUS")) {
-            return (inputTemperatureValue - 32) * (5.0 / 9.0);
-        }
-
-        if (inputTemperatureName.equals("KELVIN")) {
-            return (inputTemperatureValue * (9.0 / 5.0)) + 32;
-        }
-
-        return inputTemperatureValue;
-    }
-
-    private Double calculateOutputTemperatureToKelvin() {
-        if (inputTemperatureName.compareTo("CELSIUS") == 0) {
-            return inputTemperatureValue + 273.15;
-        }
-
-        if (inputTemperatureName.compareTo("FAHRENHEIT") == 0) {
-            return (inputTemperatureValue - 32) * (5.0 / 9.0) + 273.15;
-        }
-
-        return inputTemperatureValue;
+        return roundedUpFinalTemperature;
     }
 }

@@ -8,12 +8,3 @@ public interface InterfaceTemperatureUnit {
     // return name of unit
     public String toString();
 }
-
-//    public double getCurrentTemperature();
-//
-//    // Basic temperature is Celsius
-//    public double getBasicTemperature();
-//
-//    public double setCurrentTemperature(double value);
-//
-//    public void setBasicTemperature(double value);

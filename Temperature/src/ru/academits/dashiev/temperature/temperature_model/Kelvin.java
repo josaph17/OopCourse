@@ -13,6 +13,6 @@ public class Kelvin implements InterfaceTemperatureUnit {
 
     @Override
     public String toString(){
-        return "Fahrenheit";
-    };
+        return "Kelvin";
+    }
 }
