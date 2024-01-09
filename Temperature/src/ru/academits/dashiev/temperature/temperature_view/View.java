@@ -1,39 +1,35 @@
-package ru.academits.dashiev.temperature_view;
+package ru.academits.dashiev.temperature.temperature_view;
+
+import ru.academits.dashiev.temperature.temperature_model.Model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 
-public class View implements IView {
+public class View {
     private JFrame frame;
     private JPanel panel1;
     private JPanel panel2;
     private JPanel panel3;
     private JPanel panel4;
     private JPanel panel5;
-    private JTextField inputField;
-    private JTextField outputField;
+    private JTextField inputTemperatureField;
+    private JTextField outputTemperatureField;
     private JLabel inputTemperatureAndChooseUnitLabel;
     private JLabel outputTemperatureAndChooseUnitLabel;
     private JButton convertButton;
-    private JLabel inputTemperatureLabel;
-    private JLabel outputTemperatureLabel;
     private JComboBox inputTemperatureComboBox;
     private JComboBox outputTemperatureComboBox;
-    private JRadioButton inputCelsiusButton;
-    private JRadioButton inputFahrenheitButton;
-    private JRadioButton inputKelvinButton;
-    private ButtonGroup inputTemperatureButtonsGroup;
-    private JRadioButton outputCelsiusButton;
-    private JRadioButton outputFahrenheitButton;
-    private JRadioButton outputKelvinButton;
-    private ButtonGroup outputTemperatureButtonsGroup;
     private ImageIcon convertButtonIcon;
     private Image appIcon;
     private ImageIcon warningIcon;
 
-    public View() {
+    public View(Model model) {
         SwingUtilities.invokeLater(() -> {
             try {
+                // setLookAndFeel это Тема оформления
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ignored) {
 
@@ -82,15 +78,15 @@ public class View implements IView {
             convertButtonIcon = new ImageIcon("change.png"); // convertButtonIcon
             warningIcon = new ImageIcon("attention.png");
 
-            inputField = new JTextField();
-            inputField.setColumns(20); // textField 20 symbols
-            inputField.setBounds(2, 3, 200, 30);
+            inputTemperatureField = new JTextField();
+            inputTemperatureField.setColumns(20); // textField 20 symbols
+            inputTemperatureField.setBounds(2, 3, 200, 30);
 
-            outputField = new JTextField(20);
-            outputField.setBounds(2, 3, 200, 30);
-            outputField.setEditable(false);
+            outputTemperatureField = new JTextField(20);
+            outputTemperatureField.setBounds(2, 3, 200, 30);
+            outputTemperatureField.setEditable(false);
 
-            //button.addActionListener((e) -> button.setText("Ищу инструументы")); // button использовали замыкание
+            //button.addActionListener((e) -> button.setText("Ищу инструменты")); // button использовали замыкание
             inputTemperatureAndChooseUnitLabel = new JLabel();
             inputTemperatureAndChooseUnitLabel.setText("Enter input value and choose temperature unit");
             inputTemperatureAndChooseUnitLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -103,23 +99,8 @@ public class View implements IView {
             convertButton.setText("Convert");
             convertButton.setIcon(convertButtonIcon);
 
-//            inputCelsiusButton = new JRadioButton("Celsius");
-//            inputFahrenheitButton = new JRadioButton("Fahrenheit");
-//            inputKelvinButton = new JRadioButton("Kelvin");
-//            inputTemperatureButtonsGroup = new ButtonGroup();
-//            inputTemperatureButtonsGroup.add(inputCelsiusButton);
-//            inputTemperatureButtonsGroup.add(inputFahrenheitButton);
-//            inputTemperatureButtonsGroup.add(inputKelvinButton);
-//            outputCelsiusButton = new JRadioButton("Celsius");
-//            outputFahrenheitButton = new JRadioButton("Fahrenheit");
-//            outputKelvinButton = new JRadioButton("Kelvin");
-//            outputTemperatureButtonsGroup = new ButtonGroup();
-//            outputTemperatureButtonsGroup.add(outputCelsiusButton);
-//            outputTemperatureButtonsGroup.add(outputFahrenheitButton);
-//            outputTemperatureButtonsGroup.add(outputKelvinButton);
-
-            inputTemperatureComboBox = new JComboBox();
-            outputTemperatureComboBox = new JComboBox();
+            inputTemperatureComboBox = new JComboBox(model.getUnits());
+            outputTemperatureComboBox = new JComboBox(model.getUnits());
 
             // add UI elements to Frame
             frame.setIconImage(appIcon);
@@ -133,83 +114,48 @@ public class View implements IView {
 
             panel1.add(inputTemperatureAndChooseUnitLabel);
             panel2.add(inputTemperatureComboBox);
-            panel2.add(inputField);
-//            panel2.add(inputCelsiusButton);
-//            panel2.add(inputFahrenheitButton);
-//            panel2.add(inputKelvinButton);
+            panel2.add(inputTemperatureField);
             panel3.add(convertButton);
             panel4.add(outputTemperatureAndChooseUnitLabel);
             panel5.add(outputTemperatureComboBox);
-            panel5.add(outputField);
-//            panel5.add(outputCelsiusButton);
-//            panel5.add(outputFahrenheitButton);
-//            panel5.add(outputKelvinButton);
+            panel5.add(outputTemperatureField);
+
+            convertButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getSource() == convertButton) {
+                        // Обновил значение температуры
+                        try {
+                            model.setInputTemperature(Double.parseDouble((inputTemperatureField.getText())));
+                        } catch (NumberFormatException exception) {
+                            showWrongInputError();
+                            // остановить функцию, чтобы дальше не пошла исполняться
+                        }
+
+                        // TODO Until there done
+                        try {
+                            double calculatedTemperature = model.getTemperatureFromInputToOutput((String) inputTemperatureComboBox.getSelectedItem(), (String) outputTemperatureComboBox.getSelectedItem());
+
+                            model.setOutputTemperature(calculatedTemperature);
+                        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException |
+                                 ClassNotFoundException | InstantiationException ex) {
+                            throw new RuntimeException(ex);
+                        }
+
+                        outputTemperatureField.setText(String.valueOf(model.getOutputTemperature()));
+                    }
+                }
+            });
         });
     }
 
-    public JButton getConvertButton() {
-        return convertButton;
+    public String getInputTemperature() {
+        return inputTemperatureField.getText();
     }
 
-//    @Override
-//    public void initView(Runnable convertAction) {
-//        outputCelsiusButton.doClick();
-//        inputCelsiusButton.doClick();
-//convertAction -> convertAction.run());
-//    }
-
-    @Override
-    public String getInputTemperatureText() {
-        return inputField.getText();
-    }
-
-    public void setInputTemperature(String value) {
-        outputField.setText(value);
-    }
-
-    @Override
-    public void setOutputTemperature(String value) {
-        outputField.setText(value);
-    }
-
-    @Override
-    public String getInputTemperatureName() {
-        if (inputKelvinButton.isSelected()) {
-            return "KELVIN";
-        }
-
-        if (inputFahrenheitButton.isSelected()) {
-            return "FAHRENHEIT";
-        }
-
-        return "CELSIUS";
-    }
-
-    @Override
-    public String getOutputTemperatureName() {
-        if (outputKelvinButton.isSelected()) {
-            return "KELVIN";
-        }
-
-        if (outputFahrenheitButton.isSelected()) {
-            return "FAHRENHEIT";
-        }
-
-        return "CELSIUS";
-    }
-
-    @Override
     public void showWrongInputError() {
         JOptionPane.showOptionDialog(null, "Input wrong value! Input number", "Input error",
                                      JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                                      warningIcon, null, 0);
-    }
-
-    public void initInputTemperatureComboBox(ComboBoxModel<String> aModel){
-        inputTemperatureComboBox.setModel(aModel);
-    }
-
-    public void initOutputTemperatureComboBox(ComboBoxModel<String> aModel){
-        inputTemperatureComboBox.setModel(aModel);
     }
 }
