@@ -4,50 +4,43 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class Csv {
-    public static void main(String[] args) throws IOException {
-        // Буфферизованные потоки
+    public static void readCSV(String sourcePath, String resultPath) {
         String readLine;
 
-        String sourcePath = "table.csv";
-        String resultPath = "csv2.html";
-        boolean isNextTableRow = true;
-        boolean isCharIncludeInCell = false;
-        boolean isTwoDotsCallFirst = false;
-
-        try (BufferedReader reader = //
-                     new BufferedReader( //
-                                         new FileReader(sourcePath, StandardCharsets.UTF_8)); //
-             BufferedWriter writer = //
-                     new BufferedWriter( //
-                                         new FileWriter(resultPath, StandardCharsets.UTF_8))) { //
+        // Буферизованные потоки
+        try (BufferedReader reader = new BufferedReader(new FileReader(sourcePath, StandardCharsets.UTF_8));
+             BufferedWriter writer = new BufferedWriter( new FileWriter(resultPath, StandardCharsets.UTF_8))) {
             writer.write("<table border=\"1\">");
 
-            while ((readLine = reader.readLine()) != null) {
-                StringBuilder sb = new StringBuilder();
+            boolean isNextTableRow = true;
+            boolean isCharIncludeInCell = false;
+            boolean isTwoDotsCallFirst = false;
 
+            while ((readLine = reader.readLine()) != null) {
                 if (readLine.isEmpty()) {
                     continue;
-                } else if (isCharIncludeInCell == false) {
-                    sb.append("<tr>");
-                    sb.append("<td>");
+                }
+
+                if (!isCharIncludeInCell) {
+                    writer.write("<tr>");
+                    writer.write("<td>");
                 } else {
-                    sb.append("<br>");
+                    writer.write("<br>");
                 }
 
                 for (int i = 0; i < readLine.length(); i++) {
                     char currentChar = readLine.charAt(i);
 
-                    //System.out.println("currentChar[" + i + "] = " + currentChar);
-                    if ((Character.compare(currentChar, '"') == 0)) {
-                        if (isTwoDotsCallFirst == false) {
+                    /* Прошу не считать ошибкой вместо этого можно использовать == и !=. Character.compare(currentChar, '"') == 0 */
+                    if (currentChar == '"') {
+                        if (!isTwoDotsCallFirst) {
                             isTwoDotsCallFirst = true;
                             isCharIncludeInCell = true; // start involve in cell  before "
-                        } else if (i < (readLine.length() - 1) && (Character.compare(
-                                readLine.charAt(i + 1), '"') == 0)) {
-                            i = i + 1;
+                        } else if (i < (readLine.length() - 1) && (readLine.charAt(i + 1) == '"')) {
+                            i++;
 
-                            sb.append('"');
-                        } else { // если след за " char не равен "
+                            writer.write('"');
+                        } else { // если след за "char не равен"
                             isNextTableRow = !isNextTableRow;
 
                             isCharIncludeInCell = false;
@@ -55,43 +48,36 @@ public class Csv {
 
                             // System.out.println("--Close content!--");
                         }
-                    } else if (Character.compare(currentChar, ',') == 0) {
-                        if (isCharIncludeInCell == true) {
-                            sb.append(currentChar);
+                    } else if (currentChar == ',') {
+                        if (isCharIncludeInCell) {
+                            writer.write(currentChar);
                         } else {
-                            sb.append("</td>");
-                            sb.append("<td>");
+                            writer.write("</td>");
+                            writer.write("<td>");
                         }
-                    } else if (Character.compare(currentChar, '<') == 0) {
-                        sb.append("&lt");
-                    } else if (Character.compare(currentChar, '>') == 0) {
-                        sb.append("&gt");
-                    } else if (Character.compare(currentChar, '&') == 0) {
-                        sb.append("&amp");
+                    } else if (currentChar == '<') {
+                        writer.write("&lt;");
+                    } else if (currentChar == '>') {
+                        writer.write("&gt;");
+                    } else if (currentChar == '&') {
+                        writer.write("&amp;");
                     } else {
-                        sb.append(currentChar);
+                        writer.write(currentChar);
                     }
-
-                    // System.out.println(sb);
                 }
 
-                if (isCharIncludeInCell == false) {
-                    sb.append("</td>");
-                    sb.append("</tr>");
+                if (!isCharIncludeInCell) {
+                    writer.write("</td>");
+                    writer.write("</tr>");
                 }
-
-                String resultLine = sb.toString();
-
-                // System.out.println(sb);
-
-                writer.write(resultLine); // запоняем каждую строчку
+                // к этому моменту заполнили строчку
             }
 
             writer.write("</table>");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            System.out.print("");
+            System.out.println("File not found!");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
