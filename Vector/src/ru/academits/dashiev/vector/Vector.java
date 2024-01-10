@@ -148,11 +148,11 @@ public class Vector {
         multiplyByScalar(-1); // через this.multiplyByScalar(-1) не надо обращаться
     }
 
-    public double getLength() { // e.Получение длины вектора
+    public double getLength() { // e. Получение длины вектора
         double elementsSquaresSum = 0;
 
         for (double e : components) {
-            elementsSquaresSum += e * e; // умножение т.к. это быстрее Math.pow
+            elementsSquaresSum += e * e; // Умножение т.к. это быстрее Math.pow
         }
 
         return Math.sqrt(elementsSquaresSum);
