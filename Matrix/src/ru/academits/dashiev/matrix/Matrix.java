@@ -124,17 +124,7 @@ public class Matrix {
      * Статические методы. c. Умножение матриц
      */
     public static Matrix getMultiplicationResult(Matrix matrix1, Matrix matrix2) {
-        /* 12. Статический multiply: - есть ошибка, для некоторых матриц метод падает - Ваш комментарий 11.02.23
-        При неправильных параметрах я выкидывал исключение IllegalArgumentException, как правильно обработать чтобы
-         программа и дальше выполнялась?
-
-         Я нашел способ при котором мы ловим исключение и обрабатываем в catch, можем написать сообщение, но что отправлять в return?*/
-
-        if (matrix1.rows[0].getSize() != matrix2.rows.length) {
-            throw new IllegalArgumentException(
-                    "Matrices cannot be multiplied! Matrix1 columns count = " + matrix1.rows[0].getSize() +
-                            " not match to Matrix2 rows count = " + matrix2.rows.length);
-        }
+        checkMatricesSizesForMultiplication(matrix1, matrix2);
 
         Vector[] multiplicationMatrix = new Vector[matrix1.rows.length];
 
@@ -147,6 +137,14 @@ public class Matrix {
         }
 
         return new Matrix(multiplicationMatrix);
+    }
+
+    private static void checkMatricesSizesForMultiplication(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.rows[0].getSize() != matrix2.rows.length) {
+            throw new IllegalArgumentException(
+                    "Matrices cannot be multiplied! Matrix1 columns count = " + matrix1.rows[0].getSize() +
+                            " not match to Matrix2 rows count = " + matrix2.rows.length);
+        }
     }
 
     private void checkRowIndex(int index) {

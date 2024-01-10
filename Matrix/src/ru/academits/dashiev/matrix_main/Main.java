@@ -172,7 +172,6 @@ public class Main {
         Matrix multiplyMatrix = Matrix.getMultiplicationResult(matrix5, matrix6);
 
         System.out.println(multiplyMatrix);
-        System.out.println("КОНЕЦЦЦЦЦЦЦЦЦ!");
     }
 
     public static void main(String[] args) {
