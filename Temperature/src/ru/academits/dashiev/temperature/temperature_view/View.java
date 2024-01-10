@@ -120,6 +120,7 @@ public class View {
             panel5.add(outputTemperatureComboBox);
             panel5.add(outputTemperatureField);
 
+            // add ActionListener on convertButton
             convertButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
