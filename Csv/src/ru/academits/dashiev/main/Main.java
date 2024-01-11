@@ -1,4 +1,4 @@
-package main;
+package ru.academits.dashiev.main;
 
 import ru.academits.dashiev.csv.Csv;
 

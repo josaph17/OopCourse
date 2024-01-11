@@ -10,11 +10,14 @@ public class Csv {
         // Буферизованные потоки
         try (BufferedReader reader = new BufferedReader(new FileReader(sourcePath, StandardCharsets.UTF_8));
              BufferedWriter writer = new BufferedWriter( new FileWriter(resultPath, StandardCharsets.UTF_8))) {
-            writer.write("<table border=\"1\">");
+            writer.write("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n\t<meta charset=\"UTF-8\">\n\t<title>Document</title>\n</head>\n");
+            writer.write("<body>\n");
 
             boolean isNextTableRow = true;
             boolean isCharIncludeInCell = false;
             boolean isTwoDotsCallFirst = false;
+
+            writer.write("\t<table border=\"1\">\n");
 
             while ((readLine = reader.readLine()) != null) {
                 if (readLine.isEmpty()) {
@@ -22,8 +25,8 @@ public class Csv {
                 }
 
                 if (!isCharIncludeInCell) {
-                    writer.write("<tr>");
-                    writer.write("<td>");
+                    writer.write("\t\t<tr>\n");
+                    writer.write("\t\t\t<td>");
                 } else {
                     writer.write("<br>");
                 }
@@ -46,14 +49,14 @@ public class Csv {
                             isCharIncludeInCell = false;
                             isTwoDotsCallFirst = false;
 
-                            // System.out.println("--Close content!--");
+                            // Here we "Close content!";
                         }
                     } else if (currentChar == ',') {
                         if (isCharIncludeInCell) {
                             writer.write(currentChar);
                         } else {
-                            writer.write("</td>");
-                            writer.write("<td>");
+                            writer.write("</td>\n");
+                            writer.write("\t\t\t<td>");
                         }
                     } else if (currentChar == '<') {
                         writer.write("&lt;");
@@ -68,12 +71,14 @@ public class Csv {
 
                 if (!isCharIncludeInCell) {
                     writer.write("</td>");
-                    writer.write("</tr>");
+                    writer.write("\n\t\t</tr>\n");
                 }
                 // к этому моменту заполнили строчку
             }
 
-            writer.write("</table>");
+            writer.write("\t</table>\n");
+            writer.write("</body>\n");
+            writer.write("</html>\n");
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
         } catch (IOException e) {
