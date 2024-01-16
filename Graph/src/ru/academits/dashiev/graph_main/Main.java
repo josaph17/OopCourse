@@ -6,22 +6,24 @@ public class Main {
     public static void main(String[] args) {
         Graph path = new Graph(8);
 
-        path.set(1, 2, 1);
-        path.set(1, 5, 1);
-        path.set(2, 5, 1);
-        path.set(2, 8, 1);
-        path.set(3, 5, 1);
-        path.set(3, 8, 1);
-        path.set(4, 5, 1);
-        path.set(6, 7, 1);
+        path.set(0, 1, 1);
+        path.set(0, 4, 1);
+        path.set(1, 4, 1);
+        path.set(1, 7, 1);
+        path.set(2, 4, 1);
+        path.set(2, 7, 1);
+        path.set(3, 4, 1);
+        path.set(5, 6, 1);
 
         System.out.println("Width bypass:");
-        path.widthBypass();
+        path.bypassInWidth(i -> System.out.print(i + " "));
+        System.out.println();
 
         System.out.println("Deep bypass:");
-        path.deepBypass();
+        path.bypassInDeep(i -> System.out.print(i + " "));
+        System.out.println();
 
         System.out.println("Recursion deep bypass:");
-        path.recursionDeepBypass();
+        path.bypassInDeepRecursively(i -> System.out.print(i + " "));
     }
 }
