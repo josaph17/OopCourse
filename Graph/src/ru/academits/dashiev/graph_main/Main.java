@@ -4,26 +4,27 @@ import ru.academits.dashiev.graph.Graph;
 
 public class Main {
     public static void main(String[] args) {
-        Graph path = new Graph(8);
+        // Graph<Integer> graph = new Graph<>(1,2,3,4,5,6,7,8);
+        Graph<Integer> graph = new Graph<>(3,4,5,6,7,8,9,10);
 
-        path.set(0, 1, 1);
-        path.set(0, 4, 1);
-        path.set(1, 4, 1);
-        path.set(1, 7, 1);
-        path.set(2, 4, 1);
-        path.set(2, 7, 1);
-        path.set(3, 4, 1);
-        path.set(5, 6, 1);
+        graph.set(3, 4, 1);
+        graph.set(3, 7, 1);
+        graph.set(4, 7, 1);
+        graph.set(4, 10, 1);
+        graph.set(5, 7, 1);
+        graph.set(5, 10, 1);
+        graph.set(6, 7, 1);
+        graph.set(8, 9, 1);
 
         System.out.println("Width bypass:");
-        path.bypassInWidth(i -> System.out.print(i + " "));
+        graph.bypassInWidth(i -> System.out.print(i + " "));
         System.out.println();
 
-        System.out.println("Deep bypass:");
-        path.bypassInDeep(i -> System.out.print(i + " "));
-        System.out.println();
-
-        System.out.println("Recursion deep bypass:");
-        path.bypassInDeepRecursively(i -> System.out.print(i + " "));
+//        System.out.println("Deep bypass:");
+//        graph.bypassInDeep(i -> System.out.print(i + " "));
+//        System.out.println();
+//
+//        System.out.println("Recursion deep bypass:");
+//        graph.bypassInDeepRecursively(i -> System.out.print(i + " "));
     }
 }
