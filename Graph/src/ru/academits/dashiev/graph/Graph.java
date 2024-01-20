@@ -9,8 +9,9 @@ public class Graph<E> {
     private final int[][] adjacencyMatrix;
 
 
+    @SafeVarargs
     public Graph(E ... vertexValues) {
-        this.vertexesValues = new ArrayList<E>();
+        this.vertexesValues = new ArrayList<>();
 
         this.vertexesValues.addAll(Arrays.asList(vertexValues));
 
@@ -53,6 +54,7 @@ public class Graph<E> {
 
     public void bypassInWidth(Consumer<E> consumer) {
         boolean[] visited = new boolean[adjacencyMatrix.length];
+
         Queue<E> queue = new LinkedList<>();
 
         for (int i = 0; i < adjacencyMatrix.length; i++) {
@@ -83,35 +85,30 @@ public class Graph<E> {
         }
     }
 
-    public void bypassInDeep(Consumer<? super Number> consumer) {
+    public void bypassInDeep(Consumer<E> consumer) {
         boolean[] visited = new boolean[adjacencyMatrix.length];
 
-        Deque<Integer> stack = new LinkedList<>();
+        Deque<E> stack = new LinkedList<>();
 
-        stack.addLast(0);
+        for (int i = 0; i < adjacencyMatrix.length; i++){
+            if (!visited[i]){
+                stack.addLast(vertexesValues.get(i));
 
-        while (!stack.isEmpty()) { // пока очередь не пуста
-            Integer currentElementFromStack = stack.removeLast(); // достаем последний элемент из stack и удаляем его
+                while (!stack.isEmpty()){ // пока стек не пуст
+                    E currentElementFromStack = stack.removeLast();
 
-            if (!visited[currentElementFromStack]) {
-                consumer.accept(currentElementFromStack);
-                visited[currentElementFromStack] = true;
+                    int currentVertexFromStackIndex = vertexesValues.indexOf(currentElementFromStack);
 
-                for (int i = adjacencyMatrix.length - 1; i > 0; i--) {
-                    if (adjacencyMatrix[currentElementFromStack][i] == 1) {
-                        // добавляем элемент в очередь
-                        if (!visited[i]) { // если false
-                            stack.addLast(i);
+                    if (!visited[currentVertexFromStackIndex]){
+                        consumer.accept(currentElementFromStack);
+                        visited[currentVertexFromStackIndex] = true;
+
+                        for (int j = adjacencyMatrix.length - 1; j >= 0; j--) {
+                            if (adjacencyMatrix[currentVertexFromStackIndex][j] == 1 && !visited[j]) {
+                                // добавляем элемент в стек
+                                stack.addLast(vertexesValues.get(j));
+                            }
                         }
-                    }
-                }
-            }
-
-            if (stack.isEmpty()) {
-                for (int i = 0; i < adjacencyMatrix.length; i++) {
-                    if (!visited[i]) { // если вершина не посещена
-                        stack.addLast(i);
-                        break;
                     }
                 }
             }
