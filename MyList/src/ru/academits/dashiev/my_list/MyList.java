@@ -3,7 +3,7 @@ package ru.academits.dashiev.my_list;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class MyList<T> { // класс List  должен быть generic, чтобы тоже жестко не привязываться к типу
+public class MyList<T> { // класс List должен быть generic, чтобы тоже жестко не привязываться к типу
     private Node<T> head; // переменная, которая указывает на начало списка
     private int size;
 
