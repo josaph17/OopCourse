@@ -19,6 +19,7 @@ public class Tree<E> {
         this.comparator = comparator;
     }
 
+    @SafeVarargs
     public Tree(Comparator<E> comparator, E... elements) {
         this.comparator = comparator;
 
