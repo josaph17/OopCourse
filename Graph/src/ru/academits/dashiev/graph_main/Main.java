@@ -23,8 +23,8 @@ public class Main {
         System.out.println("Deep bypass:");
         graph.bypassInDeep(i -> System.out.print(i + " "));
         System.out.println();
-//
-//        System.out.println("Recursion deep bypass:");
-//        graph.bypassInDeepRecursively(i -> System.out.print(i + " "));
+
+        System.out.println("Recursion deep bypass:");
+        graph.bypassInDeepRecursively(i -> System.out.print(i + " "));
     }
 }

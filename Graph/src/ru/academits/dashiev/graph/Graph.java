@@ -115,7 +115,8 @@ public class Graph<E> {
         }
     }
 
-    public void bypassInDeepRecursively(Consumer<? super Number> consumer){
+
+    public void bypassInDeepRecursively(Consumer<E> consumer){
         boolean[] visited = new boolean[adjacencyMatrix.length];
 
         for(int i = 0; i < adjacencyMatrix.length; i ++){
@@ -125,14 +126,18 @@ public class Graph<E> {
         }
     }
 
-    private void visitInDeepRecursively(Integer vertex, boolean[] visited, Consumer<? super Number> consumer) { // private, чтобы не вызвать извне
-        if (!visited[vertex]){
+    private void visitInDeepRecursively(int vertexIndex, boolean[] visited, Consumer<E> consumer) { // private, чтобы не вызвать извне
+        if (!visited[vertexIndex]){
             //System.out.print(vertex + " ");
-            consumer.accept(vertex);
-            visited[vertex] = true;
+            // vertexesValues.indexOf(currentElementFromStack)
+
+            E vertexValue = vertexesValues.get(vertexIndex);
+
+            consumer.accept(vertexValue);
+            visited[vertexIndex] = true;
 
             for (int i = 0; i < adjacencyMatrix.length; i++) {
-                if (adjacencyMatrix[vertex][i] == 1) {
+                if (adjacencyMatrix[vertexIndex][i] == 1) {
                     // добавляем элемент
                     visitInDeepRecursively(i, visited, consumer);
                 }
