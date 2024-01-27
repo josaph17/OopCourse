@@ -24,7 +24,7 @@ public class Tree<E> {
         this.comparator = comparator;
 
         for (E element : elements) {
-           add(element);
+            add(element);
         }
     }
 
