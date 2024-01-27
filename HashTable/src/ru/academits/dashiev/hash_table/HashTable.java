@@ -5,7 +5,7 @@ import java.util.*;
 public class HashTable<E> implements Collection<E> {
     private static final int DEFAULT_CAPACITY = 10; // константа для размера массива по умолчанию
 
-    private final LinkedList<E>[] lists; // это точно правильно, Массив односвязных списков
+    private final ArrayList<E>[] lists; // это точно правильно, Массив односвязных списков
     private int size; // кол-во эл-в
     private int modCount; // кол-во изменений
 
@@ -19,7 +19,7 @@ public class HashTable<E> implements Collection<E> {
         }
 
         //noinspection unchecked
-        lists = new LinkedList[capacity];
+        lists = new ArrayList[capacity];
     }
 
     private int getIndex(Object o) {
@@ -53,7 +53,7 @@ public class HashTable<E> implements Collection<E> {
 
         int arrayIndex = 0;
 
-        for (LinkedList<E> list : lists) {
+        for (ArrayList<E> list : lists) {
             if (list != null) {
                 for (E item : list) {
                     array[arrayIndex] = item;
@@ -97,7 +97,7 @@ public class HashTable<E> implements Collection<E> {
         int index = getIndex(item);
 
         if (lists[index] == null) {
-            lists[index] = new LinkedList<>();
+            lists[index] = new ArrayList<>();
         }
 
         modCount++;
@@ -170,7 +170,7 @@ public class HashTable<E> implements Collection<E> {
 
         int oldSize = size;
 
-        for (LinkedList<E> list : lists) {
+        for (ArrayList<E> list : lists) {
             if (list != null) {
                 int initialListSize = list.size();
 
@@ -206,7 +206,7 @@ public class HashTable<E> implements Collection<E> {
 
         int oldSize = size;
 
-        for (LinkedList<E> list : lists) {
+        for (ArrayList<E> list : lists) {
             if (list != null) {
                 int initialListSize = list.size();
 
