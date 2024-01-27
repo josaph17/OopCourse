@@ -1,10 +1,11 @@
-package ru.academits.dashiev.my_hash_table_main;
+package ru.academits.dashiev.hash_table_main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import ru.academits.dashiev.my_hash_table.MyHashTable;
+
+import ru.academits.dashiev.hash_table.MyHashTable;
 
 public class Main {
     public static void main(String[] args) {

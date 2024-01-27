@@ -1,4 +1,4 @@
-package ru.academits.dashiev.my_hash_table;
+package ru.academits.dashiev.hash_table;
 
 import java.util.*;
 
@@ -15,7 +15,7 @@ public class MyHashTable<E> implements Collection<E> {
 
     public MyHashTable(int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException("Illegal capacity value. Capacity must be >= 0. Capacity = " + capacity);
+            throw new IllegalArgumentException("Illegal capacity value. Capacity should be > 0. Capacity = " + capacity);
         }
 
         //noinspection unchecked
