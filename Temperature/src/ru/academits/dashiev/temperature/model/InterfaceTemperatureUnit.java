@@ -1,4 +1,4 @@
-package ru.academits.dashiev.temperature.temperature_model;
+package ru.academits.dashiev.temperature.model;
 
 public interface InterfaceTemperatureUnit {
     public double convertFromCurrentToBasic(double currentTemperature);

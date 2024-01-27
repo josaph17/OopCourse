@@ -2,7 +2,7 @@
   <artifact type="jar" name="Temperature:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Temperature_jar</output-path>
     <root id="archive" name="Temperature.jar">
-      <element id="module-output" name="Temperature" />
+      <element id="module-output" name="MyTemperature" />
     </root>
   </artifact>
 </component>

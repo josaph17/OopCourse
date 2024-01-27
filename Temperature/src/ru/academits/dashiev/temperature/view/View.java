@@ -1,6 +1,6 @@
-package ru.academits.dashiev.temperature.temperature_view;
+package ru.academits.dashiev.temperature.view;
 
-import ru.academits.dashiev.temperature.temperature_model.Model;
+import ru.academits.dashiev.temperature.model.Model;
 
 import javax.swing.*;
 import java.awt.*;
@@ -156,7 +156,7 @@ public class View {
 
     public void showWrongInputError() {
         JOptionPane.showOptionDialog(null, "Input wrong value! Input number", "Input error",
-                                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-                                     warningIcon, null, 0);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                warningIcon, null, 0);
     }
 }

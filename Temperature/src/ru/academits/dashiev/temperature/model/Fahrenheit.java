@@ -1,4 +1,4 @@
-package ru.academits.dashiev.temperature.temperature_model;
+package ru.academits.dashiev.temperature.model;
 
 public class Fahrenheit implements InterfaceTemperatureUnit {
     @Override
