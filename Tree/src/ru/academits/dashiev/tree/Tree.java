@@ -202,7 +202,7 @@ public class Tree<E> {
     private TreeNode<E> findNodeParent(E data) {
         // Вместо findNodeToDeleteParent переименовали в findNodeParent
         TreeNode<E> currentNode = root;
-        TreeNode<E> parentNode = null;
+        TreeNode<E> parentNode;
 
         while (true) {
             int comprasionResult = compare(currentNode.getData(), data);
