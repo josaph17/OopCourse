@@ -1,4 +1,4 @@
-package ru.academits.dashiev.temperature.temperature_model;
+package ru.academits.dashiev.temperature.model;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -35,7 +35,7 @@ public class Model {
     }
 
     public double getTemperatureFromInputToOutput(String inputTemperatureName, String outputTemperatureName) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
-        String path = "ru.academits.dashiev.temperature.temperature_model.";
+        String path = "ru.academits.dashiev.temperature.model.";
 
         String path1 = path + inputTemperatureName;
         String path2 = path + outputTemperatureName;

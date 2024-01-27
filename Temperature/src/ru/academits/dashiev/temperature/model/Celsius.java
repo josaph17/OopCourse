@@ -1,18 +1,18 @@
-package ru.academits.dashiev.temperature.temperature_model;
+package ru.academits.dashiev.temperature.model;
 
-public class Kelvin implements InterfaceTemperatureUnit {
+public class Celsius implements InterfaceTemperatureUnit {
     @Override
     public double convertFromCurrentToBasic(double currentTemperature) {
-        return currentTemperature - 273.15;
+        return currentTemperature;
     }
 
     @Override
     public double convertFromBasicToCurrent(double basicTemperature) {
-        return basicTemperature + 273.15;
+        return basicTemperature;
     }
 
     @Override
     public String toString(){
-        return "Kelvin";
+        return "Celsius";
     }
 }
