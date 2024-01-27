@@ -190,7 +190,6 @@ public class HashTable<E> implements Collection<E> {
     }
 
     // Удаляет элементы, не принадлежащие переданной коллекции
-    // 14. Можно не реализовывать remove итератора и реализовать retainAll без него.
     //Этот пункт можно не исправлять
     @Override
     public boolean retainAll(Collection<?> c) {
@@ -257,7 +256,7 @@ public class HashTable<E> implements Collection<E> {
         return sb.toString();
     }
 
-    private class HashTableIterator implements java.util.Iterator<E> {
+    private class MyHashTableIterator implements java.util.Iterator<E> {
         private int initialModCount = modCount;
 
         private int hashTableItemIndex = -1; // индекс элемента во всей таблице
@@ -320,7 +319,7 @@ public class HashTable<E> implements Collection<E> {
     }
 
     @Override
-    public java.util.Iterator<E> iterator() {
-        return new HashTableIterator();
+    public Iterator<E> iterator() {
+        return new MyHashTableIterator();
     }
 }
