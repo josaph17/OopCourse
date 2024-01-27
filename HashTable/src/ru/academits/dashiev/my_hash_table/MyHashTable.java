@@ -1,19 +1,19 @@
-package ru.academits.dashiev.hash_table;
+package ru.academits.dashiev.my_hash_table;
 
 import java.util.*;
 
-public class HashTable<E> implements Collection<E> {
+public class MyHashTable<E> implements Collection<E> {
     private static final int DEFAULT_CAPACITY = 10; // константа для размера массива по умолчанию
 
     private final LinkedList<E>[] lists; // это точно правильно, Массив односвязных списков
     private int size; // кол-во эл-в
     private int modCount; // кол-во изменений
 
-    public HashTable() {
+    public MyHashTable() {
         this(DEFAULT_CAPACITY);
     }
 
-    public HashTable(int capacity) {
+    public MyHashTable(int capacity) {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Illegal capacity value. Capacity must be >= 0. Capacity = " + capacity);
         }
@@ -22,7 +22,7 @@ public class HashTable<E> implements Collection<E> {
         lists = new LinkedList[capacity];
     }
 
-    private int getIndex(Object o){
+    private int getIndex(Object o) {
         return (o == null) ? 0 : Math.abs(o.hashCode() % lists.length);
     }
 
@@ -54,7 +54,7 @@ public class HashTable<E> implements Collection<E> {
         int arrayIndex = 0;
 
         for (LinkedList<E> list : lists) {
-            if (list != null){
+            if (list != null) {
                 for (E item : list) {
                     array[arrayIndex] = item;
 
@@ -74,7 +74,7 @@ public class HashTable<E> implements Collection<E> {
 
         // hashTableArray - лучше сделать типа Object[], т.к. это по факту пока не T[], прошу не считать за ошибку
         // важный комментарий
-        Object[] hashTableArray =  toArray();
+        Object[] hashTableArray = toArray();
 
         if (size > a.length) {
             // возвращается новый массив, но длины хэш Таблицы
@@ -144,7 +144,7 @@ public class HashTable<E> implements Collection<E> {
     public boolean remove(Object o) {
         int index = getIndex(o);
 
-        if(lists[index] != null && lists[index].remove(o)){
+        if (lists[index] != null && lists[index].remove(o)) {
             modCount++;
             size--;
 
@@ -168,25 +168,25 @@ public class HashTable<E> implements Collection<E> {
             return false;
         }
 
-        int oldHashTableSize = size;
+        int oldSize = size;
 
         for (LinkedList<E> list : lists) {
             if (list != null) {
                 int initialListSize = list.size();
 
-                if(list.removeAll(c)){
+                if (list.removeAll(c)) {
                     size -= initialListSize - list.size();
                 }
             }
         }
 
-        boolean isHashTableModified = oldHashTableSize != size;
+        boolean isModified = oldSize != size;
 
-        if (isHashTableModified){
+        if (isModified) {
             modCount++;
         }
 
-        return isHashTableModified;
+        return isModified;
     }
 
     // Удаляет элементы, не принадлежащие переданной коллекции
@@ -195,28 +195,6 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public boolean retainAll(Collection<?> c) {
         // todo прошу не считать за замечание, хочу запомнить данный способ реализации функции
-//        if (c == null) {
-//            throw new NullPointerException("Collection is null!");
-//        }
-//
-//        if (size == 0) { // HashTable is empty
-//            return false;
-//        }
-//
-//        int oldHashTableSize = size;
-//
-//        /* внизу вместо лямбды было выражение
-//         while (iterator.hasNext()) {
-//            E value = iterator.next();
-//
-//            if (!c.contains(value)) {
-//                iterator.remove();
-//            }
-//        } */
-//
-//        removeIf(value -> !c.contains(value));
-//
-//        return oldHashTableSize != size;
 
         if (c == null) {
             throw new NullPointerException("Parameter collection is null!");
@@ -226,25 +204,25 @@ public class HashTable<E> implements Collection<E> {
             return false;
         }
 
-        int oldHashTableSize = size;
+        int oldSize = size;
 
         for (LinkedList<E> list : lists) {
             if (list != null) {
                 int initialListSize = list.size();
 
-                if(list.retainAll(c)){
+                if (list.retainAll(c)) {
                     size -= initialListSize - list.size();
                 }
             }
         }
 
-        boolean isHashTableModified = oldHashTableSize != size;
+        boolean isModified = oldSize != size;
 
-        if (isHashTableModified){
+        if (isModified) {
             modCount++;
         }
 
-        return oldHashTableSize != size;
+        return oldSize != size;
     }
 
     @Override
@@ -269,7 +247,7 @@ public class HashTable<E> implements Collection<E> {
 
         sb.append('[');
 
-        for (E item: this) {
+        for (E item : this) {
             sb.append(item).append(", ");
         }
 
@@ -279,7 +257,7 @@ public class HashTable<E> implements Collection<E> {
         return sb.toString();
     }
 
-    private class Iterator implements java.util.Iterator<E> {
+    private class HashTableIterator implements java.util.Iterator<E> {
         private int initialModCount = modCount;
 
         private int hashTableItemIndex = -1; // индекс элемента во всей таблице
@@ -310,7 +288,7 @@ public class HashTable<E> implements Collection<E> {
 
             itemIndex++;
 
-            while (lists[listIndex] == null || itemIndex >= lists[listIndex].size()){
+            while (lists[listIndex] == null || itemIndex >= lists[listIndex].size()) {
                 listIndex++;
                 itemIndex = 0;
             }
@@ -343,6 +321,6 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public java.util.Iterator<E> iterator() {
-        return new Iterator();
+        return new HashTableIterator();
     }
 }
