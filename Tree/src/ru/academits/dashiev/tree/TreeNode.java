@@ -1,7 +1,6 @@
 package ru.academits.dashiev.tree;
 
-class TreeNode<T>  { // Wildcard с ? , Надо указать что-то расш, T - т.к. этот тип надо переиспользовать,
-    // теперь все поля extends Comparable
+class TreeNode<T> {
     private TreeNode<T> left;
     private TreeNode<T> right;
     private final T data;

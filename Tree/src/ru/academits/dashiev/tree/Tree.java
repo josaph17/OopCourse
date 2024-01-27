@@ -15,7 +15,7 @@ public class Tree<E> {
     public Tree() { // конструктор без компаратора
     }
 
-    public Tree(Comparator<E> comparator){ // конструктор с компаратором
+    public Tree(Comparator<E> comparator) { // конструктор с компаратором
         this.comparator = comparator;
     }
 
@@ -28,8 +28,8 @@ public class Tree<E> {
         }
     }
 
-    private int compare(E data1, E data2){
-        if (comparator != null){
+    private int compare(E data1, E data2) {
+        if (comparator != null) {
             return comparator.compare(data1, data2);
         }
 
@@ -37,11 +37,11 @@ public class Tree<E> {
             return 0;
         }
 
-        if (data1 == null){
+        if (data1 == null) {
             return -1;
         }
 
-        if (data2 == null){
+        if (data2 == null) {
             return 1;
         }
 
@@ -49,9 +49,9 @@ public class Tree<E> {
         // данные к Comparable<T> и вызывать метод compareTo оттуда
 
         @SuppressWarnings("unchecked")
-        Comparable<E> convertedToComparableObject = (Comparable<E>) data1;
+        Comparable<E> сomparable = (Comparable<E>) data1;
 
-        return convertedToComparableObject.compareTo(data2);
+        return сomparable.compareTo(data2);
     }
 
     public void add(E data) {
@@ -106,16 +106,16 @@ public class Tree<E> {
         queue.offer(root);
 
         while (!queue.isEmpty()) { // пока очередь не пус та
-            TreeNode<E> data = queue.poll(); // достаем первый элемент из очереди и удаляем его
+            TreeNode<E> node = queue.poll(); // достаем первый элемент из очереди и удаляем его
 
-            consumer.accept(data.getData());
+            consumer.accept(node.getData());
 
-            if (data.getLeft() != null) {
-                queue.offer(data.getLeft()); //добавить эл-т
+            if (node.getLeft() != null) {
+                queue.offer(node.getLeft()); //добавить эл-т
             }
 
-            if (data.getRight() != null) {
-                queue.offer(data.getRight());
+            if (node.getRight() != null) {
+                queue.offer(node.getRight());
             }
         }
     }
@@ -131,16 +131,16 @@ public class Tree<E> {
         stack.addLast(root);
 
         while (!stack.isEmpty()) { // пока очередь не пуста
-            TreeNode<E> data = stack.removeLast(); // достаем последний элемент из stack и удаляем его
+            TreeNode<E> node = stack.removeLast(); // достаем последний элемент из stack и удаляем его
 
-            consumer.accept(data.getData());
+            consumer.accept(node.getData());
 
-            if (data.getRight() != null) { // добавляем детей в обратном порядке
-                stack.addLast(data.getRight());
+            if (node.getRight() != null) { // добавляем детей в обратном порядке
+                stack.addLast(node.getRight());
             }
 
-            if (data.getLeft() != null) {
-                stack.addLast(data.getLeft());
+            if (node.getLeft() != null) {
+                stack.addLast(node.getLeft());
             }
         }
     }
@@ -153,37 +153,37 @@ public class Tree<E> {
         bypassInDeepRecursively(root, consumer);
     }
 
-    // Todo правильно ли я понимаю, что это перегрузка функции bypassInDeepRecursively?
-    private void bypassInDeepRecursively(TreeNode<E> data, Consumer<? super E> consumer) { // private, чтобы не вызвать извне
-        consumer.accept(data.getData());
+    // Это перегрузка функции bypassInDeepRecursively?
+    private void bypassInDeepRecursively(TreeNode<E> node, Consumer<? super E> consumer) { // private, чтобы не вызвать извне
+        consumer.accept(node.getData());
 
         // System.out.print(node.getData() + " ");
 
-        if (data.getLeft() != null) {
-            bypassInDeepRecursively(data.getLeft(), consumer);
+        if (node.getLeft() != null) {
+            bypassInDeepRecursively(node.getLeft(), consumer);
         }
 
-        if (data.getRight() != null) {
-            bypassInDeepRecursively(data.getRight(), consumer);
+        if (node.getRight() != null) {
+            bypassInDeepRecursively(node.getRight(), consumer);
         }
     }
 
     public boolean contains(E data) {
         // Если дерево пустое
-        if(size == 0){
+        if (size == 0) {
             return false;
         }
 
         TreeNode<E> currentNode = root;
 
         while (true) {
-            int compareResult = compare(currentNode.getData(), data);
+            int comparisonResult = compare(currentNode.getData(), data);
 
-            if (compareResult == 0) {
+            if (comparisonResult == 0) {
                 return true;
             }
 
-            if (compareResult > 0){
+            if (comparisonResult > 0) {
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
                 } else {
@@ -202,40 +202,36 @@ public class Tree<E> {
     private TreeNode<E> findNodeParent(E data) {
         // Вместо findNodeToDeleteParent переименовали в findNodeParent
         TreeNode<E> currentNode = root;
-        TreeNode<E> parentNode = root;
+        TreeNode<E> parentNode;
 
-        while(true){
-            int compareResult = compare(currentNode.getData(), data);
+        while (true) {
+            int comprasionResult = compare(currentNode.getData(), data);
 
-            // todo Прошу проверить метод
-            if(compareResult >= 0){
-                if(currentNode.getLeft() != null && currentNode.getLeft() != null){
-                    if(compare(currentNode.getLeft().getData(), data) == 0){
-                        return currentNode;
+            if (comprasionResult >= 0) {
+                if (currentNode.getLeft() != null) {
+                    if (compare(currentNode.getLeft().getData(), data) == 0) {
+                        parentNode = currentNode;
+                        return parentNode;
                     }
 
                     currentNode = currentNode.getLeft();
+                    parentNode = currentNode;
 
-                    continue;
                     // То этот элемент точно null
-                }
-
-                if (currentNode.getLeft() != null){
-                    currentNode = currentNode.getLeft();
-
                     continue;
-                }else {
-                    // Нет такого элемента
-                    return null;
                 }
+
+                return null;
             }
 
-            if(currentNode.getRight() != null){
-                if(compare(currentNode.getRight().getData(), data) == 0){
-                    return currentNode;
+            if (currentNode.getRight() != null) {
+                if (compare(currentNode.getRight().getData(), data) == 0) {
+                    parentNode = currentNode;
+                    return parentNode;
                 }
 
                 currentNode = currentNode.getRight();
+                parentNode = currentNode;
             } else {
                 // Нет такого элемента
                 return null;
@@ -244,14 +240,14 @@ public class Tree<E> {
     }
 
     public boolean delete(E data) {
-        if(size == 0){
+        if (size == 0) {
             return false;
         }
 
         TreeNode<E> nodeToDeleteParent = null;
         TreeNode<E> nodeToDelete = null;
 
-        if (compare(root.getData(), data) == 0){
+        if (compare(root.getData(), data) == 0) {
             nodeToDelete = root; // nodeToDeleteParent == null
         } else {
             nodeToDeleteParent = findNodeParent(data);
@@ -261,12 +257,12 @@ public class Tree<E> {
 
         boolean isRightChild = false; // Про тот узел, который надо удалить
 
-        if(nodeToDeleteParent == null) {
-            if (nodeToDelete != root){
+        if (nodeToDeleteParent == null) {
+            if (nodeToDelete != root) {
                 return false;
             }
         } else {
-            if (nodeToDeleteParent.getLeft()!= null && compare(nodeToDeleteParent.getLeft().getData(), data) == 0){
+            if (nodeToDeleteParent.getLeft() != null && compare(nodeToDeleteParent.getLeft().getData(), data) == 0) {
                 nodeToDelete = nodeToDeleteParent.getLeft();
             } else if (nodeToDeleteParent.getRight() != null && compare(nodeToDeleteParent.getRight().getData(), data) == 0) {
                 nodeToDelete = nodeToDeleteParent.getRight();
@@ -277,9 +273,9 @@ public class Tree<E> {
             }
         }
 
-        /* Todo 1. Удаляемый узел - лист */
+        /* 1. Удаляемый узел - лист */
         if (nodeToDelete.getLeft() == null && nodeToDelete.getRight() == null) {
-            if (nodeToDelete == root){
+            if (nodeToDelete == root) {
                 root = null;
             } else if (isRightChild) {
                 nodeToDeleteParent.setRight(null);
@@ -293,20 +289,18 @@ public class Tree<E> {
             return true; // 1. Удаляемый узел - лист
         }
 
-        // Todo 2. Удаление узла - c одним ребенком
+        // 2. Удаление узла - c одним ребенком
         if (nodeToDelete.getLeft() == null || nodeToDelete.getRight() == null) {
             TreeNode<E> notNullChild;
 
-            if (nodeToDelete.getLeft() != null){
+            if (nodeToDelete.getLeft() != null) {
                 notNullChild = nodeToDelete.getLeft();
-            } else{
+            } else {
                 notNullChild = nodeToDelete.getRight();
             }
 
-            if (nodeToDelete == root){
-                if (nodeToDelete.getLeft() == null){
-                    root = notNullChild;
-                }
+            if (nodeToDelete == root) {
+                root = notNullChild;
             } else if (isRightChild) {
                 // удаляемый элемент не null и он точно справа
                 nodeToDeleteParent.setRight(notNullChild);
@@ -320,28 +314,24 @@ public class Tree<E> {
             return true;
         }
 
-        // Todo 3. Удаление узла - c двумя детьми
-        TreeNode<E> minLastNodeParent;
-        TreeNode<E> minLastNode;
-        TreeNode<E> rootToDeleteSubTree = root.getRight();
-
-        if (nodeToDelete!= root){
-            rootToDeleteSubTree = nodeToDelete.getRight();
-        }
+        // 3. Удаление узла - c двумя детьми
+        TreeNode<E> rootToDeleteSubTree = nodeToDelete.getRight();
 
         // В правом поддереве у узла нет левого ребенка
         if (rootToDeleteSubTree.getLeft() == null) {
-            if (nodeToDelete == root){
+            if (nodeToDelete == root) {
                 rootToDeleteSubTree.setLeft(root.getLeft());
 
                 root = rootToDeleteSubTree;
-            } else if(isRightChild){
+            } else if (isRightChild) {
                 nodeToDeleteParent.setRight(rootToDeleteSubTree);
 
                 rootToDeleteSubTree.setLeft(nodeToDelete.getLeft());
 
             } else {
-                // TODO что такое assert? IDEA подсказала так сделать, чтобы не было "Method invocation 'setLeft' may produce 'NullPointerException'"
+                /*assert IDEA подсказала так сделать, чтобы не было "Method invocation 'setLeft' may produce
+                'NullPointerException'". Это проверка некоторого условия, которое, по идее, никогда не должно нарушаться.
+                Если условие все же окажется ложным, то будет брошено исключение*/
                 assert nodeToDeleteParent != null;
                 nodeToDeleteParent.setLeft(rootToDeleteSubTree);
 
@@ -353,8 +343,8 @@ public class Tree<E> {
             return true;
         }
 
-        minLastNodeParent = rootToDeleteSubTree;
-        minLastNode = rootToDeleteSubTree.getLeft();
+        TreeNode<E> minLastNodeParent = rootToDeleteSubTree;
+        TreeNode<E> minLastNode = rootToDeleteSubTree.getLeft();
 
         // Находим самый левый элемент
         while (minLastNode.getLeft() != null) {
@@ -365,14 +355,10 @@ public class Tree<E> {
 
         minLastNodeParent.setLeft(minLastNode.getRight());
 
-        if (nodeToDelete != root){
-            minLastNode.setRight(null);
-        }
-
         minLastNode.setLeft(nodeToDelete.getLeft());
         minLastNode.setRight(nodeToDelete.getRight()); // привязываем детей nodeToDelete к minLastNode
 
-        if (nodeToDelete == root){
+        if (nodeToDelete == root) {
             root = minLastNode;
         } else if (isRightChild) {
             nodeToDeleteParent.setRight(minLastNode);
@@ -398,7 +384,7 @@ public class Tree<E> {
             Deque<TreeNode<E>> localStack = new LinkedList<>();
             isRowEmpty = true;
 
-            for (int i = 0; i < gapsCount; i++){
+            for (int i = 0; i < gapsCount; i++) {
                 System.out.print(' ');
             }
 
@@ -410,7 +396,7 @@ public class Tree<E> {
                     localStack.addLast(node.getLeft()); // Сохраняем в локальный стек, наследники текущего элемента
                     localStack.addLast(node.getRight());
 
-                    if (node.getLeft() != null || node.getRight() != null){
+                    if (node.getLeft() != null || node.getRight() != null) {
                         isRowEmpty = false;
                     }
                 } else {
@@ -419,10 +405,11 @@ public class Tree<E> {
                     localStack.addLast(null);
                 }
 
-                for (int i = 0; i < gapsCount * 2 - 2; i++){
+                for (int i = 0; i < gapsCount * 2 - 2; i++) {
                     System.out.print(' ');
                 }
             }
+
             System.out.println();
 
             gapsCount /= 2; // При переходе на следующий уровень расстояние между элементами каждый раз уменьшается
