@@ -1,9 +1,6 @@
 package ru.academits.dashiev.hash_table_main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import ru.academits.dashiev.hash_table.HashTable;
 
@@ -55,7 +52,25 @@ public class Main {
 
         System.out.println("hashTable1.isEmpty(): " + hashTable1.isEmpty());
 
-        System.out.println("hashTable1.iterator() реализован в ф-ии showHashTable");
+
+
+
+
+        // TODO проверить
+        System.out.print("hashTable1.iterator(): ");
+
+        Iterator<Integer> iterator = hashTable1.iterator();
+
+        for(Iterator <Integer> i = hashTable1.stream().iterator(); i.hasNext(); ){
+            Integer item = i.next();
+            System.out.print(item + " ");
+        }
+
+        System.out.println();
+
+
+
+
 
         System.out.print("Object[] array = hashTable1.toArray(), array: ");
         Object[] array = hashTable1.toArray();
