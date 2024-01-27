@@ -1,10 +1,10 @@
 package ru.academits.dashiev.tree_main;
 
-import ru.academits.dashiev.tree.Tree;
 import ru.academits.dashiev.shapes.Circle;
 import ru.academits.dashiev.shapes.Square;
 import ru.academits.dashiev.shapes.Triangle;
 import ru.academits.dashiev.shapes_comparators.AreaComparator;
+import ru.academits.dashiev.tree.Tree;
 
 public class Main {
     private static <E> void deleteAndPrint(Tree<E> tree, E deletableElement) {
