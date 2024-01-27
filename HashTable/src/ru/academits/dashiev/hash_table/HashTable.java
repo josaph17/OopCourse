@@ -2,18 +2,18 @@ package ru.academits.dashiev.hash_table;
 
 import java.util.*;
 
-public class MyHashTable<E> implements Collection<E> {
+public class HashTable<E> implements Collection<E> {
     private static final int DEFAULT_CAPACITY = 10; // константа для размера массива по умолчанию
 
     private final LinkedList<E>[] lists; // это точно правильно, Массив односвязных списков
     private int size; // кол-во эл-в
     private int modCount; // кол-во изменений
 
-    public MyHashTable() {
+    public HashTable() {
         this(DEFAULT_CAPACITY);
     }
 
-    public MyHashTable(int capacity) {
+    public HashTable(int capacity) {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Illegal capacity value. Capacity should be > 0. Capacity = " + capacity);
         }

@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import ru.academits.dashiev.hash_table.MyHashTable;
+import ru.academits.dashiev.hash_table.HashTable;
 
 public class Main {
     public static void main(String[] args) {
-        MyHashTable<Integer> hashTable1 = new MyHashTable<>(15);
+        HashTable<Integer> hashTable1 = new HashTable<>(15);
 
         Integer elementToAdd = 421;
 
@@ -82,7 +82,7 @@ public class Main {
 
         hashTable1.remove(elementToRemove);
 
-        MyHashTable<Integer> hashTable2 = new MyHashTable<>(25);
+        HashTable<Integer> hashTable2 = new HashTable<>(25);
 
         hashTable2.add(543);
         hashTable2.add(1);
@@ -101,7 +101,7 @@ public class Main {
 
         System.out.println("HashTable2 after removeAll: " + hashTable2);
 
-        MyHashTable<Integer> hashTable3 = new MyHashTable<>(20);
+        HashTable<Integer> hashTable3 = new HashTable<>(20);
         hashTable3.add(78);
         hashTable3.add(6545);
         hashTable3.add(54);
