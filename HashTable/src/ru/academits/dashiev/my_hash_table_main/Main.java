@@ -1,12 +1,14 @@
-package ru.academits.dashiev.hash_table_main;
+package ru.academits.dashiev.my_hash_table_main;
 
-import ru.academits.dashiev.hash_table.HashTable;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import ru.academits.dashiev.my_hash_table.MyHashTable;
 
 public class Main {
     public static void main(String[] args) {
-        HashTable<Integer> hashTable1 = new HashTable<>(15);
+        MyHashTable<Integer> hashTable1 = new MyHashTable<>(15);
 
         Integer elementToAdd = 421;
 
@@ -18,7 +20,7 @@ public class Main {
         hashTable1.add(elementToAdd2);
         hashTable1.add(elementToAdd3);
 
-        System.out.println("hashTable1 after add elements "+ elementToAdd2 + ", " + elementToAdd3 + ": " + hashTable1);
+        System.out.println("hashTable1 after add elements " + elementToAdd2 + ", " + elementToAdd3 + ": " + hashTable1);
 
         System.out.println("hashTable1 size = " + hashTable1.size());
 
@@ -39,7 +41,7 @@ public class Main {
         hashTable1.add(elementToAdd4);
         hashTable1.add(elementToAdd5);
         hashTable1.add(elementToAdd6);
-        System.out.println("hashTable1 after add "+ elementToAdd4 + ", " + elementToAdd5 +", " + elementToAdd6 +": " + hashTable1);
+        System.out.println("hashTable1 after add " + elementToAdd4 + ", " + elementToAdd5 + ", " + elementToAdd6 + ": " + hashTable1);
 
         Integer objectForCheckToContain = 778;
 
@@ -79,7 +81,7 @@ public class Main {
 
         hashTable1.remove(elementToRemove);
 
-        HashTable<Integer> hashTable2 = new HashTable<>(25);
+        MyHashTable<Integer> hashTable2 = new MyHashTable<>(25);
 
         hashTable2.add(543);
         hashTable2.add(1);
@@ -98,7 +100,7 @@ public class Main {
 
         System.out.println("HashTable2 after removeAll: " + hashTable2);
 
-        HashTable<Integer> hashTable3 = new HashTable<>(20);
+        MyHashTable<Integer> hashTable3 = new MyHashTable<>(20);
         hashTable3.add(78);
         hashTable3.add(6545);
         hashTable3.add(54);
