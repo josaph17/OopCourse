@@ -11,7 +11,7 @@ public class Kelvin implements Scale {
         return basicTemperature + 273.15;
     }
 
-    public String toString(){
+    public String toString() {
         return "Kelvin";
     }
 }

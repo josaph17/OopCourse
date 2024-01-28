@@ -118,9 +118,9 @@ public class View {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() == convertButton) {
-                        try{
+                        try {
                             double inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
-                        } catch (NumberFormatException exception){
+                        } catch (NumberFormatException exception) {
                             showWrongInputError();
                         }
 
@@ -135,8 +135,6 @@ public class View {
     }
 
     public void showWrongInputError() {
-        JOptionPane.showOptionDialog(null, "Input wrong value! Input number", "Input error",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-                warningIcon, null, 0);
+        JOptionPane.showOptionDialog(null, "Input wrong value! Input number", "Input error", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, warningIcon, null, 0);
     }
 }

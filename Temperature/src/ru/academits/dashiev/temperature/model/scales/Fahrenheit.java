@@ -11,7 +11,7 @@ public class Fahrenheit implements Scale {
         return basicTemperature * (9.0 / 5.0) + 32;
     }
 
-    public String toString(){
+    public String toString() {
         return "Fahrenheit";
     }
 }
