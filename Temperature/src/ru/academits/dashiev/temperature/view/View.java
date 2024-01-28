@@ -1,32 +1,23 @@
 package ru.academits.dashiev.temperature.view;
 
-import ru.academits.dashiev.temperature.model.Model;
+import ru.academits.dashiev.temperature.model.Converter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 
 public class View {
-    private JFrame frame;
-    private JPanel panel1;
-    private JPanel panel2;
-    private JPanel panel3;
-    private JPanel panel4;
-    private JPanel panel5;
     private JTextField inputTemperatureField;
     private JTextField outputTemperatureField;
-    private JLabel inputTemperatureAndChooseUnitLabel;
-    private JLabel outputTemperatureAndChooseUnitLabel;
-    private JButton convertButton;
+    @SuppressWarnings("rawtypes")
     private JComboBox inputTemperatureComboBox;
+    @SuppressWarnings("rawtypes")
     private JComboBox outputTemperatureComboBox;
-    private ImageIcon convertButtonIcon;
-    private Image appIcon;
-    private ImageIcon warningIcon;
 
-    public View(Model model) {
+    ImageIcon warningIcon;
+
+    public View(Converter model) {
         SwingUtilities.invokeLater(() -> {
             try {
                 // setLookAndFeel это Тема оформления
@@ -37,45 +28,45 @@ public class View {
 
             String appName = "My temperature app";
 
-            frame = new JFrame(appName);
+            JFrame frame = new JFrame(appName);
             frame.setSize(500, 300);
             frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS)); // Layout manager
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // frame close on exit
             frame.setResizable(false); // not change frame size
             frame.setVisible(true);
 
-            panel1 = new JPanel();
-            panel1.setBounds(0, 0, 500, 30);
-            panel1.setBackground(new Color(255, 255, 255, 161));
-            panel1.revalidate(); // to check valid
-            panel1.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JPanel applicationPart1 = new JPanel();
+            applicationPart1.setBounds(0, 0, 500, 30);
+            applicationPart1.setBackground(new Color(255, 255, 255, 161));
+            applicationPart1.revalidate(); // to check valid
+            applicationPart1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            panel2 = new JPanel();
-            panel2.setBounds(0, 0, 500, 120);
-            panel2.setBackground(new Color(255, 255, 255, 161));
-            panel2.revalidate();
-            panel2.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JPanel applicationPart2 = new JPanel();
+            applicationPart2.setBounds(0, 0, 500, 120);
+            applicationPart2.setBackground(new Color(255, 255, 255, 161));
+            applicationPart2.revalidate();
+            applicationPart2.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            panel3 = new JPanel(); // не меняем
-            panel3.setBounds(0, 0, 500, 200);
-            panel3.setBackground(new Color(255, 255, 255, 161));
-            panel3.revalidate();
-            panel3.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JPanel applicationPart3 = new JPanel(); // не меняем
+            applicationPart3.setBounds(0, 0, 500, 200);
+            applicationPart3.setBackground(new Color(255, 255, 255, 161));
+            applicationPart3.revalidate();
+            applicationPart3.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            panel4 = new JPanel();
-            panel4.setBounds(0, 0, 500, 30);
-            panel4.setBackground(new Color(255, 255, 255, 161));
-            panel4.revalidate();
-            panel4.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JPanel applicationPart4 = new JPanel();
+            applicationPart4.setBounds(0, 0, 500, 30);
+            applicationPart4.setBackground(new Color(255, 255, 255, 161));
+            applicationPart4.revalidate();
+            applicationPart4.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            panel5 = new JPanel();
-            panel5.setBounds(0, 0, 500, 120);
-            panel5.setBackground(new Color(255, 255, 255, 161));
-            panel5.revalidate();
-            panel5.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JPanel applicationPart5 = new JPanel();
+            applicationPart5.setBounds(0, 0, 500, 120);
+            applicationPart5.setBackground(new Color(255, 255, 255, 161));
+            applicationPart5.revalidate();
+            applicationPart5.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            appIcon = Toolkit.getDefaultToolkit().getImage("appImg.png"); // create app icon
-            convertButtonIcon = new ImageIcon("change.png"); // convertButtonIcon
+            Image appIcon = Toolkit.getDefaultToolkit().getImage("appImg.png"); // create app icon
+            ImageIcon convertButtonIcon = new ImageIcon("change.png"); // convertButtonIcon
             warningIcon = new ImageIcon("attention.png");
 
             inputTemperatureField = new JTextField();
@@ -87,71 +78,60 @@ public class View {
             outputTemperatureField.setEditable(false);
 
             //button.addActionListener((e) -> button.setText("Ищу инструменты")); // button использовали замыкание
-            inputTemperatureAndChooseUnitLabel = new JLabel();
+            JLabel inputTemperatureAndChooseUnitLabel = new JLabel();
             inputTemperatureAndChooseUnitLabel.setText("Enter input value and choose temperature unit");
             inputTemperatureAndChooseUnitLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
-            outputTemperatureAndChooseUnitLabel = new JLabel();
+            JLabel outputTemperatureAndChooseUnitLabel = new JLabel();
             outputTemperatureAndChooseUnitLabel.setText("Choose temperature unit");
             outputTemperatureAndChooseUnitLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
-            convertButton = new JButton();
+            JButton convertButton = new JButton();
             convertButton.setText("Convert");
             convertButton.setIcon(convertButtonIcon);
 
-            inputTemperatureComboBox = new JComboBox(model.getUnits());
-            outputTemperatureComboBox = new JComboBox(model.getUnits());
+            //noinspection rawtypes
+            inputTemperatureComboBox = new JComboBox(model.getScalesString());
+            //noinspection rawtypes
+            outputTemperatureComboBox = new JComboBox(model.getScalesString());
 
             // add UI elements to Frame
             frame.setIconImage(appIcon);
 
             frame.getContentPane().setBackground(new Color(197, 197, 199, 161));
-            frame.add(panel1);
-            frame.add(panel2);
-            frame.add(panel3);
-            frame.add(panel4);
-            frame.add(panel5);
+            frame.add(applicationPart1);
+            frame.add(applicationPart2);
+            frame.add(applicationPart3);
+            frame.add(applicationPart4);
+            frame.add(applicationPart5);
 
-            panel1.add(inputTemperatureAndChooseUnitLabel);
-            panel2.add(inputTemperatureComboBox);
-            panel2.add(inputTemperatureField);
-            panel3.add(convertButton);
-            panel4.add(outputTemperatureAndChooseUnitLabel);
-            panel5.add(outputTemperatureComboBox);
-            panel5.add(outputTemperatureField);
+            applicationPart1.add(inputTemperatureAndChooseUnitLabel);
+            applicationPart2.add(inputTemperatureComboBox);
+            applicationPart2.add(inputTemperatureField);
+            applicationPart3.add(convertButton);
+            applicationPart4.add(outputTemperatureAndChooseUnitLabel);
+            applicationPart5.add(outputTemperatureComboBox);
+            applicationPart5.add(outputTemperatureField);
 
             // add ActionListener on convertButton
             convertButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() == convertButton) {
-                        // Обновил значение температуры
-                        try {
-                            model.setInputTemperature(Double.parseDouble((inputTemperatureField.getText())));
-                        } catch (NumberFormatException exception) {
+                        try{
+                            double inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
+                        } catch (NumberFormatException exception){
                             showWrongInputError();
-                            // остановить функцию, чтобы дальше не пошла исполняться
                         }
 
-                        // TODO Until there done
-                        try {
-                            double calculatedTemperature = model.getTemperatureFromInputToOutput((String) inputTemperatureComboBox.getSelectedItem(), (String) outputTemperatureComboBox.getSelectedItem());
+                        double calculatedTemperature = model.getTemperatureFromInputToOutput((String) inputTemperatureComboBox.getSelectedItem(), (String) outputTemperatureComboBox.getSelectedItem(), Double.parseDouble((inputTemperatureField.getText())));
 
-                            model.setOutputTemperature(calculatedTemperature);
-                        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException |
-                                 ClassNotFoundException | InstantiationException ex) {
-                            throw new RuntimeException(ex);
-                        }
 
-                        outputTemperatureField.setText(String.valueOf(model.getOutputTemperature()));
+                        outputTemperatureField.setText(Double.toString(calculatedTemperature));
                     }
                 }
             });
         });
-    }
-
-    public String getInputTemperature() {
-        return inputTemperatureField.getText();
     }
 
     public void showWrongInputError() {
