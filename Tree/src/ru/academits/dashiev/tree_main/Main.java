@@ -67,17 +67,20 @@ public class Main {
         System.out.println();
 
         System.out.println("bypassInWidth:");
-        tree.bypassInWidth(System.out::println);
+        // tree.bypassInWidth(System.out::println);
+        tree.bypassInWidth(e -> System.out.print(e + " "));
 
         System.out.println();
 
         System.out.println("bypassInDeep:");
-        tree.bypassInDeep(System.out::println);
+        tree.bypassInDeep(e -> System.out.print(e + " "));
 
         System.out.println();
 
         System.out.println("bypassInDeepRecursively:");
-        tree.bypassInDeepRecursively(System.out::println);
+        tree.bypassInDeepRecursively(e -> System.out.print(e + " "));
+        System.out.println();
+
         System.out.println();
 
         System.out.println("Check deleteNode function:");
