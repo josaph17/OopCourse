@@ -118,14 +118,15 @@ public class View {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() == convertButton) {
+                        double inputTemperature = 0.0;
+
                         try {
-                            double inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
+                            inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
                         } catch (NumberFormatException exception) {
                             showWrongInputError();
                         }
 
-                        double calculatedTemperature = model.getTemperatureFromInputToOutput((String) inputTemperatureComboBox.getSelectedItem(), (String) outputTemperatureComboBox.getSelectedItem(), Double.parseDouble((inputTemperatureField.getText())));
-
+                        double calculatedTemperature = model.getTemperatureFromInputToOutput((String) inputTemperatureComboBox.getSelectedItem(), (String) outputTemperatureComboBox.getSelectedItem(), inputTemperature);
 
                         outputTemperatureField.setText(Double.toString(calculatedTemperature));
                     }
