@@ -5,7 +5,7 @@ import java.util.*;
 public class HashTable<E> implements Collection<E> {
     private static final int DEFAULT_CAPACITY = 10; // константа для размера массива по умолчанию
 
-    private final ArrayList<E>[] lists; // это точно правильно, Массив односвязных списков
+    private final ArrayList<E>[] lists;
     private int size; // кол-во эл-в
     private int modCount; // кол-во изменений
 
@@ -256,7 +256,7 @@ public class HashTable<E> implements Collection<E> {
         return sb.toString();
     }
 
-    private class MyHashTableIterator implements java.util.Iterator<E> {
+    private class HashTableIterator implements java.util.Iterator<E> {
         private int initialModCount = modCount;
 
         private int hashTableItemIndex = -1; // индекс элемента во всей таблице
@@ -320,6 +320,6 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new MyHashTableIterator();
+        return new HashTableIterator();
     }
 }

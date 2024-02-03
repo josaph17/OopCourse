@@ -52,25 +52,14 @@ public class Main {
 
         System.out.println("hashTable1.isEmpty(): " + hashTable1.isEmpty());
 
-
-
-
-
-        // TODO проверить
         System.out.print("hashTable1.iterator(): ");
 
-        Iterator<Integer> iterator = hashTable1.iterator();
-
-        for(Iterator <Integer> i = hashTable1.stream().iterator(); i.hasNext(); ){
-            Integer item = i.next();
+        for (Iterator<Integer> iterator = hashTable1.stream().iterator(); iterator.hasNext(); ) {
+            Integer item = iterator.next();
             System.out.print(item + " ");
         }
 
         System.out.println();
-
-
-
-
 
         System.out.print("Object[] array = hashTable1.toArray(), array: ");
         Object[] array = hashTable1.toArray();
