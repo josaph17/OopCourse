@@ -175,8 +175,22 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        checkConstructors();
-        checkNonStaticMethods();
-        checkStaticMethods();
+//        checkConstructors();
+//        checkNonStaticMethods();
+//        checkStaticMethods();
+
+        System.out.println("-- Конструкторы --");
+        System.out.println();
+
+        int rowsCount = 0;
+        int columnsCount = 0;
+
+        Matrix sizeMatrix = new Matrix(rowsCount, columnsCount);
+
+        System.out.println("a.Конструктор матрица нулей размера nxm:");
+        System.out.println(
+                "Rows count = " + sizeMatrix.getRowsCount() + " , columns count = " + sizeMatrix.getColumnsCount());
+
+        double[][] array = {{0.9, 2.1, 5.2, 4.2}, {3, 42.7, 6.5}, {321, 7.1, 43.9, 111.3}};
     }
 }
