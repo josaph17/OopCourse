@@ -256,7 +256,7 @@ public class HashTable<E> implements Collection<E> {
         return sb.toString();
     }
 
-    private class HashTableIterator implements java.util.Iterator<E> {
+    private class HashTableIterator implements Iterator<E> {
         private int initialModCount = modCount;
 
         private int hashTableItemIndex = -1; // индекс элемента во всей таблице

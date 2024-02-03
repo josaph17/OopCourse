@@ -54,7 +54,7 @@ public class Main {
 
         System.out.print("hashTable1.iterator(): ");
 
-        for (Iterator<Integer> iterator = hashTable1.stream().iterator(); iterator.hasNext(); ) {
+        for (Iterator<Integer> iterator = hashTable1.iterator(); iterator.hasNext(); ) {
             Integer item = iterator.next();
             System.out.print(item + " ");
         }
