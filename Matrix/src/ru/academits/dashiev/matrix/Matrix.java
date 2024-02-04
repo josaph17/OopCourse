@@ -131,7 +131,7 @@ public class Matrix {
         for (int i = 0; i < matrix1.rows.length; i++) {
             productsVectors[i] = new Vector(matrix2.rows[0].getSize());
 
-            for (int j = 0; j < matrix2.rows[i].getSize(); j++) {
+            for (int j = 0; j < matrix2.rows[0].getSize(); j++) {
                 productsVectors[i].setComponent(j, Vector.getScalarProduct(matrix1.rows[i], matrix2.getColumn(j)));
             }
         }

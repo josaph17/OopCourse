@@ -175,8 +175,40 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        checkConstructors();
-        checkNonStaticMethods();
-        checkStaticMethods();
+//        checkConstructors();
+//        checkNonStaticMethods();
+//        checkStaticMethods();
+
+        System.out.println("c.Умножение матриц:");
+
+        double[][] array2 = { //
+                {1, -1}, //
+                {2,0}, //
+                {3,0} //
+        };
+
+        double[][] array1 = { //
+                {1, 1}, //
+                {2,0}, //
+        };
+
+        double[][] array3 = { //
+                {2, 1}, //
+                {-3,0}, //
+                {4,-1} //
+        };
+
+        double[][] array4 = { //
+                {5, -1, 6}, //
+                {-3,0,7}, //
+        };
+
+        Matrix matrix5 = new Matrix(array1);
+
+        Matrix matrix6 = new Matrix(array2);
+
+        Matrix multiplyMatrix = Matrix.getProduct(matrix5, matrix6);
+
+        System.out.println(multiplyMatrix);
     }
 }
