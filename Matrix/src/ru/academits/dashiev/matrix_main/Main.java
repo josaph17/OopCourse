@@ -147,7 +147,7 @@ public class Main {
         System.out.println("a.Сложение матриц:");
         System.out.println(matrix3);
 
-        Matrix matrix4 = Matrix.getSubtractionResult(matrix3, matrix2);
+        Matrix matrix4 = Matrix.getDifference(matrix3, matrix2);
 
         System.out.println("b.Вычитание матриц:");
         System.out.println(matrix4);
@@ -156,7 +156,7 @@ public class Main {
 
         double[][] array2 = { //
                 {6, 5, 7.01, 22.0}, //
-                {32.1, 98, 5.5, 0.0}, //
+                {32.1, 98, 5.5, 0.0} //
         };
 
         double[][] array3 = { //
@@ -169,28 +169,14 @@ public class Main {
 
         Matrix matrix6 = new Matrix(array3);
 
-        Matrix multiplyMatrix = Matrix.getMultiplicationResult(matrix5, matrix6);
+        Matrix multiplyMatrix = Matrix.getProduct(matrix5, matrix6);
 
         System.out.println(multiplyMatrix);
     }
 
     public static void main(String[] args) {
-//        checkConstructors();
-//        checkNonStaticMethods();
-//        checkStaticMethods();
-
-        System.out.println("-- Конструкторы --");
-        System.out.println();
-
-        int rowsCount = 0;
-        int columnsCount = 0;
-
-        Matrix sizeMatrix = new Matrix(rowsCount, columnsCount);
-
-        System.out.println("a.Конструктор матрица нулей размера nxm:");
-        System.out.println(
-                "Rows count = " + sizeMatrix.getRowsCount() + " , columns count = " + sizeMatrix.getColumnsCount());
-
-        double[][] array = {{0.9, 2.1, 5.2, 4.2}, {3, 42.7, 6.5}, {321, 7.1, 43.9, 111.3}};
+        checkConstructors();
+        checkNonStaticMethods();
+        checkStaticMethods();
     }
 }
