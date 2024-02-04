@@ -252,7 +252,6 @@ public class BinaryTree<E> {
         }
 
         // Узнаем есть ли вообще nodeToDelete
-
         boolean isRightChild = false; // Про тот узел, который надо удалить
 
         if (nodeToDeleteParent == null) {
@@ -325,7 +324,6 @@ public class BinaryTree<E> {
                 nodeToDeleteParent.setRight(rootToDeleteSubTree);
 
                 rootToDeleteSubTree.setLeft(nodeToDelete.getLeft());
-
             } else {
                 /* assert IDEA подсказала так сделать, чтобы не было "Method invocation 'setLeft' may produce
                 'NullPointerException'". Это проверка некоторого условия, которое, по идее, никогда не должно нарушаться.
