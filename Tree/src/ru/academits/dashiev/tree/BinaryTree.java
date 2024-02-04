@@ -6,21 +6,21 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-public class Tree<E> {
+public class BinaryTree<E> {
     private TreeNode<E> root;
     private int size;
 
     private Comparator<E> comparator;
 
-    public Tree() { // конструктор без компаратора
+    public BinaryTree() { // Конструктор без компаратора
     }
 
-    public Tree(Comparator<E> comparator) { // конструктор с компаратором
+    public BinaryTree(Comparator<E> comparator) { // Конструктор с компаратором
         this.comparator = comparator;
     }
 
     @SafeVarargs
-    public Tree(Comparator<E> comparator, E... elements) {
+    public BinaryTree(Comparator<E> comparator, E... elements) {
         this.comparator = comparator;
 
         for (E element : elements) {
@@ -45,13 +45,13 @@ public class Tree<E> {
             return 1;
         }
 
-        //Если для дерева используют конструктор без компаратора, то для сравнения нужно приводить
-        // данные к Comparable<T> и вызывать метод compareTo оттуда
+        // Если для дерева используют конструктор без компаратора, то для сравнения нужно приводить
+        // Данные к Comparable<T> и вызывать метод compareTo оттуда
 
         @SuppressWarnings("unchecked")
-        Comparable<E> сomparable = (Comparable<E>) data1;
+        Comparable<E> comparable = (Comparable<E>) data1;
 
-        return сomparable.compareTo(data2);
+        return comparable.compareTo(data2);
     }
 
     public void add(E data) {
@@ -60,18 +60,18 @@ public class Tree<E> {
 
             size++;
 
-            return; // обязательно, чтобы код ниже не выполнялся
+            return; // Обязательно, чтобы код ниже не выполнялся
         }
 
         TreeNode<E> currentNode = root;
 
-        while (true) { // если значения будут повторяться, то ветка перейдет вправо
-            if (compare(currentNode.getData(), data) > 0) { // из лекции если x<узла 18 стр., equals можно заменить на compare,
-                // если у Объекта Comparable, equals они равны или не равны
+        while (true) { // Если значения будут повторяться, то ветка перейдет вправо
+            if (compare(currentNode.getData(), data) > 0) { // Из лекции если x<узла 18 стр., equals можно заменить на compare,
+                // Если у Объекта Comparable, equals они равны или не равны
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
                 } else {
-                    currentNode.setLeft(new TreeNode<>(data)); // вставляем data как левого сына
+                    currentNode.setLeft(new TreeNode<>(data)); // Вставляем data как левого сына
 
                     size++;
 
@@ -81,7 +81,7 @@ public class Tree<E> {
                 if (currentNode.getRight() != null) {
                     currentNode = currentNode.getRight();
                 } else {
-                    currentNode.setRight(new TreeNode<>(data)); // вставляем data как правого сына
+                    currentNode.setRight(new TreeNode<>(data)); // Вставляем data как правого сына
 
                     size++;
 
@@ -102,16 +102,16 @@ public class Tree<E> {
 
         Queue<TreeNode<E>> queue = new LinkedList<>();
 
-        // положить в очередь в очередь корень дерева, false если не получается вставить
+        // Положить в очередь в очередь корень дерева, false если не получается вставить
         queue.offer(root);
 
-        while (!queue.isEmpty()) { // пока очередь не пус та
-            TreeNode<E> node = queue.poll(); // достаем первый элемент из очереди и удаляем его
+        while (!queue.isEmpty()) { // Пока очередь не пус та
+            TreeNode<E> node = queue.poll(); // Достаем первый элемент из очереди и удаляем его
 
             consumer.accept(node.getData());
 
             if (node.getLeft() != null) {
-                queue.offer(node.getLeft()); //добавить эл-т
+                queue.offer(node.getLeft()); // Добавить эл-т
             }
 
             if (node.getRight() != null) {
@@ -127,15 +127,15 @@ public class Tree<E> {
 
         Deque<TreeNode<E>> stack = new LinkedList<>();
 
-        // положить в очередь в очередь корень дерева, false если не получается вставить
+        // Положить в очередь в очередь корень дерева, false если не получается вставить
         stack.addLast(root);
 
-        while (!stack.isEmpty()) { // пока очередь не пуста
-            TreeNode<E> node = stack.removeLast(); // достаем последний элемент из stack и удаляем его
+        while (!stack.isEmpty()) { // Пока очередь не пуста
+            TreeNode<E> node = stack.removeLast(); // Достаем последний элемент из stack и удаляем его
 
             consumer.accept(node.getData());
 
-            if (node.getRight() != null) { // добавляем детей в обратном порядке
+            if (node.getRight() != null) { // Добавляем детей в обратном порядке
                 stack.addLast(node.getRight());
             }
 
@@ -154,10 +154,8 @@ public class Tree<E> {
     }
 
     // Это перегрузка функции bypassInDeepRecursively?
-    private void bypassInDeepRecursively(TreeNode<E> node, Consumer<? super E> consumer) { // private, чтобы не вызвать извне
+    private void bypassInDeepRecursively(TreeNode<E> node, Consumer<? super E> consumer) {
         consumer.accept(node.getData());
-
-        // System.out.print(node.getData() + " ");
 
         if (node.getLeft() != null) {
             bypassInDeepRecursively(node.getLeft(), consumer);
@@ -253,7 +251,7 @@ public class Tree<E> {
             nodeToDeleteParent = findNodeParent(data);
         }
 
-        //Узнаем есть ли вообще nodeToDelete
+        // Узнаем есть ли вообще nodeToDelete
 
         boolean isRightChild = false; // Про тот узел, который надо удалить
 
@@ -302,9 +300,9 @@ public class Tree<E> {
             if (nodeToDelete == root) {
                 root = notNullChild;
             } else if (isRightChild) {
-                // удаляемый элемент не null и он точно справа
+                // Удаляемый элемент не null и он точно справа
                 nodeToDeleteParent.setRight(notNullChild);
-            } else { // удаляемый элемент не null и он точно слева
+            } else { // Удаляемый элемент не null и он точно слева
                 assert nodeToDeleteParent != null;
                 nodeToDeleteParent.setLeft(notNullChild);
             }
@@ -329,9 +327,9 @@ public class Tree<E> {
                 rootToDeleteSubTree.setLeft(nodeToDelete.getLeft());
 
             } else {
-                /*assert IDEA подсказала так сделать, чтобы не было "Method invocation 'setLeft' may produce
+                /* assert IDEA подсказала так сделать, чтобы не было "Method invocation 'setLeft' may produce
                 'NullPointerException'". Это проверка некоторого условия, которое, по идее, никогда не должно нарушаться.
-                Если условие все же окажется ложным, то будет брошено исключение*/
+                Если условие все же окажется ложным, то будет брошено исключение */
                 assert nodeToDeleteParent != null;
                 nodeToDeleteParent.setLeft(rootToDeleteSubTree);
 
@@ -348,15 +346,15 @@ public class Tree<E> {
 
         // Находим самый левый элемент
         while (minLastNode.getLeft() != null) {
-            minLastNodeParent = minLastNode; // -- нашли minLastNodeParent
+            minLastNodeParent = minLastNode; // -- Нашли minLastNodeParent
 
-            minLastNode = minLastNodeParent.getLeft(); // -- нашли minLastNode
+            minLastNode = minLastNodeParent.getLeft(); // -- Нашли minLastNode
         }
 
         minLastNodeParent.setLeft(minLastNode.getRight());
 
         minLastNode.setLeft(nodeToDelete.getLeft());
-        minLastNode.setRight(nodeToDelete.getRight()); // привязываем детей nodeToDelete к minLastNode
+        minLastNode.setRight(nodeToDelete.getRight()); // Привязываем детей nodeToDelete к minLastNode
 
         if (nodeToDelete == root) {
             root = minLastNode;
@@ -414,8 +412,9 @@ public class Tree<E> {
 
             gapsCount /= 2; // При переходе на следующий уровень расстояние между элементами каждый раз уменьшается
 
-            while (!localStack.isEmpty())
+            while (!localStack.isEmpty()) {
                 globalStack.push(localStack.removeLast()); // Перемещаем все элементы из локального стека в глобальный
+            }
         }
     }
 }
