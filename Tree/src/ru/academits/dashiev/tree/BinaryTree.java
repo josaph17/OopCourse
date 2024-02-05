@@ -312,35 +312,31 @@ public class BinaryTree<E> {
         }
 
         // 3. Удаление узла - c двумя детьми
-        TreeNode<E> rootToDeleteSubTree = nodeToDelete.getRight();
+        TreeNode<E> rightSubTree = nodeToDelete.getRight();
 
         // В правом поддереве у узла нет левого ребенка
-        if (rootToDeleteSubTree.getLeft() == null) {
+        if (rightSubTree.getLeft() == null) {
             if (nodeToDelete == root) {
-                rootToDeleteSubTree.setLeft(root.getLeft());
-
-                root = rootToDeleteSubTree;
+                root = rightSubTree;
             } else if (isRightChild) {
-                nodeToDeleteParent.setRight(rootToDeleteSubTree);
-
-                rootToDeleteSubTree.setLeft(nodeToDelete.getLeft());
+                nodeToDeleteParent.setRight(rightSubTree);
             } else {
                 /* assert IDEA подсказала так сделать, чтобы не было "Method invocation 'setLeft' may produce
                 'NullPointerException'". Это проверка некоторого условия, которое, по идее, никогда не должно нарушаться.
                 Если условие все же окажется ложным, то будет брошено исключение */
                 assert nodeToDeleteParent != null;
-                nodeToDeleteParent.setLeft(rootToDeleteSubTree);
-
-                rootToDeleteSubTree.setLeft(nodeToDelete.getLeft());
+                nodeToDeleteParent.setLeft(rightSubTree);
             }
+
+            rightSubTree.setLeft(nodeToDelete.getLeft());
 
             size--;
 
             return true;
         }
 
-        TreeNode<E> minLastNodeParent = rootToDeleteSubTree;
-        TreeNode<E> minLastNode = rootToDeleteSubTree.getLeft();
+        TreeNode<E> minLastNodeParent = rightSubTree;
+        TreeNode<E> minLastNode = rightSubTree.getLeft();
 
         // Находим самый левый элемент
         while (minLastNode.getLeft() != null) {
