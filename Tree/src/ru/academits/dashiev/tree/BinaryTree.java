@@ -209,7 +209,7 @@ public class BinaryTree<E> {
                 return  parentNode;
             }
 
-            if (comprasionResult >= 0) {
+            if (comprasionResult > 0) {
                 if (currentNode.getLeft() != null) {
                     parentNode = currentNode;
                     currentNode = currentNode.getLeft();
