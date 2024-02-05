@@ -10,12 +10,9 @@ import java.awt.event.ActionListener;
 public class View {
     private JTextField inputTemperatureField;
     private JTextField outputTemperatureField;
-    @SuppressWarnings("rawtypes")
-    private JComboBox inputTemperatureComboBox;
-    @SuppressWarnings("rawtypes")
-    private JComboBox outputTemperatureComboBox;
-
-    ImageIcon warningIcon;
+    private JComboBox<String> inputScalesNamesComboBox;
+    private JComboBox<String> outputScalesNamesComboBox;
+    private ImageIcon warningIcon;
 
     public View(Converter model) {
         SwingUtilities.invokeLater(() -> {
@@ -35,35 +32,35 @@ public class View {
             frame.setResizable(false); // not change frame size
             frame.setVisible(true);
 
-            JPanel applicationPart1 = new JPanel();
-            applicationPart1.setBounds(0, 0, 500, 30);
-            applicationPart1.setBackground(new Color(255, 255, 255, 161));
-            applicationPart1.revalidate(); // to check valid
-            applicationPart1.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JPanel guide1Panel = new JPanel();
+            guide1Panel.setBounds(0, 0, 500, 30);
+            guide1Panel.setBackground(new Color(255, 255, 255, 161));
+            guide1Panel.revalidate(); // to check valid
+            guide1Panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            JPanel applicationPart2 = new JPanel();
-            applicationPart2.setBounds(0, 0, 500, 120);
-            applicationPart2.setBackground(new Color(255, 255, 255, 161));
-            applicationPart2.revalidate();
-            applicationPart2.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JPanel inputScaleAndTemperaturePanel = new JPanel();
+            inputScaleAndTemperaturePanel.setBounds(0, 0, 500, 120);
+            inputScaleAndTemperaturePanel.setBackground(new Color(255, 255, 255, 161));
+            inputScaleAndTemperaturePanel.revalidate();
+            inputScaleAndTemperaturePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            JPanel applicationPart3 = new JPanel(); // не меняем
-            applicationPart3.setBounds(0, 0, 500, 200);
-            applicationPart3.setBackground(new Color(255, 255, 255, 161));
-            applicationPart3.revalidate();
-            applicationPart3.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JPanel convertButtonPanel = new JPanel(); // не меняем
+            convertButtonPanel.setBounds(0, 0, 500, 200);
+            convertButtonPanel.setBackground(new Color(255, 255, 255, 161));
+            convertButtonPanel.revalidate();
+            convertButtonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            JPanel applicationPart4 = new JPanel();
-            applicationPart4.setBounds(0, 0, 500, 30);
-            applicationPart4.setBackground(new Color(255, 255, 255, 161));
-            applicationPart4.revalidate();
-            applicationPart4.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JPanel guide2Panel = new JPanel();
+            guide2Panel.setBounds(0, 0, 500, 30);
+            guide2Panel.setBackground(new Color(255, 255, 255, 161));
+            guide2Panel.revalidate();
+            guide2Panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            JPanel applicationPart5 = new JPanel();
-            applicationPart5.setBounds(0, 0, 500, 120);
-            applicationPart5.setBackground(new Color(255, 255, 255, 161));
-            applicationPart5.revalidate();
-            applicationPart5.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JPanel outputScaleAndTemperaturePanel = new JPanel();
+            outputScaleAndTemperaturePanel.setBounds(0, 0, 500, 120);
+            outputScaleAndTemperaturePanel.setBackground(new Color(255, 255, 255, 161));
+            outputScaleAndTemperaturePanel.revalidate();
+            outputScaleAndTemperaturePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             Image appIcon = Toolkit.getDefaultToolkit().getImage("appImg.png"); // create app icon
             ImageIcon convertButtonIcon = new ImageIcon("change.png"); // convertButtonIcon
@@ -90,28 +87,26 @@ public class View {
             convertButton.setText("Convert");
             convertButton.setIcon(convertButtonIcon);
 
-            //noinspection rawtypes
-            inputTemperatureComboBox = new JComboBox(model.getScalesString());
-            //noinspection rawtypes
-            outputTemperatureComboBox = new JComboBox(model.getScalesString());
+            inputScalesNamesComboBox = new JComboBox<>(model.getScalesArray());
+            outputScalesNamesComboBox = new JComboBox<>(model.getScalesArray());
 
             // add UI elements to Frame
             frame.setIconImage(appIcon);
 
             frame.getContentPane().setBackground(new Color(197, 197, 199, 161));
-            frame.add(applicationPart1);
-            frame.add(applicationPart2);
-            frame.add(applicationPart3);
-            frame.add(applicationPart4);
-            frame.add(applicationPart5);
+            frame.add(guide1Panel);
+            frame.add(inputScaleAndTemperaturePanel);
+            frame.add(convertButtonPanel);
+            frame.add(guide2Panel);
+            frame.add(outputScaleAndTemperaturePanel);
 
-            applicationPart1.add(inputTemperatureAndChooseUnitLabel);
-            applicationPart2.add(inputTemperatureComboBox);
-            applicationPart2.add(inputTemperatureField);
-            applicationPart3.add(convertButton);
-            applicationPart4.add(outputTemperatureAndChooseUnitLabel);
-            applicationPart5.add(outputTemperatureComboBox);
-            applicationPart5.add(outputTemperatureField);
+            guide1Panel.add(inputTemperatureAndChooseUnitLabel);
+            inputScaleAndTemperaturePanel.add(inputScalesNamesComboBox);
+            inputScaleAndTemperaturePanel.add(inputTemperatureField);
+            convertButtonPanel.add(convertButton);
+            guide2Panel.add(outputTemperatureAndChooseUnitLabel);
+            outputScaleAndTemperaturePanel.add(outputScalesNamesComboBox);
+            outputScaleAndTemperaturePanel.add(outputTemperatureField);
 
             // add ActionListener on convertButton
             convertButton.addActionListener(new ActionListener() {
@@ -126,16 +121,16 @@ public class View {
                             showWrongInputError();
                         }
 
-                        double calculatedTemperature = model.getTemperatureFromInputToOutput((String) inputTemperatureComboBox.getSelectedItem(), (String) outputTemperatureComboBox.getSelectedItem(), inputTemperature);
+                        double outputTemperature = model.convertTemperatureFromInputToOutput((String) inputScalesNamesComboBox.getSelectedItem(), (String) outputScalesNamesComboBox.getSelectedItem(), inputTemperature);
 
-                        outputTemperatureField.setText(Double.toString(calculatedTemperature));
+                        outputTemperatureField.setText(Double.toString(outputTemperature));
                     }
                 }
             });
         });
     }
 
-    public void showWrongInputError() {
+    private void showWrongInputError() {
         JOptionPane.showOptionDialog(null, "Input wrong value! Input number", "Input error", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, warningIcon, null, 0);
     }
 }

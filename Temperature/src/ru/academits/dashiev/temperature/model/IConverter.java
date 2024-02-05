@@ -1,7 +1,7 @@
 package ru.academits.dashiev.temperature.model;
 
 public interface IConverter {
-    public String[] getScalesString();
+    public String[] getScalesArray();
 
-    public double getTemperatureFromInputToOutput(String inputTemperatureName, String outputTemperatureName, double inputTemperature);
+    public double convertTemperatureFromInputToOutput(String inputScaleName, String outputScaleName, double inputTemperature);
 }
