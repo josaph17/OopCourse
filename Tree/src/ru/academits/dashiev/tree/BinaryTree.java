@@ -200,20 +200,19 @@ public class BinaryTree<E> {
     private TreeNode<E> findNodeParent(E data) {
         // Вместо findNodeToDeleteParent переименовали в findNodeParent
         TreeNode<E> currentNode = root;
-        TreeNode<E> parentNode;
+        TreeNode<E> parentNode = currentNode;
 
         while (true) {
             int comprasionResult = compare(currentNode.getData(), data);
 
+            if (comprasionResult == 0){
+                return  parentNode;
+            }
+
             if (comprasionResult >= 0) {
                 if (currentNode.getLeft() != null) {
-                    if (compare(currentNode.getLeft().getData(), data) == 0) {
-                        parentNode = currentNode;
-                        return parentNode;
-                    }
-
-                    currentNode = currentNode.getLeft();
                     parentNode = currentNode;
+                    currentNode = currentNode.getLeft();
 
                     // То этот элемент точно null
                     continue;
@@ -223,15 +222,9 @@ public class BinaryTree<E> {
             }
 
             if (currentNode.getRight() != null) {
-                if (compare(currentNode.getRight().getData(), data) == 0) {
-                    parentNode = currentNode;
-                    return parentNode;
-                }
-
-                currentNode = currentNode.getRight();
                 parentNode = currentNode;
+                currentNode = currentNode.getRight();
             } else {
-                // Нет такого элемента
                 return null;
             }
         }
