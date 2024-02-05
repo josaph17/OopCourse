@@ -10,7 +10,7 @@ public class Converter implements IConverter {
     }
 
     @Override
-    public String[] getScalesString() {
+    public String[] getScalesArray() {
         String[] stringScales = new String[scales.length];
 
         for (int i = 0; i < scales.length; i++) {
@@ -21,11 +21,11 @@ public class Converter implements IConverter {
     }
 
     @Override
-    public double getTemperatureFromInputToOutput(String inputTemperatureName, String outputTemperatureName, double inputTemperature) {
+    public double convertTemperatureFromInputToOutput(String inputScaleName, String outputScaleName, double inputTemperature) {
         double convertToCelsiusResult = 0.0;
 
         for (int i = 0; i < scales.length; i++) {
-            if (inputTemperatureName.equals(scales[i].toString())) {
+            if (inputScaleName.equals(scales[i].toString())) {
                 convertToCelsiusResult = scales[i].convertToCelsius(inputTemperature);
             }
         }
@@ -33,7 +33,7 @@ public class Converter implements IConverter {
         double convertFromCelsiusResult = 0.0;
 
         for (int i = 0; i < scales.length; i++) {
-            if (outputTemperatureName.equals(scales[i].toString())) {
+            if (outputScaleName.equals(scales[i].toString())) {
                 convertFromCelsiusResult = scales[i].convertFromCelsius(convertToCelsiusResult);
             }
         }
