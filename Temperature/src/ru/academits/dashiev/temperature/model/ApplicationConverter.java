@@ -30,7 +30,7 @@ public class ApplicationConverter implements Converter {
 
                 break;
             } else {
-                throw new IllegalArgumentException("There is no such input Scale name!");
+                throw new IllegalArgumentException("There is no such scale name in all scales list!");
             }
         }
 
@@ -42,7 +42,7 @@ public class ApplicationConverter implements Converter {
 
                 break;
             }else {
-                throw new IllegalArgumentException("There is no such output Scale name!");
+                throw new IllegalArgumentException("There is no such scale name in all scales list!");
             }
         }
 
