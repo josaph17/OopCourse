@@ -62,9 +62,9 @@ public class View {
             outputScaleAndTemperaturePanel.revalidate();
             outputScaleAndTemperaturePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            Image appIcon = Toolkit.getDefaultToolkit().getImage("appImg.png"); // create app icon
-            ImageIcon convertButtonIcon = new ImageIcon("change.png"); // convertButtonIcon
-            warningIcon = new ImageIcon("attention.png");
+            Image appIcon = Toolkit.getDefaultToolkit().getImage("Temperature\\src\\ru\\academits\\dashiev\\temperature\\references\\appImg.png"); // create app icon
+            ImageIcon convertButtonIcon = new ImageIcon("Temperature\\src\\ru\\academits\\dashiev\\temperature\\references\\convertButton.png"); // convertButtonIcon
+            warningIcon = new ImageIcon("Temperature\\src\\ru\\academits\\dashiev\\temperature\\references\\attention.png");
 
             inputTemperatureField = new JTextField();
             inputTemperatureField.setColumns(20); // textField 20 symbols
@@ -74,7 +74,6 @@ public class View {
             outputTemperatureField.setBounds(2, 3, 200, 30);
             outputTemperatureField.setEditable(false);
 
-            //button.addActionListener((e) -> button.setText("Ищу инструменты")); // button использовали замыкание
             JLabel inputTemperatureAndChooseUnitLabel = new JLabel();
             inputTemperatureAndChooseUnitLabel.setText("Enter input value and choose temperature unit");
             inputTemperatureAndChooseUnitLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -123,7 +122,7 @@ public class View {
 
                         double outputTemperature = model.convertTemperatureFromInputToOutput((String) inputScalesNamesComboBox.getSelectedItem(), (String) outputScalesNamesComboBox.getSelectedItem(), inputTemperature);
 
-                        outputTemperatureField.setText(Double.toString(outputTemperature));
+                        outputTemperatureField.setText(Double.toString((double) Math.round(outputTemperature * 100) / 100));
                     }
                 }
             });
