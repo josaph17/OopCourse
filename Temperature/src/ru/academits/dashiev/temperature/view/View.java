@@ -4,8 +4,6 @@ import ru.academits.dashiev.temperature.model.Converter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class View {
     private JTextField inputTemperatureField;
@@ -108,21 +106,18 @@ public class View {
             outputScaleAndTemperaturePanel.add(outputTemperatureField);
 
             // add ActionListener on convertButton
-            convertButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (e.getSource() == convertButton) {
-                        try {
-                            double inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
+            convertButton.addActionListener(e -> {
+                if (e.getSource() == convertButton) {
+                    try {
+                        double inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
 
-                            double outputTemperature = model.convertTemperatureFromInputToOutput((String) inputScalesNamesComboBox.getSelectedItem(), (String) outputScalesNamesComboBox.getSelectedItem(), inputTemperature);
+                        double outputTemperature = model.convertTemperatureFromInputToOutput((String) inputScalesNamesComboBox.getSelectedItem(), (String) outputScalesNamesComboBox.getSelectedItem(), inputTemperature);
 
-                            outputTemperatureField.setText(Double.toString((double) Math.round(outputTemperature * 100) / 100));
-                        } catch (NumberFormatException exception) {
-                            showWrongInputError();
+                        outputTemperatureField.setText(Double.toString((double) Math.round(outputTemperature * 100) / 100));
+                    } catch (NumberFormatException exception) {
+                        showWrongInputError();
 
-                            outputTemperatureField.setText("");
-                        }
+                        outputTemperatureField.setText("");
                     }
                 }
             });
