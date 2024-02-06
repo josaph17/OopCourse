@@ -3,8 +3,8 @@ package ru.academits.dashiev.csv;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public class Converter {
-    public static void convertFromCsvToHtml(String sourcePath, String resultPath) throws IOException {
+public class ConverterFromCsvToHtml {
+    public static void convert(String sourcePath, String resultPath) throws IOException {
         // Буферизованные потоки
         try (BufferedReader reader = new BufferedReader(new FileReader(sourcePath, StandardCharsets.UTF_8));
              PrintWriter writer = new PrintWriter(new FileWriter(resultPath, StandardCharsets.UTF_8))) {
@@ -18,15 +18,15 @@ public class Converter {
 
             // является ячейка в кавычках
             boolean isCellInQuotes = false;
-            boolean isQuotesCallFirstTime = false;
+            boolean isQuotesFirstTime = false;
 
             writer.println("\t<table border=\"1\">");
 
             String line;
 
             while ((line = reader.readLine()) != null) {
-                if (line.isEmpty()) {
-                    continue;
+                if (line.isEmpty()) { // Обрабатываем пустую строку
+                    writer.print("");
                 }
 
                 if (!isCellInQuotes) {
@@ -39,10 +39,9 @@ public class Converter {
                 for (int i = 0; i < line.length(); i++) {
                     char currentChar = line.charAt(i);
 
-                    /* Прошу не считать ошибкой вместо этого можно использовать == и !=. Character.compare(currentChar, '"') == 0 */
                     if (currentChar == '"') {
-                        if (!isQuotesCallFirstTime) {
-                            isQuotesCallFirstTime = true;
+                        if (!isQuotesFirstTime) {
+                            isQuotesFirstTime = true;
                             isCellInQuotes = true; // Начинаем включать в кавычки "
                         } else if (i < (line.length() - 1) && (line.charAt(i + 1) == '"')) {
                             i++;
@@ -50,7 +49,7 @@ public class Converter {
                             writer.print('"');
                         } else { // Если след за "char не равен"
                             isCellInQuotes = false;
-                            isQuotesCallFirstTime = false;
+                            isQuotesFirstTime = false;
                             // Здесь мы закрываем контент
                         }
                     } else if (currentChar == ',') {
