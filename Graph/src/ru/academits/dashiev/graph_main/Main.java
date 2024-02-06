@@ -4,7 +4,6 @@ import ru.academits.dashiev.graph.Graph;
 
 public class Main {
     public static void main(String[] args) {
-        // Graph<Integer> graph = new Graph<>(1,2,3,4,5,6,7,8);
         Graph<Integer> graph = new Graph<>(3,4,5,6,7,8,9,10);
 
         graph.set(3, 4, 1);
@@ -21,10 +20,10 @@ public class Main {
         System.out.println();
 
         System.out.println("Deep bypass:");
-        graph.bypassInDeep(i -> System.out.print(i + " "));
+        graph.bypassInDepth(i -> System.out.print(i + " "));
         System.out.println();
 
         System.out.println("Recursion deep bypass:");
-        graph.bypassInDeepRecursively(i -> System.out.print(i + " "));
+        graph.bypassInDeepRecursive(i -> System.out.print(i + " "));
     }
 }
