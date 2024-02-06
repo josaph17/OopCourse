@@ -112,17 +112,17 @@ public class View {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() == convertButton) {
-                        double inputTemperature = 0.0;
-
                         try {
-                            inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
+                            double inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
+
+                            double outputTemperature = model.convertTemperatureFromInputToOutput((String) inputScalesNamesComboBox.getSelectedItem(), (String) outputScalesNamesComboBox.getSelectedItem(), inputTemperature);
+
+                            outputTemperatureField.setText(Double.toString((double) Math.round(outputTemperature * 100) / 100));
                         } catch (NumberFormatException exception) {
                             showWrongInputError();
+
+                            outputTemperatureField.setText("");
                         }
-
-                        double outputTemperature = model.convertTemperatureFromInputToOutput((String) inputScalesNamesComboBox.getSelectedItem(), (String) outputScalesNamesComboBox.getSelectedItem(), inputTemperature);
-
-                        outputTemperatureField.setText(Double.toString((double) Math.round(outputTemperature * 100) / 100));
                     }
                 }
             });
