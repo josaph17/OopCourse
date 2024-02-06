@@ -131,6 +131,6 @@ public class View {
     }
 
     private void showWrongInputOutputTemperatureNameError() {
-        JOptionPane.showOptionDialog(null, "There is no such input ou output Scale name!", "Input error", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, warningIcon, null, 0);
+        JOptionPane.showOptionDialog(null, "There is no such scale name in all scales list!", "Wrong scale name error", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, warningIcon, null, 0);
     }
 }
