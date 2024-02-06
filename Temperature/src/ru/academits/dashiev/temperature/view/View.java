@@ -4,8 +4,6 @@ import ru.academits.dashiev.temperature.model.Converter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class View {
     private JTextField inputTemperatureField;
@@ -62,9 +60,9 @@ public class View {
             outputScaleAndTemperaturePanel.revalidate();
             outputScaleAndTemperaturePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            Image appIcon = Toolkit.getDefaultToolkit().getImage("appImg.png"); // create app icon
-            ImageIcon convertButtonIcon = new ImageIcon("change.png"); // convertButtonIcon
-            warningIcon = new ImageIcon("attention.png");
+            Image appIcon = Toolkit.getDefaultToolkit().getImage("Temperature\\src\\ru\\academits\\dashiev\\temperature\\references\\appImg.png"); // create app icon
+            ImageIcon convertButtonIcon = new ImageIcon("Temperature\\src\\ru\\academits\\dashiev\\temperature\\references\\convertButton.png"); // convertButtonIcon
+            warningIcon = new ImageIcon("Temperature\\src\\ru\\academits\\dashiev\\temperature\\references\\attention.png");
 
             inputTemperatureField = new JTextField();
             inputTemperatureField.setColumns(20); // textField 20 symbols
@@ -74,7 +72,6 @@ public class View {
             outputTemperatureField.setBounds(2, 3, 200, 30);
             outputTemperatureField.setEditable(false);
 
-            //button.addActionListener((e) -> button.setText("Ищу инструменты")); // button использовали замыкание
             JLabel inputTemperatureAndChooseUnitLabel = new JLabel();
             inputTemperatureAndChooseUnitLabel.setText("Enter input value and choose temperature unit");
             inputTemperatureAndChooseUnitLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -87,8 +84,8 @@ public class View {
             convertButton.setText("Convert");
             convertButton.setIcon(convertButtonIcon);
 
-            inputScalesNamesComboBox = new JComboBox<>(model.getScalesArray());
-            outputScalesNamesComboBox = new JComboBox<>(model.getScalesArray());
+            inputScalesNamesComboBox = new JComboBox<>(model.getScalesNamesStringsArray());
+            outputScalesNamesComboBox = new JComboBox<>(model.getScalesNamesStringsArray());
 
             // add UI elements to Frame
             frame.setIconImage(appIcon);
@@ -109,21 +106,20 @@ public class View {
             outputScaleAndTemperaturePanel.add(outputTemperatureField);
 
             // add ActionListener on convertButton
-            convertButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (e.getSource() == convertButton) {
-                        double inputTemperature = 0.0;
-
-                        try {
-                            inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
-                        } catch (NumberFormatException exception) {
-                            showWrongInputError();
-                        }
+            convertButton.addActionListener(e -> {
+                if (e.getSource() == convertButton) {
+                    try {
+                        double inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
 
                         double outputTemperature = model.convertTemperatureFromInputToOutput((String) inputScalesNamesComboBox.getSelectedItem(), (String) outputScalesNamesComboBox.getSelectedItem(), inputTemperature);
 
-                        outputTemperatureField.setText(Double.toString(outputTemperature));
+                        outputTemperatureField.setText(Double.toString((double) Math.round(outputTemperature * 100) / 100));
+                    } catch (NumberFormatException exception) {
+                        showWrongInputError();
+
+                        outputTemperatureField.setText("");
+                    } catch (IllegalArgumentException exception){
+                        showWrongInputOutputTemperatureNameError();
                     }
                 }
             });
@@ -132,5 +128,9 @@ public class View {
 
     private void showWrongInputError() {
         JOptionPane.showOptionDialog(null, "Input wrong value! Input number", "Input error", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, warningIcon, null, 0);
+    }
+
+    private void showWrongInputOutputTemperatureNameError() {
+        JOptionPane.showOptionDialog(null, "There is no such input ou output Scale name!", "Input error", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, warningIcon, null, 0);
     }
 }
