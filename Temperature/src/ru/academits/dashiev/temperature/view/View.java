@@ -84,8 +84,8 @@ public class View {
             convertButton.setText("Convert");
             convertButton.setIcon(convertButtonIcon);
 
-            inputScalesNamesComboBox = new JComboBox<>(model.getScalesArray());
-            outputScalesNamesComboBox = new JComboBox<>(model.getScalesArray());
+            inputScalesNamesComboBox = new JComboBox<>(model.getScalesNamesStringsArray());
+            outputScalesNamesComboBox = new JComboBox<>(model.getScalesNamesStringsArray());
 
             // add UI elements to Frame
             frame.setIconImage(appIcon);
@@ -118,6 +118,8 @@ public class View {
                         showWrongInputError();
 
                         outputTemperatureField.setText("");
+                    } catch (IllegalArgumentException exception){
+                        showWrongInputOutputTemperatureNameError();
                     }
                 }
             });
@@ -126,5 +128,9 @@ public class View {
 
     private void showWrongInputError() {
         JOptionPane.showOptionDialog(null, "Input wrong value! Input number", "Input error", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, warningIcon, null, 0);
+    }
+
+    private void showWrongInputOutputTemperatureNameError() {
+        JOptionPane.showOptionDialog(null, "There is no such input ou output Scale name!", "Input error", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, warningIcon, null, 0);
     }
 }

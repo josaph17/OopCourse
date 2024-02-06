@@ -10,7 +10,7 @@ public class ApplicationConverter implements Converter {
     }
 
     @Override
-    public String[] getScalesArray() {
+    public String[] getScalesNamesStringsArray() {
         String[] scalesNamesArray = new String[scales.length];
 
         for (int i = 0; i < scales.length; i++) {
@@ -29,6 +29,8 @@ public class ApplicationConverter implements Converter {
                 celsiusTemperature = scale.convertToCelsius(inputTemperature);
 
                 break;
+            } else {
+                throw new IllegalArgumentException("There is no such input Scale name!");
             }
         }
 
@@ -39,6 +41,8 @@ public class ApplicationConverter implements Converter {
                 outputTemperature = scale.convertFromCelsius(celsiusTemperature);
 
                 break;
+            }else {
+                throw new IllegalArgumentException("There is no such output Scale name!");
             }
         }
 
