@@ -1,0 +1,10 @@
+cd .\Csv
+javac -sourcepath src -d out src/ru/academits/dashiev/csv_main/Main.java
+перемещаю в out table.csv
+cd out
+java ru.academits.dashiev.csv_main.Main table.csv index.html
+
+
+
+
+PS:: C:\Users\sayan\Disk\Coding\Csv\out> (будучи в out)  java ru.academits.dashiev.csv_main.Main table.csv index.html
