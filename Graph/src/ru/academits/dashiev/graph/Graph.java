@@ -51,31 +51,37 @@ public class Graph<E> {
 
         Queue<E> queue = new LinkedList<>();
 
-        for (int i = 0; i < adjacencyMatrix.length; i++) {
-            if (!visited[i]) {
-                // Положить в очередь вершину графа, обычно это 0
-                queue.offer(vertexesValues.get(i));
+        for (int i = 0; i < adjacencyMatrix.length; ) {
+            if (visited[i]){
+                i++;
 
-                while (!queue.isEmpty()) {
-                    E currentVertexFromQueue = queue.poll();
+                continue;
+            }
 
-                    int currentVertexFromQueueIndex = vertexesValues.indexOf(currentVertexFromQueue);
+            // Положить в очередь вершину графа, обычно это 0
+            queue.offer(vertexesValues.get(i));
 
-                    if (!visited[currentVertexFromQueueIndex]) {
-                        consumer.accept(currentVertexFromQueue);
-                        visited[currentVertexFromQueueIndex] = true;
+            while (!queue.isEmpty()) {
+                E currentVertexFromQueue = queue.poll();
 
-                        // Кладем детей вершины в очередь
-                        for (int j = 0; j < adjacencyMatrix.length; j++) {
-                            // Берем те, где есть ребро и где мы еще не были
-                            if (adjacencyMatrix[currentVertexFromQueueIndex][j] == 1 && !visited[j]) {
-                                // Добавляем элемент в очередь
-                                queue.offer(vertexesValues.get(j));
-                            }
+                int currentVertexFromQueueIndex = vertexesValues.indexOf(currentVertexFromQueue);
+
+                if (!visited[currentVertexFromQueueIndex]) {
+                    consumer.accept(currentVertexFromQueue);
+                    visited[currentVertexFromQueueIndex] = true;
+
+                    // Кладем детей вершины в очередь
+                    for (int j = 0; j < adjacencyMatrix.length; j++) {
+                        // Берем те, где есть ребро и где мы еще не были
+                        if (adjacencyMatrix[currentVertexFromQueueIndex][j] == 1 && !visited[j]) {
+                            // Добавляем элемент в очередь
+                            queue.offer(vertexesValues.get(j));
                         }
                     }
                 }
             }
+
+            i++;
         }
     }
 
@@ -84,28 +90,34 @@ public class Graph<E> {
 
         Deque<E> stack = new LinkedList<>();
 
-        for (int i = 0; i < adjacencyMatrix.length; i++) {
-            if (!visited[i]) {
-                stack.addLast(vertexesValues.get(i));
+        for (int i = 0; i < adjacencyMatrix.length; ) {
+            if (visited[i]) {
+               i++;
 
-                while (!stack.isEmpty()) { // Пока стек не пуст
-                    E currentElementFromStack = stack.removeLast();
+               continue;
+            }
 
-                    int currentVertexFromStackIndex = vertexesValues.indexOf(currentElementFromStack);
+            stack.addLast(vertexesValues.get(i));
 
-                    if (!visited[currentVertexFromStackIndex]) {
-                        consumer.accept(currentElementFromStack);
-                        visited[currentVertexFromStackIndex] = true;
+            while (!stack.isEmpty()) { // Пока стек не пуст
+                E currentElementFromStack = stack.removeLast();
 
-                        for (int j = adjacencyMatrix.length - 1; j >= 0; j--) {
-                            if (adjacencyMatrix[currentVertexFromStackIndex][j] == 1 && !visited[j]) {
-                                // Добавляем элемент в стек
-                                stack.addLast(vertexesValues.get(j));
-                            }
+                int currentVertexFromStackIndex = vertexesValues.indexOf(currentElementFromStack);
+
+                if (!visited[currentVertexFromStackIndex]) {
+                    consumer.accept(currentElementFromStack);
+                    visited[currentVertexFromStackIndex] = true;
+
+                    for (int j = adjacencyMatrix.length - 1; j >= 0; j--) {
+                        if (adjacencyMatrix[currentVertexFromStackIndex][j] == 1 && !visited[j]) {
+                            // Добавляем элемент в стек
+                            stack.addLast(vertexesValues.get(j));
                         }
                     }
                 }
             }
+
+            i++;
         }
     }
 
