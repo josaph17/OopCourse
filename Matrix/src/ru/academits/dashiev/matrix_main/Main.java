@@ -14,8 +14,7 @@ public class Main {
         Matrix sizeMatrix = new Matrix(rowsCount, columnsCount);
 
         System.out.println("a.Конструктор матрица нулей размера nxm:");
-        System.out.println(
-                "Rows count = " + sizeMatrix.getRowsCount() + " , columns count = " + sizeMatrix.getColumnsCount());
+        System.out.println("Rows count = " + sizeMatrix.getRowsCount() + " , columns count = " + sizeMatrix.getColumnsCount());
 
         double[][] array = {{0.9, 2.1, 5.2, 4.2}, {3, 42.7, 6.5}, {321, 7.1, 43.9, 111.3}};
 
@@ -54,12 +53,7 @@ public class Main {
 
         System.out.println("b.Получение вектора-строки по индексу = " + rowIndex + ":");
 
-        double[][] array1 = { //
-                {6, 5, 7.01, 22, 5.2}, //
-                {32.1, 98, 5.5}, //
-                {5.87, 3, 21.2, 90, 11.37}, //
-                {1.6, 81.33, 1.2, 278, 9.4} //
-        };
+        double[][] array1 = {{6, 5, 7.01, 22, 5.2}, {32.1, 98, 5.5}, {5.87, 3, 21.2, 90, 11.37}, {1.6, 81.33, 1.2, 278, 9.4}};
 
         Matrix matrix1 = new Matrix(array1);
         System.out.println(matrix1.getRow(rowIndex));
@@ -90,12 +84,7 @@ public class Main {
 
         System.out.println("f.Вычисление определителя матрицы");
 
-        double[][] array3 = { //
-                {6, 5, 7.01, 22}, //
-                {4, 74, 1.23, 8.09}, //
-                {5.87, 3, 21.2, 90}, //
-                {1.6, 81.33, 1.2, 278} //
-        };
+        double[][] array3 = {{6, 5, 7.01, 22}, {4, 74, 1.23, 8.09}, {5.87, 3, 21.2, 90}, {1.6, 81.33, 1.2, 278}};
 
         Matrix matrix2 = new Matrix(array3);
 
@@ -112,12 +101,7 @@ public class Main {
         System.out.println(multiplyByVector);
 
         System.out.println("i.Сложение матриц:");
-        double[][] array4 = { //
-                {6, 5, 7.01, 22}, //
-                {4, 74, 1.23, 8.09}, //
-                {5.87, 3, 21.2, 90}, //
-                {1.6, 81.33, 1.2, 278} //
-        };
+        double[][] array4 = {{6, 5, 7.01, 22}, {4, 74, 1.23, 8.09}, {5.87, 3, 21.2, 90}, {1.6, 81.33, 1.2, 278}};
 
         Matrix matrix3 = new Matrix(array4);
 
@@ -134,10 +118,7 @@ public class Main {
         System.out.println("-- Статические методы --");
         System.out.println();
 
-        double[][] array1 = { //
-                {1.3, 5, 2.3}, //
-                {3, 4, 7.04} //
-        };
+        double[][] array1 = {{1.3, 5, 2.3}, {3, 4, 7.04}};
 
         Matrix matrix1 = new Matrix(array1);
         Matrix matrix2 = new Matrix(matrix1);
@@ -154,20 +135,14 @@ public class Main {
 
         System.out.println("c.Умножение матриц:");
 
-        double[][] array2 = { //
-                {6, 5, 7.01, 22.0}, //
-                {32.1, 98, 5.5, 0.0} //
-        };
+        double[][] array3 = {{2, 1}, {-3, 0}, {4, -1}};
 
-        double[][] array3 = { //
-                {6, 5, 7.01, 22}, //
-                {32.1, 98, 5.5, 5.2}, //
-                {5.87, 3, 21.2, 90} //
-        };
+        double[][] array4 = {{5, -1, 6}, {-3, 0, 7}};
 
-        Matrix matrix5 = new Matrix(array2);
+        Matrix matrix5;
+        matrix5 = new Matrix(array3);
 
-        Matrix matrix6 = new Matrix(array3);
+        Matrix matrix6 = new Matrix(array4);
 
         Matrix multiplyMatrix = Matrix.getProduct(matrix5, matrix6);
 
@@ -175,40 +150,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-//        checkConstructors();
-//        checkNonStaticMethods();
-//        checkStaticMethods();
-
-        System.out.println("c.Умножение матриц:");
-
-        double[][] array2 = { //
-                {1, -1}, //
-                {2,0}, //
-                {3,0} //
-        };
-
-        double[][] array1 = { //
-                {1, 1}, //
-                {2,0}, //
-        };
-
-        double[][] array3 = { //
-                {2, 1}, //
-                {-3,0}, //
-                {4,-1} //
-        };
-
-        double[][] array4 = { //
-                {5, -1, 6}, //
-                {-3,0,7}, //
-        };
-
-        Matrix matrix5 = new Matrix(array1);
-
-        Matrix matrix6 = new Matrix(array2);
-
-        Matrix multiplyMatrix = Matrix.getProduct(matrix5, matrix6);
-
-        System.out.println(multiplyMatrix);
+        checkConstructors();
+        checkNonStaticMethods();
+        checkStaticMethods();
     }
 }
