@@ -133,17 +133,19 @@ public class Graph<E> {
     }
 
     private void bypassInDeepRecursively(int vertexIndex, boolean[] visited, Consumer<E> consumer) { // private, чтобы не вызвать извне
-        if (!visited[vertexIndex]) {
-            E vertexValue = vertexesValues.get(vertexIndex);
+        if(visited[vertexIndex]){
+            return;
+        }
 
-            consumer.accept(vertexValue);
-            visited[vertexIndex] = true;
+        E vertexValue = vertexesValues.get(vertexIndex);
 
-            for (int i = 0; i < adjacencyMatrix.length; i++) {
-                if (adjacencyMatrix[vertexIndex][i] == 1) {
-                    // Добавляем элемент
-                    bypassInDeepRecursively(i, visited, consumer);
-                }
+        consumer.accept(vertexValue);
+        visited[vertexIndex] = true;
+
+        for (int i = 0; i < adjacencyMatrix.length; i++) {
+            if (adjacencyMatrix[vertexIndex][i] == 1) {
+                // Добавляем элемент
+                bypassInDeepRecursively(i, visited, consumer);
             }
         }
     }
