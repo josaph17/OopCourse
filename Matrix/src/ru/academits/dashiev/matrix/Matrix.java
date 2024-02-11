@@ -2,8 +2,6 @@ package ru.academits.dashiev.matrix;
 
 import ru.academits.dashiev.vector.Vector;
 
-import java.util.Arrays;
-
 public class Matrix {
     private Vector[] rows;
 
@@ -213,22 +211,17 @@ public class Matrix {
 
     // f. Вычисление определителя матрицы
     private Matrix getMinor(int removedColumnIndex) {
-        double[][] minorRows = new double[rows.length - 1][];
+        double[][] minorRows = new double[rows.length - 1][rows.length - 1];
 
         // m - Счетчик циклов для минора
-        for (int i = 1, m = 0; i < rows.length; i++) { // i - номер строки, всегда берем с 1 строки, т.к. 0 не участвует
-            // Создаем подмассив для инициализации минора
-            double[] rowArray = new double[rows.length - 1]; // После прохода каждой строчки создаю подмассив
-
-            // column - номер столбца, k - счетчик циклов для подмассива
+        for (int i = 1, m = 0; i < rows.length; i++) { // i - номер строки в rows, всегда берем с 1 строки, т.к. 0 не участвует
             for (int j = 0, k = 0; j < rows.length; j++) {
                 if (j != removedColumnIndex) {
-                    rowArray[k] = rows[i].getComponent(j);
+                    minorRows[m][k] = rows[i].getComponent(j);
                     k++;
                 }
             }
 
-            minorRows[m] = Arrays.copyOf(rowArray, rowArray.length);
             m++;
         }
 
