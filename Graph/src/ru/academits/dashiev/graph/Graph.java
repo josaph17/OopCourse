@@ -49,7 +49,7 @@ public class Graph<E> {
     public void bypassInWidth(Consumer<E> consumer) {
         boolean[] visited = new boolean[adjacencyMatrix.length];
 
-        Queue<E> queue = new LinkedList<>();
+        Queue<Integer> queue = new LinkedList<>();
 
         for (int i = 0; i < adjacencyMatrix.length; ) {
             if (visited[i]){
@@ -58,24 +58,22 @@ public class Graph<E> {
                 continue;
             }
 
-            // Положить в очередь вершину графа, обычно это 0
-            queue.offer(vertexesValues.get(i));
+            // Положить в очередь вершину графа
+            queue.offer(i);
 
             while (!queue.isEmpty()) {
-                E currentVertexFromQueue = queue.poll();
+                Integer currentVertexFromQueue = queue.poll();
 
-                int currentVertexFromQueueIndex = vertexesValues.indexOf(currentVertexFromQueue);
-
-                if (!visited[currentVertexFromQueueIndex]) {
-                    consumer.accept(currentVertexFromQueue);
-                    visited[currentVertexFromQueueIndex] = true;
+                if (!visited[currentVertexFromQueue]) {
+                    consumer.accept(vertexesValues.get(currentVertexFromQueue));
+                    visited[currentVertexFromQueue] = true;
 
                     // Кладем детей вершины в очередь
                     for (int j = 0; j < adjacencyMatrix.length; j++) {
                         // Берем те, где есть ребро и где мы еще не были
-                        if (adjacencyMatrix[currentVertexFromQueueIndex][j] == 1 && !visited[j]) {
+                        if (adjacencyMatrix[currentVertexFromQueue][j] == 1 && !visited[j]) {
                             // Добавляем элемент в очередь
-                            queue.offer(vertexesValues.get(j));
+                            queue.offer(j);
                         }
                     }
                 }
@@ -88,7 +86,7 @@ public class Graph<E> {
     public void bypassInDepth(Consumer<E> consumer) {
         boolean[] visited = new boolean[adjacencyMatrix.length];
 
-        Deque<E> stack = new LinkedList<>();
+        Deque<Integer> stack = new LinkedList<>();
 
         for (int i = 0; i < adjacencyMatrix.length; ) {
             if (visited[i]) {
@@ -97,21 +95,19 @@ public class Graph<E> {
                continue;
             }
 
-            stack.addLast(vertexesValues.get(i));
+            stack.addLast(i);
 
             while (!stack.isEmpty()) { // Пока стек не пуст
-                E currentElementFromStack = stack.removeLast();
+                Integer currentElementFromStack = stack.removeLast();
 
-                int currentVertexFromStackIndex = vertexesValues.indexOf(currentElementFromStack);
-
-                if (!visited[currentVertexFromStackIndex]) {
-                    consumer.accept(currentElementFromStack);
-                    visited[currentVertexFromStackIndex] = true;
+                if (!visited[currentElementFromStack]) {
+                    consumer.accept(vertexesValues.get(currentElementFromStack));
+                    visited[currentElementFromStack] = true;
 
                     for (int j = adjacencyMatrix.length - 1; j >= 0; j--) {
-                        if (adjacencyMatrix[currentVertexFromStackIndex][j] == 1 && !visited[j]) {
+                        if (adjacencyMatrix[currentElementFromStack][j] == 1 && !visited[j]) {
                             // Добавляем элемент в стек
-                            stack.addLast(vertexesValues.get(j));
+                            stack.addLast(j);
                         }
                     }
                 }
