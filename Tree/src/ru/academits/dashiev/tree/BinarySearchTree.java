@@ -205,14 +205,14 @@ public class BinarySearchTree<E> {
         while (true) {
             int comparisonResult = compare(currentNode.getData(), data);
 
-            if (comparisonResult == 0){
+            if (comparisonResult == 0) {
                 return  parentNode;
             }
 
             parentNode = currentNode;
 
             if (comparisonResult > 0) {
-                if (currentNode.getLeft() == null){
+                if (currentNode.getLeft() == null) {
                     return null;
                 }
 
@@ -222,7 +222,7 @@ public class BinarySearchTree<E> {
                 continue;
             }
 
-            if (currentNode.getRight() == null){
+            if (currentNode.getRight() == null) {
                 return null;
             } else{
                 currentNode = currentNode.getRight();
