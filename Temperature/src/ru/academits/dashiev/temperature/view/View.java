@@ -12,23 +12,25 @@ public class View {
     private JComboBox<String> outputScalesNamesComboBox;
     private ImageIcon warningIcon;
 
+    private JFrame frame;
+
     public View(Converter model) {
         SwingUtilities.invokeLater(() -> {
             try {
                 // setLookAndFeel это Тема оформления
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ignored) {
-
             }
 
             String appName = "My temperature app";
 
-            JFrame frame = new JFrame(appName);
+            frame = new JFrame(appName);
             frame.setSize(500, 300);
             frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS)); // Layout manager
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // frame close on exit
             frame.setResizable(false); // not change frame size
             frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
 
             JPanel guide1Panel = new JPanel();
             guide1Panel.setBounds(0, 0, 500, 30);
@@ -60,9 +62,9 @@ public class View {
             outputScaleAndTemperaturePanel.revalidate();
             outputScaleAndTemperaturePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            Image appIcon = Toolkit.getDefaultToolkit().getImage("Temperature\\src\\ru\\academits\\dashiev\\temperature\\references\\appImg.png"); // create app icon
-            ImageIcon convertButtonIcon = new ImageIcon("Temperature\\src\\ru\\academits\\dashiev\\temperature\\references\\convertButton.png"); // convertButtonIcon
-            warningIcon = new ImageIcon("Temperature\\src\\ru\\academits\\dashiev\\temperature\\references\\attention.png");
+            Image appIcon = Toolkit.getDefaultToolkit().getImage("Temperature\\src\\ru\\academits\\dashiev\\temperature\\resources\\appImg.png"); // create app icon
+            ImageIcon convertButtonIcon = new ImageIcon("Temperature\\src\\ru\\academits\\dashiev\\temperature\\resources\\convertButton.png"); // convertButtonIcon
+            warningIcon = new ImageIcon("Temperature\\src\\ru\\academits\\dashiev\\temperature\\resources\\attention.png");
 
             inputTemperatureField = new JTextField();
             inputTemperatureField.setColumns(20); // textField 20 symbols
@@ -84,12 +86,11 @@ public class View {
             convertButton.setText("Convert");
             convertButton.setIcon(convertButtonIcon);
 
-            inputScalesNamesComboBox = new JComboBox<>(model.getScalesNamesStringsArray());
-            outputScalesNamesComboBox = new JComboBox<>(model.getScalesNamesStringsArray());
+            inputScalesNamesComboBox = new JComboBox<>(model.getScalesNames());
+            outputScalesNamesComboBox = new JComboBox<>(model.getScalesNames());
 
             // add UI elements to Frame
             frame.setIconImage(appIcon);
-
             frame.getContentPane().setBackground(new Color(197, 197, 199, 161));
             frame.add(guide1Panel);
             frame.add(inputScaleAndTemperaturePanel);
@@ -111,7 +112,7 @@ public class View {
                     try {
                         double inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
 
-                        double outputTemperature = model.convertTemperatureFromInputToOutput((String) inputScalesNamesComboBox.getSelectedItem(), (String) outputScalesNamesComboBox.getSelectedItem(), inputTemperature);
+                        double outputTemperature = model.convertTemperature((String) inputScalesNamesComboBox.getSelectedItem(), (String) outputScalesNamesComboBox.getSelectedItem(), inputTemperature);
 
                         outputTemperatureField.setText(Double.toString((double) Math.round(outputTemperature * 100) / 100));
                     } catch (NumberFormatException exception) {
@@ -127,10 +128,12 @@ public class View {
     }
 
     private void showWrongInputError() {
-        JOptionPane.showOptionDialog(null, "Input wrong value! Input number", "Input error", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, warningIcon, null, 0);
+        JOptionPane.showMessageDialog(frame, "Input wrong value! Input number", "Input error",
+                JOptionPane.PLAIN_MESSAGE, warningIcon);
     }
 
     private void showWrongInputOutputTemperatureNameError() {
-        JOptionPane.showOptionDialog(null, "There is no such scale name in all scales list!", "Wrong scale name error", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, warningIcon, null, 0);
+        JOptionPane.showMessageDialog(frame, "There is no such scale name in all scales list!",
+                "Wrong scale name error", JOptionPane.PLAIN_MESSAGE, warningIcon);
     }
 }
