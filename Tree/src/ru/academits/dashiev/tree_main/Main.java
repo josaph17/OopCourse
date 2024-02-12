@@ -4,10 +4,10 @@ import ru.academits.dashiev.shapes.Circle;
 import ru.academits.dashiev.shapes.Square;
 import ru.academits.dashiev.shapes.Triangle;
 import ru.academits.dashiev.shapes_comparators.AreaComparator;
-import ru.academits.dashiev.tree.BinaryTree;
+import ru.academits.dashiev.tree.BinarySearchTree;
 
 public class Main {
-    private static <E> void deleteAndPrint(BinaryTree<E> tree, E deletableElement) {
+    private static <E> void deleteAndPrint(BinarySearchTree<E> tree, E deletableElement) {
         System.out.println("New tree before delete = " + deletableElement + ", size = " + tree.getSize() + ":");
         tree.printTree();
 
@@ -24,22 +24,22 @@ public class Main {
     }
 
     public static void checkDeleteNode() {
-        deleteAndPrint(new BinaryTree<>(null, 2, 6, 1, 4, 3), 2); // 1
-        deleteAndPrint(new BinaryTree<>(null, 5, 10, 0, 9, 8, 7, 6), 5); // 2
-        deleteAndPrint(new BinaryTree<>(null, 5, 10, 0, 9, 8, 6, 7), 5); // 3
-        deleteAndPrint(new BinaryTree<>(null, 5, 10, 0, 8, 7, 6), 5); // 4
-        deleteAndPrint(new BinaryTree<>(null, 5, 10, 0, 50, 100), 5); // 5
-        deleteAndPrint(new BinaryTree<>(null, 10, 5, 3, 8, 1, 4, 9, 7), 5); // 6
-        deleteAndPrint(new BinaryTree<>(null, 10, 100, 93, 108, 91, 94, 109), 93); // 7
-        deleteAndPrint(new BinaryTree<>(null, 100, 50, 200, 110, 205, 40, 45, 1), 50); // 8
-        deleteAndPrint(new BinaryTree<>(null, 10.0), 5.0); // 9
-        deleteAndPrint(new BinaryTree<>(null, 40.0, 30.0, null, null, 17.0, 15.0, 30.0, 13.0, 14.0), null); // 10
-        deleteAndPrint(new BinaryTree<>(null, null, null, 17.0, 15.0, 30.0, 13.0), null); // 11
-        deleteAndPrint(new BinaryTree<>(new AreaComparator(), new Square(5), null, null, new Square(4), new Triangle(10, 6, 8, 10, 5, 2), new Triangle(2, 3, 1, 1, 7, 4), new Triangle(2, 3, 1, 1, 7, 4), new Circle(5), new Circle(6), null), new Square(4));
+        deleteAndPrint(new BinarySearchTree<>(null, 2, 6, 1, 4, 3), 2); // 1
+        deleteAndPrint(new BinarySearchTree<>(null, 5, 10, 0, 9, 8, 7, 6), 5); // 2
+        deleteAndPrint(new BinarySearchTree<>(null, 5, 10, 0, 9, 8, 6, 7), 5); // 3
+        deleteAndPrint(new BinarySearchTree<>(null, 5, 10, 0, 8, 7, 6), 5); // 4
+        deleteAndPrint(new BinarySearchTree<>(null, 5, 10, 0, 50, 100), 5); // 5
+        deleteAndPrint(new BinarySearchTree<>(null, 10, 5, 3, 8, 1, 4, 9, 7), 5); // 6
+        deleteAndPrint(new BinarySearchTree<>(null, 10, 100, 93, 108, 91, 94, 109), 93); // 7
+        deleteAndPrint(new BinarySearchTree<>(null, 100, 50, 200, 110, 205, 40, 45, 1), 50); // 8
+        deleteAndPrint(new BinarySearchTree<>(null, 10.0), 5.0); // 9
+        deleteAndPrint(new BinarySearchTree<>(null, 40.0, 30.0, null, null, 17.0, 15.0, 30.0, 13.0, 14.0), null); // 10
+        deleteAndPrint(new BinarySearchTree<>(null, null, null, 17.0, 15.0, 30.0, 13.0), null); // 11
+        deleteAndPrint(new BinarySearchTree<>(new AreaComparator(), new Square(5), null, null, new Square(4), new Triangle(10, 6, 8, 10, 5, 2), new Triangle(2, 3, 1, 1, 7, 4), new Triangle(2, 3, 1, 1, 7, 4), new Circle(5), new Circle(6), null), new Square(4));
     }
 
     public static void main(String[] args) {
-        BinaryTree<Integer> tree = new BinaryTree<>();
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
 
         tree.add(10);
         tree.add(100);
@@ -69,7 +69,7 @@ public class Main {
         System.out.println();
 
         System.out.println("bypassInDeep:");
-        tree.bypassInDeep(e -> System.out.print(e + " "));
+        tree.bypassInDepth(e -> System.out.print(e + " "));
 
         System.out.println();
 

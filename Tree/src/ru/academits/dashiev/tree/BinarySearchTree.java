@@ -6,21 +6,21 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-public class BinaryTree<E> {
+public class BinarySearchTree<E> {
     private TreeNode<E> root;
     private int size;
 
     private Comparator<E> comparator;
 
-    public BinaryTree() { // Конструктор без компаратора
+    public BinarySearchTree() { // Конструктор без компаратора
     }
 
-    public BinaryTree(Comparator<E> comparator) { // Конструктор с компаратором
+    public BinarySearchTree(Comparator<E> comparator) { // Конструктор с компаратором
         this.comparator = comparator;
     }
 
     @SafeVarargs
-    public BinaryTree(Comparator<E> comparator, E... elements) {
+    public BinarySearchTree(Comparator<E> comparator, E... elements) {
         this.comparator = comparator;
 
         for (E element : elements) {
@@ -120,7 +120,7 @@ public class BinaryTree<E> {
         }
     }
 
-    public void bypassInDeep(Consumer<? super E> consumer) {
+    public void bypassInDepth(Consumer<? super E> consumer) {
         if (size == 0) {
             return; // Когда дерево пустое
         }
@@ -200,18 +200,19 @@ public class BinaryTree<E> {
     private TreeNode<E> findNodeParent(E data) {
         // Вместо findNodeToDeleteParent переименовали в findNodeParent
         TreeNode<E> currentNode = root;
-        TreeNode<E> parentNode = currentNode;
+        TreeNode<E> parentNode = null;
 
         while (true) {
-            int comprasionResult = compare(currentNode.getData(), data);
+            int comparisonResult = compare(currentNode.getData(), data);
 
-            if (comprasionResult == 0){
+            if (comparisonResult == 0){
                 return  parentNode;
             }
 
-            if (comprasionResult > 0) {
+            parentNode = currentNode;
+
+            if (comparisonResult > 0) {
                 if (currentNode.getLeft() != null) {
-                    parentNode = currentNode;
                     currentNode = currentNode.getLeft();
 
                     // То этот элемент точно null
@@ -222,7 +223,6 @@ public class BinaryTree<E> {
             }
 
             if (currentNode.getRight() != null) {
-                parentNode = currentNode;
                 currentNode = currentNode.getRight();
             } else {
                 return null;
@@ -292,9 +292,8 @@ public class BinaryTree<E> {
             if (nodeToDelete == root) {
                 root = notNullChild;
             } else if (isRightChild) {
-                // Удаляемый элемент не null и он точно справа
                 nodeToDeleteParent.setRight(notNullChild);
-            } else { // Удаляемый элемент не null и он точно слева
+            } else {
                 assert nodeToDeleteParent != null;
                 nodeToDeleteParent.setLeft(notNullChild);
             }
@@ -334,7 +333,6 @@ public class BinaryTree<E> {
         // Находим самый левый элемент
         while (minLastNode.getLeft() != null) {
             minLastNodeParent = minLastNode; // -- Нашли minLastNodeParent
-
             minLastNode = minLastNodeParent.getLeft(); // -- Нашли minLastNode
         }
 
