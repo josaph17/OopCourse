@@ -212,20 +212,22 @@ public class BinarySearchTree<E> {
             parentNode = currentNode;
 
             if (comparisonResult > 0) {
-                if (currentNode.getLeft() != null) {
-                    currentNode = currentNode.getLeft();
-
-                    // То этот элемент точно null
-                    continue;
+                if (currentNode.getLeft() == null){
+                    return null;
                 }
 
-                return null;
+                currentNode = currentNode.getLeft();
+
+                // То этот элемент точно null
+                continue;
             }
 
             if (currentNode.getRight() != null) {
+                if (currentNode.getRight() == null){
+                    return null;
+                }
+
                 currentNode = currentNode.getRight();
-            } else {
-                return null;
             }
         }
     }
