@@ -335,8 +335,8 @@ public class BinarySearchTree<E> {
 
         // Находим самый левый элемент
         while (minLastNode.getLeft() != null) {
-            minLastNodeParent = minLastNode; // -- Нашли minLastNodeParent
-            minLastNode = minLastNodeParent.getLeft(); // -- Нашли minLastNode
+            minLastNodeParent = minLastNode; // Нашли minLastNodeParent
+            minLastNode = minLastNodeParent.getLeft(); // Нашли minLastNode
         }
 
         minLastNodeParent.setLeft(minLastNode.getRight());
