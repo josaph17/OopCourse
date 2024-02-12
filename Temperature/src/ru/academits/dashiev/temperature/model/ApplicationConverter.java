@@ -10,18 +10,18 @@ public class ApplicationConverter implements Converter {
     }
 
     @Override
-    public String[] getScalesNamesStringsArray() {
-        String[] scalesNamesArray = new String[scales.length];
+    public String[] getScalesNames() {
+        String[] scalesNames = new String[scales.length];
 
         for (int i = 0; i < scales.length; i++) {
-            scalesNamesArray[i] = scales[i].toString();
+            scalesNames[i] = scales[i].toString();
         }
 
-        return scalesNamesArray;
+        return scalesNames;
     }
 
     @Override
-    public double convertTemperatureFromInputToOutput(String inputScaleName, String outputScaleName, double inputTemperature) {
+    public double convertTemperature(String inputScaleName, String outputScaleName, double inputTemperature) {
         double celsiusTemperature = 0.0;
 
         for (Scale scale : scales) {
@@ -29,9 +29,9 @@ public class ApplicationConverter implements Converter {
                 celsiusTemperature = scale.convertToCelsius(inputTemperature);
 
                 break;
-            } else {
-                throw new IllegalArgumentException("There is no such scale name in all scales list!");
             }
+
+            throw new IllegalArgumentException("There is no such scale name in all scales list!");
         }
 
         double outputTemperature = 0.0;
@@ -41,9 +41,9 @@ public class ApplicationConverter implements Converter {
                 outputTemperature = scale.convertFromCelsius(celsiusTemperature);
 
                 break;
-            }else {
-                throw new IllegalArgumentException("There is no such scale name in all scales list!");
             }
+
+            throw new IllegalArgumentException("There is no such scale name in all scales list!");
         }
 
         return outputTemperature;
