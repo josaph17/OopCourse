@@ -223,11 +223,9 @@ public class BinarySearchTree<E> {
                 continue;
             }
 
-            if (currentNode.getRight() != null) {
-                if (currentNode.getRight() == null){
-                    return null;
-                }
-
+            if (currentNode.getRight() == null){
+                return null;
+            } else{
                 currentNode = currentNode.getRight();
             }
         }
