@@ -10,9 +10,10 @@ public class BinarySearchTree<E> {
     private TreeNode<E> root;
     private int size;
 
-    private Comparator<E> comparator;
+    private final Comparator<E> comparator;
 
     public BinarySearchTree() { // Конструктор без компаратора
+        comparator = null;
     }
 
     public BinarySearchTree(Comparator<E> comparator) { // Конструктор с компаратором
