@@ -92,18 +92,18 @@ public class Main {
 
         System.out.println("h.умножение матрицы на вектор:");
 
-        double[] multiplyArray = {2, 2, 2, 2};
+        double[] array4 = {2, 2, 2, 2};
 
-        Vector multiplyVector = new Vector(multiplyArray);
+        Vector vector = new Vector(array4);
 
-        Vector multiplyByVector = matrix1.multiplyByVector(multiplyVector);
+        Vector ptoductVector = matrix1.multiplyByVector(vector);
 
-        System.out.println(multiplyByVector);
+        System.out.println(ptoductVector);
 
         System.out.println("i.Сложение матриц:");
-        double[][] array4 = {{6, 5, 7.01, 22}, {4, 74, 1.23, 8.09}, {5.87, 3, 21.2, 90}, {1.6, 81.33, 1.2, 278}};
+        double[][] array5 = {{6, 5, 7.01, 22}, {4, 74, 1.23, 8.09}, {5.87, 3, 21.2, 90}, {1.6, 81.33, 1.2, 278}};
 
-        Matrix matrix3 = new Matrix(array4);
+        Matrix matrix3 = new Matrix(array5);
 
         matrix2.add(matrix3);
         System.out.println(matrix2);
@@ -144,9 +144,9 @@ public class Main {
 
         Matrix matrix6 = new Matrix(array4);
 
-        Matrix multiplyMatrix = Matrix.getProduct(matrix5, matrix6);
+        Matrix productMatrix = Matrix.getProduct(matrix5, matrix6);
 
-        System.out.println(multiplyMatrix);
+        System.out.println(productMatrix);
     }
 
     public static void main(String[] args) {

@@ -11,7 +11,7 @@ public class Matrix {
         }
 
         if (columnsCount <= 0) {
-            throw new IllegalArgumentException("Matrix columns must be > 0. Current columns count = " + columnsCount);
+            throw new IllegalArgumentException("Matrix columns count must be > 0. Current columns count = " + columnsCount);
         }
 
         rows = new Vector[rowsCount];
@@ -38,8 +38,8 @@ public class Matrix {
             throw new NullPointerException("Array is null");
         }
 
-        if (array.length == 0) {
-            throw new IllegalArgumentException("Array columns count shouldn't be = 0!");
+        if (array[0].length == 0) {
+            throw new IllegalArgumentException("Array columns count must be > 0");
         }
 
         rows = new Vector[array.length];
@@ -63,7 +63,7 @@ public class Matrix {
         }
 
         if (vectors.length == 0) {
-            throw new IllegalArgumentException("Vectors array size = 0!");
+            throw new IllegalArgumentException("Vectors array size = 0");
         }
 
         rows = new Vector[vectors.length];
@@ -78,7 +78,6 @@ public class Matrix {
 
         for (int i = 0; i < vectors.length; i++) {
             rows[i] = new Vector(maxSize);
-
             rows[i].add(vectors[i]);
         }
     }
@@ -120,7 +119,7 @@ public class Matrix {
      */
     public static Matrix getProduct(Matrix matrix1, Matrix matrix2) {
         if (matrix1.getColumnsCount() != matrix2.rows.length) {
-            throw new IllegalArgumentException("Matrices cannot be multiplied! Matrix1 columns count = "
+            throw new IllegalArgumentException("Matrices cannot be multiplied! Matrix1 columns count should be equal to Matrix2 rows count. Now Matrix1 columns count = "
                     + matrix1.getColumnsCount() + " not match to Matrix2 rows count = " + matrix2.rows.length);
         }
 
@@ -220,9 +219,9 @@ public class Matrix {
                     minorRows[m][k] = rows[i].getComponent(j);
                     k++;
                 }
-            }
 
-            m++;
+                m++;
+            }
         }
 
         return new Matrix(minorRows);
@@ -285,13 +284,13 @@ public class Matrix {
                     + " not match to vector elements count = " + vector.getSize());
         }
 
-        double[] multiplicationArray = new double[rows.length];
+        double[] product = new double[rows.length];
 
         for (int i = 0; i < rows.length; i++) {
-            multiplicationArray[i] = Vector.getScalarProduct(rows[i], vector);
+            product[i] = Vector.getScalarProduct(rows[i], vector);
         }
 
-        return new Vector(multiplicationArray);
+        return new Vector(product);
     }
 
     // i. Сложение матриц
