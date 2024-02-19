@@ -1,24 +1,27 @@
 package ru.academits.dashiev.csv_main;
 
-import ru.academits.dashiev.csv.ConverterFromCsvToHtml;
+import ru.academits.dashiev.csv.CsvToHtmlConverter;
 
 import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class Main {
     public static void main(String[] args) {
-        try{
-            if (args.length != 2){
-                throw new IllegalArgumentException("Argument should be 2, first argument is existing source file name, second argument is producing output Html file name.");
+        try {
+            if (args.length != 2) {
+                System.out.println("Argument should be 2 arguments, first argument is existing source file name, second argument is producing output Html file name.");
+
+                return;
             }
 
-            String  sourcePath = args[0];
-            String  outputPath = args[1];
+            String inputPath = args[0];
+            String outputPath = args[1];
 
-            ConverterFromCsvToHtml.convert(sourcePath, outputPath);
-        } catch (IllegalArgumentException e){
-            System.out.println("Argument should be 2, first argument is existing source file name, second argument is producing output Html file name.");
-        } catch (IOException e) {
+            CsvToHtmlConverter.convert(inputPath, outputPath);
+        } catch (FileNotFoundException e) {
             System.out.println("File not found!");
+        } catch (IOException e) {
+            System.out.println("Exception ....!");
         }
     }
 }
