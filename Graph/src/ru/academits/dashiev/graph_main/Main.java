@@ -24,7 +24,7 @@ public class Main {
         System.out.println();
 
         System.out.println("Recursion deep bypass:");
-        graph.bypassInDeepRecursive(i -> System.out.print(i + " "));
+        graph.bypassInDepthRecursively(i -> System.out.print(i + " "));
 
         System.out.println();
     }
