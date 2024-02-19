@@ -54,7 +54,7 @@ public class Graph<E> {
         for (int i = 0; i < adjacencyMatrix.length; i++) {
             // Прошу не считать за ошибку поскольку это важный комментарий для учебы
             // В этом коде мы пропускаем только те вершины, которые уже были посещены, а не просто инкриминируем переменную цикла i
-            if (visited[i]){
+            if (visited[i]) {
                 continue;
             }
 
@@ -89,7 +89,7 @@ public class Graph<E> {
 
         for (int i = 0; i < adjacencyMatrix.length; i++) {
             if (visited[i]) {
-               continue;
+                continue;
             }
 
             stack.addLast(i);
@@ -124,7 +124,7 @@ public class Graph<E> {
     }
 
     private void bypassInDepthRecursively(int vertexIndex, boolean[] visited, Consumer<E> consumer) { // private, чтобы не вызвать извне
-        if(visited[vertexIndex]){
+        if (visited[vertexIndex]) {
             return;
         }
 
