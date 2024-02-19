@@ -145,24 +145,23 @@ public class BinarySearchTree<E> {
         }
     }
 
-    public void bypassInDeepRecursively(Consumer<? super E> consumer) {
+    public void bypassInDepthRecursively(Consumer<? super E> consumer) {
         if (size == 0) {
             return; // Когда дерево пустое
         }
 
-        bypassInDeepRecursively(root, consumer);
+        bypassInDepthRecursively(root, consumer);
     }
 
-    // Это перегрузка функции bypassInDeepRecursively?
-    private void bypassInDeepRecursively(TreeNode<E> node, Consumer<? super E> consumer) {
+    private void bypassInDepthRecursively(TreeNode<E> node, Consumer<? super E> consumer) {
         consumer.accept(node.getData());
 
         if (node.getLeft() != null) {
-            bypassInDeepRecursively(node.getLeft(), consumer);
+            bypassInDepthRecursively(node.getLeft(), consumer);
         }
 
         if (node.getRight() != null) {
-            bypassInDeepRecursively(node.getRight(), consumer);
+            bypassInDepthRecursively(node.getRight(), consumer);
         }
     }
 
@@ -198,7 +197,6 @@ public class BinarySearchTree<E> {
     }
 
     private TreeNode<E> findNodeParent(E data) {
-        // Вместо findNodeToDeleteParent переименовали в findNodeParent
         TreeNode<E> currentNode = root;
         TreeNode<E> parentNode = null;
 
@@ -206,7 +204,7 @@ public class BinarySearchTree<E> {
             int comparisonResult = compare(currentNode.getData(), data);
 
             if (comparisonResult == 0) {
-                return  parentNode;
+                return parentNode;
             }
 
             parentNode = currentNode;
@@ -218,15 +216,14 @@ public class BinarySearchTree<E> {
 
                 currentNode = currentNode.getLeft();
 
-                // То этот элемент точно null
                 continue;
             }
 
             if (currentNode.getRight() == null) {
                 return null;
-            } else{
-                currentNode = currentNode.getRight();
             }
+
+            currentNode = currentNode.getRight();
         }
     }
 

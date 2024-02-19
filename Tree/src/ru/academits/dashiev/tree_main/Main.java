@@ -74,7 +74,7 @@ public class Main {
         System.out.println();
 
         System.out.println("bypassInDeepRecursively:");
-        tree.bypassInDeepRecursively(e -> System.out.print(e + " "));
+        tree.bypassInDepthRecursively(e -> System.out.print(e + " "));
         System.out.println();
 
         System.out.println();
