@@ -9,12 +9,12 @@ public class Graph<E> {
     private final int[][] adjacencyMatrix;
 
     @SafeVarargs
-    public Graph(E... vertexValues) {
-        vertexesValues = new ArrayList<>();
+    public Graph(E... vertexesValues) {
+        this.vertexesValues = new ArrayList<>();
 
-        vertexesValues.addAll(Arrays.asList(vertexValues));
+        this.vertexesValues.addAll(Arrays.asList(vertexesValues));
 
-        adjacencyMatrix = new int[vertexValues.length][vertexValues.length];
+        adjacencyMatrix = new int[vertexesValues.length][vertexesValues.length];
     }
 
     private void checkValue(int value) {
@@ -51,10 +51,10 @@ public class Graph<E> {
 
         Queue<Integer> queue = new LinkedList<>();
 
-        for (int i = 0; i < adjacencyMatrix.length; ) {
+        for (int i = 0; i < adjacencyMatrix.length; i++) {
+            // Прошу не считать за ошибку поскольку это важный комментарий для учебы
+            // В этом коде мы пропускаем только те вершины, которые уже были посещены, а не просто инкриминируем переменную цикла i
             if (visited[i]){
-                i++;
-
                 continue;
             }
 
@@ -62,24 +62,23 @@ public class Graph<E> {
             queue.offer(i);
 
             while (!queue.isEmpty()) {
-                Integer currentVertexFromQueue = queue.poll();
+                Integer currentVertexIndex = queue.poll();
 
-                if (!visited[currentVertexFromQueue]) {
-                    consumer.accept(vertexesValues.get(currentVertexFromQueue));
-                    visited[currentVertexFromQueue] = true;
+                if (!visited[currentVertexIndex]) {
+                    consumer.accept(vertexesValues.get(currentVertexIndex));
+
+                    visited[currentVertexIndex] = true;
 
                     // Кладем детей вершины в очередь
                     for (int j = 0; j < adjacencyMatrix.length; j++) {
                         // Берем те, где есть ребро и где мы еще не были
-                        if (adjacencyMatrix[currentVertexFromQueue][j] == 1 && !visited[j]) {
+                        if (adjacencyMatrix[currentVertexIndex][j] == 1 && !visited[j]) {
                             // Добавляем элемент в очередь
                             queue.offer(j);
                         }
                     }
                 }
             }
-
-            i++;
         }
     }
 
@@ -88,47 +87,43 @@ public class Graph<E> {
 
         Deque<Integer> stack = new LinkedList<>();
 
-        for (int i = 0; i < adjacencyMatrix.length; ) {
+        for (int i = 0; i < adjacencyMatrix.length; i++) {
             if (visited[i]) {
-               i++;
-
                continue;
             }
 
             stack.addLast(i);
 
             while (!stack.isEmpty()) { // Пока стек не пуст
-                Integer currentElementFromStack = stack.removeLast();
+                Integer currentVertexIndex = stack.removeLast();
 
-                if (!visited[currentElementFromStack]) {
-                    consumer.accept(vertexesValues.get(currentElementFromStack));
-                    visited[currentElementFromStack] = true;
+                if (!visited[currentVertexIndex]) {
+                    consumer.accept(vertexesValues.get(currentVertexIndex));
+
+                    visited[currentVertexIndex] = true;
 
                     for (int j = adjacencyMatrix.length - 1; j >= 0; j--) {
-                        if (adjacencyMatrix[currentElementFromStack][j] == 1 && !visited[j]) {
+                        if (adjacencyMatrix[currentVertexIndex][j] == 1 && !visited[j]) {
                             // Добавляем элемент в стек
                             stack.addLast(j);
                         }
                     }
                 }
             }
-
-            i++;
         }
     }
 
-
-    public void bypassInDeepRecursive(Consumer<E> consumer) {
+    public void bypassInDepthRecursively(Consumer<E> consumer) {
         boolean[] visited = new boolean[adjacencyMatrix.length];
 
         for (int i = 0; i < adjacencyMatrix.length; i++) {
             if (!visited[i]) {
-                bypassInDeepRecursively(i, visited, consumer);
+                bypassInDepthRecursively(i, visited, consumer);
             }
         }
     }
 
-    private void bypassInDeepRecursively(int vertexIndex, boolean[] visited, Consumer<E> consumer) { // private, чтобы не вызвать извне
+    private void bypassInDepthRecursively(int vertexIndex, boolean[] visited, Consumer<E> consumer) { // private, чтобы не вызвать извне
         if(visited[vertexIndex]){
             return;
         }
@@ -136,12 +131,13 @@ public class Graph<E> {
         E vertexValue = vertexesValues.get(vertexIndex);
 
         consumer.accept(vertexValue);
+
         visited[vertexIndex] = true;
 
         for (int i = 0; i < adjacencyMatrix.length; i++) {
             if (adjacencyMatrix[vertexIndex][i] == 1) {
                 // Добавляем элемент
-                bypassInDeepRecursively(i, visited, consumer);
+                bypassInDepthRecursively(i, visited, consumer);
             }
         }
     }
