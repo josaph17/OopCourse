@@ -110,7 +110,7 @@ public class View {
             convertButton.addActionListener(e -> {
                 if (e.getSource() == convertButton) {
                     try {
-                        double inputTemperature = Double.parseDouble((inputTemperatureField.getText()));
+                        double inputTemperature = Double.parseDouble(inputTemperatureField.getText());
 
                         double outputTemperature = model.convertTemperature((String) inputScalesNamesComboBox.getSelectedItem(), (String) outputScalesNamesComboBox.getSelectedItem(), inputTemperature);
 
@@ -119,7 +119,7 @@ public class View {
                         showWrongInputError();
 
                         outputTemperatureField.setText("");
-                    } catch (IllegalArgumentException exception){
+                    } catch (IllegalArgumentException exception) {
                         showWrongInputOutputTemperatureNameError();
                     }
                 }
