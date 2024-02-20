@@ -35,8 +35,8 @@ public class ApplicationConverter implements Converter {
             }
         }
 
-        if (!isInputScaleNameFound){
-            throw new IllegalArgumentException("There is no such scale name in all scales list!");
+        if (!isInputScaleNameFound) {
+            throw new IllegalArgumentException("The name of the input scale name is not found  in all scales list!");
         }
 
         double outputTemperature = 0.0;
@@ -52,8 +52,8 @@ public class ApplicationConverter implements Converter {
             }
         }
 
-        if (!isOutputScaleNameFound){
-            throw new IllegalArgumentException("There is no such scale name in all scales list!");
+        if (!isOutputScaleNameFound) {
+            throw new IllegalArgumentException("The name of the output scale name is not found  in all scales list!!");
         }
 
         return outputTemperature;
