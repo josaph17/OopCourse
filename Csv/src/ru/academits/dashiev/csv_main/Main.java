@@ -19,9 +19,9 @@ public class Main {
 
             CsvToHtmlConverter.convert(inputPath, outputPath);
         } catch (FileNotFoundException e) {
-            System.out.println("File not found!");
+            System.out.println("Input file not found!");
         } catch (IOException e) {
-            System.out.println("Exception ....!");
+            System.out.println("An IOException occurred while working with the input file.");
         }
     }
 }

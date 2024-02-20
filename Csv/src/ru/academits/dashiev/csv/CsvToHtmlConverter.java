@@ -4,10 +4,10 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class CsvToHtmlConverter {
-    public static void convert(String sourcePath, String resultPath) throws IOException {
+    public static void convert(String inputPath, String outputPath) throws IOException {
         // Буферизованные потоки
-        try (BufferedReader reader = new BufferedReader(new FileReader(sourcePath, StandardCharsets.UTF_8));
-             PrintWriter writer = new PrintWriter(new FileWriter(resultPath, StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputPath, StandardCharsets.UTF_8));
+             PrintWriter writer = new PrintWriter(new FileWriter(outputPath, StandardCharsets.UTF_8))) {
             writer.println("<!DOCTYPE html>");
             writer.println("<html lang=\"en\">");
             writer.println("<head>");
