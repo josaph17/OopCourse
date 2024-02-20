@@ -120,7 +120,7 @@ public class View {
 
                         outputTemperatureField.setText("");
                     } catch (IllegalArgumentException exception) {
-                        showWrongInputOutputTemperatureNameError();
+                        JOptionPane.showMessageDialog(frame, exception.getMessage(), "Wrong scale name error", JOptionPane.PLAIN_MESSAGE, warningIcon);
                     }
                 }
             });
@@ -130,10 +130,5 @@ public class View {
     private void showWrongInputError() {
         JOptionPane.showMessageDialog(frame, "Input wrong value! Input number", "Input error",
                 JOptionPane.PLAIN_MESSAGE, warningIcon);
-    }
-
-    private void showWrongInputOutputTemperatureNameError() {
-        JOptionPane.showMessageDialog(frame, "There is no such scale name in all scales list!",
-                "Wrong scale name error", JOptionPane.PLAIN_MESSAGE, warningIcon);
     }
 }
