@@ -62,9 +62,10 @@ public class View {
             outputScaleAndTemperaturePanel.revalidate();
             outputScaleAndTemperaturePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            Image appIcon = Toolkit.getDefaultToolkit().getImage("Temperature\\src\\ru\\academits\\dashiev\\temperature\\resources\\appImg.png"); // create app icon
-            ImageIcon convertButtonIcon = new ImageIcon("Temperature\\src\\ru\\academits\\dashiev\\temperature\\resources\\convertButton.png"); // convertButtonIcon
-            warningIcon = new ImageIcon("Temperature\\src\\ru\\academits\\dashiev\\temperature\\resources\\attention.png");
+            // В этих путях лучше использовать / Это будет работать на всех платформах. Комментарий по путям.
+            Image appIcon = Toolkit.getDefaultToolkit().getImage("Temperature/src/ru/academits/dashiev/temperature/resources/appImg.png"); // create app icon
+            ImageIcon convertButtonIcon = new ImageIcon("Temperature/src/ru/academits/dashiev/temperature/resources/convertButton.png"); // convertButtonIcon
+            warningIcon = new ImageIcon("Temperature/src/ru/academits/dashiev/temperature/resources/attention.png");
 
             inputTemperatureField = new JTextField();
             inputTemperatureField.setColumns(20); // textField 20 symbols
